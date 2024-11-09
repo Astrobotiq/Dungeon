@@ -1,32 +1,29 @@
+using System;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
-    public Camera Camera;
+    //event manager yazmadığım için şimdilik böyle koyucam
+    public event Action onRightClicked;
+    public bool canTakeInput = true;
     //Todo bütün bu managerler için bir tane Singleton parent class yazılacak yazılacak
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OnLeftButton(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && canTakeInput)
         {
             var mousePosition = Mouse.current.position.ReadValue();
             RaycastHit hit = getRaycastHit(mousePosition);
 
+            if (hit.collider == null)
+            {
+                return;
+            }
+            
             IClickable clickable = hit.collider.gameObject.GetComponent<IClickable>();
 
             if (clickable != null)
@@ -38,20 +35,9 @@ public class InputManager : MonoBehaviour
     
     public void OnRightButton(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && canTakeInput)
         {
-            //Maybe this function can use to deavtivate current action
-            
-            var mousePosition = Mouse.current.position.ReadValue();
-            RaycastHit hit = getRaycastHit(mousePosition);
-
-            IClickable clickable = hit.collider.gameObject.GetComponent<IClickable>();
-
-            if (clickable != null)
-            {
-                clickable.onRightClick();
-            }
-
+            onRightClicked?.Invoke();
         }
     }
     

@@ -6,4 +6,6 @@ public class Grid : MonoBehaviour
     {
         GridManager.Instance.AddGrid(transform.position, this.gameObject);
     }
+    
+    
 }
