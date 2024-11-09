@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    public static List<List<GameObject>> GridList;
+    [SerializeField] public GameObject selectedGrid { set; get; }
     
+    public List<List<GameObject>> GridList;
     
-    void Update()
+    void OnEnable()
     {
-        
+        InputManager.Instance.onRightClicked += DeSelectGrid;
+    }
+
+    void OnDisable()
+    {
+        InputManager.Instance.onRightClicked -= DeSelectGrid;
     }
 
     public void AddGrid(Vector3 pos, GameObject Grid)
@@ -44,5 +50,38 @@ public class GridManager : Singleton<GridManager>
         int xPos = (int)Math.Floor(pos.x);
         int zPOs = (int)Math.Floor(pos.z);
         GridList[xPos][zPOs] = null;
+    }
+
+    public GameObject GetGrid()
+    {
+        if (GridList == null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < GridList.Count; i++)
+        {
+            List<GameObject> Grids = GridList[i];
+            for (int j = 0; j < Grids.Count; j++)
+            {
+                GameObject Grid = Grids[j];
+                if (Grid != null)
+                {
+                    return Grid;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void SetSelectedGrid(GameObject Grid)
+    {
+        selectedGrid = Grid;
+        PlayerManager.Instance.SetPlayerPosition(Grid);
+    }
+
+    void DeSelectGrid()
+    {
+        selectedGrid = null;
     }
 }
