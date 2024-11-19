@@ -109,4 +109,10 @@ public class GridManager : Singleton<GridManager>
             }
         }
     }
+
+    public Grid getGridFromLocation(Vector3 input_vector3)
+    {
+        Grid temp = GridList[(int)input_vector3.x][(int)input_vector3.z].GetComponent<Grid>();
+        return temp;
+    }
 }
