@@ -4,7 +4,7 @@ public class Grid : MonoBehaviour
 {
     void OnEnable()
     {
-        GridManager.Instance.AddGrid(transform.position, this.gameObject);
+        //GridManager.Instance.AddGrid(transform.localPosition, this.gameObject);
     }
     
     

@@ -28,15 +28,16 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        this.Grid = Grid;
-        if (!canTravel())
+        if (!canTravel(Grid))
         {
             return;
         }
+        this.Grid = Grid;
+        
         Travel();
     }
 
-    bool canTravel()
+    bool canTravel(GameObject Grid)
     {
         return Mathf.Abs(Grid.transform.position.x - transform.position.x) +
             Mathf.Abs(Grid.transform.position.z - transform.position.z) <= range;

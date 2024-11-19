@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
+    [SerializeField] private GameObject GridPrefab;
     [SerializeField] public GameObject selectedGrid { set; get; }
+
+    [SerializeField] public int StartPosition; 
+    [SerializeField] public int EndPosition; 
+    //ToDo sistemden tilemap kısmını çıkarıp kendi instatiate mantığımızı yerleştirmeliyiz.
     
     public List<List<GameObject>> GridList;
-    
+
     void OnEnable()
     {
         InputManager.Instance.onRightClicked += DeSelectGrid;
+        InstantiateGrids(StartPosition,EndPosition,GridPrefab);
     }
 
     void OnDisable()
@@ -73,6 +79,11 @@ public class GridManager : Singleton<GridManager>
         }
         return null;
     }
+    
+    public float GetCenter()
+    {
+        return (StartPosition + EndPosition) / 2;
+    }
 
     public void SetSelectedGrid(GameObject Grid)
     {
@@ -83,5 +94,19 @@ public class GridManager : Singleton<GridManager>
     void DeSelectGrid()
     {
         selectedGrid = null;
+    }
+
+    void InstantiateGrids(int start, int end, GameObject Grid)
+    {
+        for (int i = start; i < end; i++)
+        {
+            for (int j = start; j < end; j++)
+            {
+                var pos = new Vector3(i, 0, j);
+                var GridGO = Instantiate(Grid, pos, Quaternion.identity);
+                GridGO.transform.SetParent(this.transform);
+                AddGrid(pos,GridGO);
+            }
+        }
     }
 }
