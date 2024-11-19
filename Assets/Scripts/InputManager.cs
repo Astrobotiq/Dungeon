@@ -10,11 +10,10 @@ public class InputManager : Singleton<InputManager>
     public event Action onRightClicked;
     public bool canTakeInput = true;
     //Todo bütün bu managerler için bir tane Singleton parent class yazılacak yazılacak
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public void OnLeftButton(InputValue value)
+    public void OnLeftButton(InputAction.CallbackContext value)
     {
-        if (value.isPressed && canTakeInput)
+        if (value.performed && canTakeInput)
         {
             var mousePosition = Mouse.current.position.ReadValue();
             RaycastHit hit = getRaycastHit(mousePosition);
@@ -41,12 +40,18 @@ public class InputManager : Singleton<InputManager>
         }
     }
     
-    public void OnMiddleClick(InputValue value)
+    public void OnMiddleClick(InputAction.CallbackContext value)
     {
-        if (value.isPressed)
+        if (value.performed)
         {
-            //In this area we will rotate our scene 
+            CameraManager.Instance.setRotation(true);
         }
+        else if (value.canceled)
+        {
+            CameraManager.Instance.setRotation(false);
+
+        }
+        
     }
     
     public void OnScrollWheel(InputValue value)
