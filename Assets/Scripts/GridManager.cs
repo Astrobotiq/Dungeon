@@ -14,10 +14,14 @@ public class GridManager : Singleton<GridManager>
     
     public List<List<GameObject>> GridList;
 
+    void Start()
+    {
+        InstantiateGrids(StartPosition,EndPosition,GridPrefab);
+    }
+
     void OnEnable()
     {
         InputManager.Instance.onRightClicked += DeSelectGrid;
-        InstantiateGrids(StartPosition,EndPosition,GridPrefab);
     }
 
     void OnDisable()
@@ -93,6 +97,7 @@ public class GridManager : Singleton<GridManager>
 
     void DeSelectGrid()
     {
+        Debug.Log("Deselect");
         selectedGrid = null;
     }
 

@@ -5,16 +5,34 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using Vector3 = UnityEngine.Vector3;
 
-public class Algorithm : MonoBehaviour
+public class Algorithm
 {
+    
+    //Yorumlarım
+    // 1-Bence bu algoritmaların ortak özelliklerini düşünüp bundan sonra yazacaklarımız için de kolaylık sağlaması adına
+    //   bir tane abstract searchAlghorithms class'ı oluşturup bunları da ondan inherit etmen iyi olur.
+    // 2-Şuan algoritma çalışmıyor çalışır hale getirirsen çok iyi olur. Bu hafta konuşmadık ama haftaya kadar abstract
+    //   ile bu class'ı çalışır hale getirirsen çok iyi olur
+    // 3-Bütün algoritma class'ları için diyorum bütün bu renk değiştirme olaylarını falan burada yapmamak daha iyi olur.
+    //   Bu class'ların bütün amacı onlara verdiğimiz listeler üzerinden search yapıp geriye hash veya list dönmesi olsun
+    //   kod daha temiz olur. herkes herkesin işine elini sokmaz. geriye dönülen liste veya hash ile dönülen yerde iş yapılır.
+    // 4-Şimdiden bol kolaylıklar.
+    
     private HashSet<Vector3> grids = new HashSet<Vector3>();
 
     public void startAlgorithm(Grid input_grid, int input_deepeningCount)
     {
+
+        Debug.Log(input_grid.gameObject.transform.position);
+
         IterativeDeepeningAlgorithmV2(input_grid,grids,input_deepeningCount);
-        foreach (Vector3 grid in grids)
+
+        foreach (Vector3 gridPos in grids)
         {
-            //burada yeşile çevirilecek o gridin deepening kadar yakınındakiler
+            Debug.Log("1-gridPos :"+gridPos);
+            MaterialController controller = GridManager.Instance.getGridFromLocation(gridPos).gameObject
+                .GetComponent<Grid>().MaterialController;
+            controller.SetMaterialWalkable();
         }
     }
     private void IterativeDeepeningAlgorithmV2(Grid input_grid, HashSet<Vector3>input_set, int input_deepeningCount){
@@ -33,6 +51,7 @@ public class Algorithm : MonoBehaviour
         }
 
         foreach(Vector3 grid in açılacakNodelar) {  //yukarıdaki listede eklenen bir öncesinde açılmış nodeun komşularını açar
+            Debug.Log("2-grid: "+grid);
             if(!input_set.Contains(grid)){
                 IterativeDeepeningAlgorithmV2(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
             }
@@ -105,6 +124,7 @@ public class Algorithm : MonoBehaviour
             nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
         }
 
+        Debug.Log("3-Location : " + location);
         GridManager.Instance.getGridFromLocation(location).setNearNodes(nearNodes);
         
     }

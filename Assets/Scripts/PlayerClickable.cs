@@ -19,6 +19,8 @@ public class PlayerClickable : IClickable
     public override void onLeftClick()
     {
         PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
+        Algorithm searchAlghorithm = new();
+        searchAlghorithm.startAlgorithm(Player.Grid.GetComponent<Grid>(), Player.range);
         GridManager.Instance.SetSelectedGrid(Player.Grid);
     }
 
