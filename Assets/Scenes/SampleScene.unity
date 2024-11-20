@@ -194,8 +194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GridPrefab: {fileID: 957283571223716465, guid: 89e766ea17e16dd448627f7d0be6ba11, type: 3}
-  StartPosition: 1
-  EndPosition: 9
+  StartPosition: 0
+  EndPosition: 8
 --- !u!4 &266425829
 Transform:
   m_ObjectHideFlags: 0
