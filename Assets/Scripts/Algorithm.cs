@@ -22,27 +22,61 @@ public class Algorithm
 
     public void startAlgorithm(Grid input_grid, int input_deepeningCount)
     {
-
+        foreach (Vector3 oldVarInSet in grids)
+        {
+            MaterialController controller = GridManager.Instance.getGridFromLocation(oldVarInSet).gameObject
+                .GetComponent<Grid>().MaterialController;
+            controller.SetMaterialDefault(); //Bunu eski gridleri eski haline döndürmek için yazayım dedim ama olmadı
+            grids.Remove(oldVarInSet);
+            //Debug.Log("Cleared old loc is " + oldVarInSet);
+        }
         Debug.Log(input_grid.gameObject.transform.position);
 
-        IterativeDeepeningAlgorithmV2(input_grid,grids,input_deepeningCount);
+        IterativeDeepeningAlgorithmV3(input_grid,grids,input_deepeningCount);
 
         foreach (Vector3 gridPos in grids)
         {
-            Debug.Log("1-gridPos :"+gridPos);
+            //Debug.Log("1-gridPos :"+gridPos);
             MaterialController controller = GridManager.Instance.getGridFromLocation(gridPos).gameObject
                 .GetComponent<Grid>().MaterialController;
             controller.SetMaterialWalkable();
         }
     }
-    private void IterativeDeepeningAlgorithmV2(Grid input_grid, HashSet<Vector3>input_set, int input_deepeningCount){
-        calculateNearNodes(input_grid.gameObject.transform.position);
-        if(input_deepeningCount==1){
-            foreach (Vector3 grid in input_grid.getNearNodes())
-            input_set.Add(grid);
+    
+    private void IterativeDeepeningAlgorithmV3(Grid input_grid, HashSet<Vector3>input_set, int input_deepeningCount){ //Lütfen bunu kullan V2 yi kullanma. V2'yi ileride gerekmesi durumunua karşı tuttum
+        //base case bu direkt (abstract için not)
+        if(input_deepeningCount==0) {
+            input_set.Add(input_grid.gameObject.transform.position);
+            return;
+        }
+        
+        //bu kısım body gibi (abstract için not)
+        calculateNearNodes(input_grid.gameObject.transform.position); //yakınklarını hesaplatır
+        List<Vector3> açılacakNodelar = new List<Vector3>(); //şuan üzerine işlem yapılacak node'un komşularının vec3 değerlerini tutar
+        foreach(Vector3 grid in input_grid.getNearNodes()){ //yakın nodeları listeye ekler
+            açılacakNodelar.Add(grid);
         }
 
-        List<Vector3> açılacakNodelar = new List<Vector3>(); //şuanki input_node ne ise onun komşularını tutar
+        //bu da iterate eden kısım gibi (abstract için not)
+        foreach(Vector3 grid in açılacakNodelar) {  //yukarıdaki liste içindeki nodeların için aynı işlemi yapar
+            Debug.Log("2-grid: "+grid);
+            IterativeDeepeningAlgorithmV3(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
+            input_set.Add(grid);
+        }
+    }
+    
+    //Şuan kullanılmıyor ama durmasında fayda var diye tutuyorum
+    /*private void IterativeDeepeningAlgorithmV2(Grid input_grid, HashSet<Vector3>input_set, int input_deepeningCount){ 
+        calculateNearNodes(input_grid.gameObject.transform.position);
+        
+        if(input_deepeningCount==1){
+            foreach (Vector3 grid in input_grid.getNearNodes())
+            {
+                input_set.Add(grid);
+            }
+        }
+
+        List<Vector3> açılacakNodelar = new List<Vector3>(); //şuan üzerine işlem yapılacak node'un komşularının vec3 değerlerini tutar
         foreach(Vector3 grid in input_grid.getNearNodes()){ //yakın nodeları stack ve liste ekler
             if(!input_set.Contains(grid)){
                 //input_stack.Push(grid);
@@ -51,13 +85,13 @@ public class Algorithm
         }
 
         foreach(Vector3 grid in açılacakNodelar) {  //yukarıdaki listede eklenen bir öncesinde açılmış nodeun komşularını açar
+            //if(!input_set.Contains(grid)){
             Debug.Log("2-grid: "+grid);
-            if(!input_set.Contains(grid)){
-                IterativeDeepeningAlgorithmV2(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
-            }
+            IterativeDeepeningAlgorithmV2(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
+            //}
             input_set.Add(grid);
         }
-    }
+    }*/
     
     private void calculateNearNodes(Vector3 coordinates)
     {
@@ -67,64 +101,64 @@ public class Algorithm
 
         if(location.z==0){ // y=0 ise
             if(location.x==0){ //hem x hem y = 0 ise
-                nearNodes.Add(new Vector3(location.x,location.y,location.z + 1)); //sağ
-                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
             }
             else if(location.x==7){ //hem x hem de y 7 ise
-                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
-                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
             }
             else{
-                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
-                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
             }
         }
         else if(location.z==7){ // y=7 ise
             if(location.x==7){ //hem x hem de y 7 ise
-                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
             }
             else if(location.x==0){ //hem x=0 y 7 ise
-                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
             }
             else{
-                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
             }
         }
         else if(location.x==0){ // x=0 ise
-            if(location.z==7){ // x=0 y=7 ise
+            /*if(location.z==7){ // x=0 y=7 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
                 nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
-            }
-            else{
-                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
-                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
-            }
+            }*/
+            //else{
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            //}
         }
         else if (location.x==7){ // x=7 ise
-            if(location.z==0){ // hem x=7 y=0 ise
+            /*if(location.z==0){ // hem x=7 y=0 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
                 nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-            }
-            else{
-                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
-                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-            }
+            }*/
+            //else{
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            //}
         }
         else{
-            nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
-            nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
-            nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-            nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+            nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+            nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+            nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+            nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
         }
 
-        Debug.Log("3-Location : " + location);
+        //Debug.Log("3-Location : " + location);
         GridManager.Instance.getGridFromLocation(location).setNearNodes(nearNodes);
         
     }
