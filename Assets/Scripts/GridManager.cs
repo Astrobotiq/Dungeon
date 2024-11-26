@@ -9,8 +9,8 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] public GameObject selectedGrid { set; get; }
 
     [SerializeField] public int StartPosition; 
+    
     [SerializeField] public int EndPosition; 
-    //ToDo sistemden tilemap kısmını çıkarıp kendi instatiate mantığımızı yerleştirmeliyiz.
     
     public List<List<GameObject>> GridList;
 
@@ -91,8 +91,25 @@ public class GridManager : Singleton<GridManager>
 
     public void SetSelectedGrid(GameObject Grid)
     {
+        if (selectedGrid == null || PlayerManager.Instance.GetSelectedPlayer() == null)
+        {
+            //Bu demek oluyor ki biz bir adet boş grid'e tıklamışız. Ozaman bir adet UI açılır.
+            //Belki bu gridde önemli birşeyler vardır. ve onu gösteririz
+        }
+        if (selectedGrid == Grid)
+        {
+            return;
+        }
+
+        if (selectedGrid != null)
+        {
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        }
         selectedGrid = Grid;
-        PlayerManager.Instance.SetPlayerPosition(Grid);
+        selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
+        //Burada zaten bu fonksiyon Player Manager tarafından çağırılıyorsa ozaman
+        //SetPlayerPosition() fonksiyonunda hemen geri dönecek çünkü oradaki grid ile buraki grid aynı
+        PlayerManager.Instance.SetPlayerPosition(selectedGrid);
     }
 
     void DeSelectGrid()
