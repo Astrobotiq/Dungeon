@@ -4,7 +4,8 @@ public class GridClickable : IClickable
 {
     public override void onLeftClick()
     {
-        GridManager.Instance.SetSelectedGrid(this.gameObject);    }
+        GridManager.Instance.SetSelectedGrid(this.gameObject);    
+    }
     
     public override void onRightClick()
     {

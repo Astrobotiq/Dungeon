@@ -6,7 +6,6 @@ public class PlayerManager : Singleton<PlayerManager>
 {
     [SerializeField]
     GameObject PlayerGO;
-    Player PlayerScript;
     GameObject SelectedPlayer;
     
     [SerializeField,Range(0,5)]
@@ -24,7 +23,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void Start()
     {
-        PlayerScript = PlayerGO.GetComponent<Player>();
         StartCoroutine(findPlayerPosition());
     }
 
@@ -36,18 +34,19 @@ public class PlayerManager : Singleton<PlayerManager>
         }
 
         GameObject grid = GridManager.Instance.GetGrid();
+        var PlayerScript = PlayerGO.GetComponent<Player>();
         PlayerScript.SetGridStart(grid, offset);
     }
 
     public void SetPlayerPosition(GameObject grid)
     {
-        if (SelectedPlayer != PlayerScript.gameObject)
+        if (SelectedPlayer == null || SelectedPlayer.GetComponent<Player>().Grid == grid)
         {
             return;
         }
-        PlayerScript.SetGrid(grid, offset);
+        SelectedPlayer.GetComponent<Player>().SetGrid(grid, offset);
     }
-
+    
     void DeSelectPlayer()
     {
         SelectedPlayer = null;
@@ -55,12 +54,22 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void SetSelectedPlayer(GameObject Player)
     {
-        if (SelectedPlayer == Player)
+        if (Player == null)
         {
+            SelectedPlayer = null;
             return;
         }
+        
+        if (SelectedPlayer == Player)
+            return;
 
         SelectedPlayer = Player;
-        PlayerScript = SelectedPlayer.GetComponent<Player>();
+        var PlayerScript = SelectedPlayer.GetComponent<Player>();
+        GridManager.Instance.SetSelectedGrid(PlayerScript.Grid);
+    }
+    
+    public GameObject GetSelectedPlayer()
+    {
+        return SelectedPlayer;
     }
 }
