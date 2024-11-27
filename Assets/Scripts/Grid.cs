@@ -22,9 +22,5 @@ public class Grid : MonoBehaviour
     public List<Vector3> getNearNodes(){
         return nearNodes;
     }
-    void OnEnable()
-    {
-        //GridManager.Instance.AddGrid(transform.localPosition, this.gameObject);
-    }
     
 }
