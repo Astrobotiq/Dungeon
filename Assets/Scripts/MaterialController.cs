@@ -42,7 +42,7 @@ public class MaterialController
             objRenderer.GetPropertyBlock(propertyBlock);
 
             // Overlay rengini ayarla (örneğin varsayılan kırmızı)
-            Color overlayColor = new Color(0, 1, 0, 0); // İstediğiniz renk ve alpha değeri
+            Color overlayColor = new Color(1, 1, 1, 1); // İstediğiniz renk ve alpha değeri
             propertyBlock.SetColor("_OverlayColor", overlayColor);
 
             // Güncellenmiş property block'u geri ata
