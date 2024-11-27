@@ -30,10 +30,16 @@ public class Player : MonoBehaviour
         }
         if (!canTravel(Grid))
         {
+            PlayerManager.Instance.SetSelectedPlayer(null);
             return;
         }
-        this.Grid = Grid;
+
+        //Hareket etmeden önce command oluştulup ekleniyor
+        Command command = new Command(this, this.Grid, offset);
+        CommandManager.Instance.AddCommand(command);
         
+        
+        this.Grid = Grid;
         Travel();
     }
 
@@ -54,6 +60,16 @@ public class Player : MonoBehaviour
             new Vector3(Grid.transform.position.x, Grid.transform.position.y + offset, Grid.transform.position.z);
     }
 
+    //This function will handle all the necessary thing when we click the player.
+    //For example if we will make a sound we will send from here
+    //if we open a UI its information will go from here
+    public void MakeSelectedPlayerThis()
+    {
+        PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
+        Algorithm searchAlghorithm = new();
+        searchAlghorithm.startAlgorithm(Grid.GetComponent<Grid>(), range);
+    }
+    #region Travel
     public void Travel()
     {
         switch (TravelType)
@@ -116,6 +132,16 @@ public class Player : MonoBehaviour
         var duration = travelTime * diffZ;
         transform.DOJump(position, 1, diffZ, duration).SetEase(EaseZ);
         InputManager.Instance.canTakeInput = true;
+    }
+    
+
+    #endregion
+
+    public void Undo(GameObject grid, float offset)
+    {
+        Grid = grid.gameObject;
+        GridManager.Instance.SetSelectedGrid(Grid);
+        Travel();
     }
 }
 

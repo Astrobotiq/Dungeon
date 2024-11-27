@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerClickable : IClickable
 {
     [SerializeField]
-    Player Player;
+    Player _Player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,10 +18,7 @@ public class PlayerClickable : IClickable
 
     public override void onLeftClick()
     {
-        PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
-        Algorithm searchAlghorithm = new();
-        searchAlghorithm.startAlgorithm(Player.Grid.GetComponent<Grid>(), Player.range);
-        GridManager.Instance.SetSelectedGrid(Player.Grid);
+        _Player.MakeSelectedPlayerThis();
     }
 
     public override void onRightClick()
