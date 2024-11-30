@@ -20,18 +20,63 @@ public class Algorithm
     
     private HashSet<Vector3> grids = new HashSet<Vector3>();
 
-    public void startAlgorithm(Grid input_grid, int input_deepeningCount)
-    {
+    /*
+    public override HashSet<Vector3> startAlgorithm(Grid grid, int deepening_count){
         foreach (Vector3 oldVarInSet in grids)
+        return grids;
+    }*/
+
+    /*
+    protected override void algorithm(Grid input_grid, HashSet<Vector3> givenHashSet, int deepening_count)
+    {
+        if (baseCase(input_grid, givenHashSet, deepening_count))
+        {
+            return;
+        }
+        bodyPart(input_grid, givenHashSet, deepening_count);
+        
+        iterativePart(input_grid, givenHashSet, deepening_count);
+    }*/
+    
+    /*
+    protected override bool baseCase(Grid input_grid, HashSet<Vector3> givenHashSet, int deepening_count)
+    {
+        if(deepening_count==0) {
+            givenHashSet.Add(input_grid.gameObject.transform.position);
+            return true;
+        }
+
+        return false;
+    }*/
+
+    /*protected override void bodyPart(Grid input_grid, HashSet<Vector3> givenHashSet, int deepening_count)
+    {
+        calculateNearNodes(input_grid.gameObject.transform.position); //yakınklarını hesaplatır
+        List<Vector3> açılacakNodelar = new List<Vector3>(); //şuan üzerine işlem yapılacak node'un komşularının vec3 değerlerini tutar
+        foreach(Vector3 grid in input_grid.getNearNodes()){ //yakın nodeları listeye ekler
+            açılacakNodelar.Add(grid);
+        }
+    }*/
+
+    /*
+    protected override void iterativePart(Grid input_grid, HashSet<Vector3> givenHashSet, int deepening_count)
+    {
+        
+    }*/
+    
+    public HashSet<Vector3> startAlgorithm(Grid input_grid, int input_deepeningCount)
+    {
+        /*foreach (Vector3 oldVarInSet in grids)
         {
             MaterialController controller = GridManager.Instance.getGridFromLocation(oldVarInSet).gameObject
                 .GetComponent<Grid>().MaterialController;
             controller.SetMaterialDefault(); //Bunu eski gridleri eski haline döndürmek için yazayım dedim ama olmadı
             grids.Remove(oldVarInSet);
             //Debug.Log("Cleared old loc is " + oldVarInSet);
-        }
-        Debug.Log(input_grid.gameObject.transform.position);
-
+        }*/
+        
+        //Debug.Log(input_grid.gameObject.transform.position);
+        
         IterativeDeepeningAlgorithmV3(input_grid,grids,input_deepeningCount);
 
         foreach (Vector3 gridPos in grids)
@@ -41,6 +86,8 @@ public class Algorithm
                 .GetComponent<Grid>().MaterialController;
             controller.SetMaterialWalkable();
         }
+        
+        return grids;
     }
     
     private void IterativeDeepeningAlgorithmV3(Grid input_grid, HashSet<Vector3>input_set, int input_deepeningCount){ //Lütfen bunu kullan V2 yi kullanma. V2'yi ileride gerekmesi durumunua karşı tuttum
