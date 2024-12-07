@@ -66,6 +66,7 @@ public class Algorithm
     
     public HashSet<Vector3> startAlgorithm(Grid input_grid, int input_deepeningCount)
     {
+        //forCheck(); //Grid classı içindeki checkIsThereObjectUpside methodunu test etmek için (Code review sonrasında silinecek)
         /*foreach (Vector3 oldVarInSet in grids)
         {
             MaterialController controller = GridManager.Instance.getGridFromLocation(oldVarInSet).gameObject
@@ -97,19 +98,33 @@ public class Algorithm
             return;
         }
         
+        if (!input_grid.getIsAvailable()) //available değil ise dönsün
+        {
+            return;
+        }
+        
         //bu kısım body gibi (abstract için not)
         calculateNearNodes(input_grid.gameObject.transform.position); //yakınklarını hesaplatır
         List<Vector3> açılacakNodelar = new List<Vector3>(); //şuan üzerine işlem yapılacak node'un komşularının vec3 değerlerini tutar
         foreach(Vector3 grid in input_grid.getNearNodes()){ //yakın nodeları listeye ekler
-            açılacakNodelar.Add(grid);
+            if (GridManager.Instance.getGridFromLocation(grid).getIsAvailable())
+            {
+                açılacakNodelar.Add(grid);
+            }
         }
 
         //bu da iterate eden kısım gibi (abstract için not)
         foreach(Vector3 grid in açılacakNodelar) {  //yukarıdaki liste içindeki nodeların için aynı işlemi yapar
-            Debug.Log("2-grid: "+grid);
+            //Debug.Log("2-grid: "+grid);
             IterativeDeepeningAlgorithmV3(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
             input_set.Add(grid);
         }
+    }
+
+    public void forCheck() //Grid classı içindeki checkIsThereObjectUpside methodunu test etmek için (Code review sonrasında silinecek)
+    {
+        Grid temp = GridManager.Instance.getGridFromLocation(new Vector3(1, 0, 0));
+        temp.checkIsThereObjectUpside();
     }
     
     //Şuan kullanılmıyor ama durmasında fayda var diye tutuyorum
