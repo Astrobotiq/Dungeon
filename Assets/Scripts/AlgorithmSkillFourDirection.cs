@@ -14,6 +14,7 @@ public class AlgorithmSkillFourDirection
 
     public void AlgorithmV1(Grid input_grid, HashSet<Vector3>input_set, int input_distance)
     {
+        GridManager gridManagerInstance = GridManager.Instance;
         Vector3 location = input_grid.gameObject.transform.position;
         int minXCanGo=0; int maxXCanGo=0;
         int minZCanGo=0; int maxZCanGo=0;
@@ -28,28 +29,46 @@ public class AlgorithmSkillFourDirection
         {
             for (int i = (int)location.x; i <= maxXCanGo; i++)
             {
-                input_set.Add(new Vector3(i, location.y, location.z));
+                Grid temp_grid = gridManagerInstance.getGridFromLocation(new Vector3(i, location.y, location.z));
+                temp_grid.checkIsThereObjectUpside();
+                if (temp_grid.getIsAvailable()){ //Şu an sadece block mu değil mi check ediyor, havan durumu da eklenince alttaki comment gibi yapılacak
+                    input_set.Add(new Vector3(i, location.y, location.z));
+                }
+                //grid blockedsa ve havan değilse break yap
+                //grid blocksa ve havansa continue yap
             }
         }
         if (!(location.x == 0))
         {
             for (int i = (int)location.x; i >= minXCanGo; i--)
             {
-                input_set.Add(new Vector3(i, location.y, location.z));
+                Grid temp_grid = gridManagerInstance.getGridFromLocation(new Vector3(i, location.y, location.z));
+                temp_grid.checkIsThereObjectUpside();
+                if (temp_grid.getIsAvailable()){ //Şu an sadece block mu değil mi check ediyor
+                    input_set.Add(new Vector3(i, location.y, location.z));
+                }
             }
         }
         if (!(location.z == 7))
         {
             for (int i = (int)location.z; i <= maxZCanGo; i++)
             {
-                input_set.Add(new Vector3(location.x, location.y, i));
+                Grid temp_grid = gridManagerInstance.getGridFromLocation(new Vector3(i, location.y, location.z));
+                temp_grid.checkIsThereObjectUpside();
+                if (temp_grid.getIsAvailable()){ //Şu an sadece block mu değil mi check ediyor
+                    input_set.Add(new Vector3(location.x, location.y, i));
+                }
             }
         }
         if (!(location.z == 0))
         {
             for (int i = (int)location.z; i >= minZCanGo; i--)
             {
-                input_set.Add(new Vector3(location.x, location.y, i));
+                Grid temp_grid = gridManagerInstance.getGridFromLocation(new Vector3(i, location.y, location.z));
+                temp_grid.checkIsThereObjectUpside();
+                if (temp_grid.getIsAvailable()){ //Şu an sadece block mu değil mi check ediyor
+                    input_set.Add(new Vector3(location.x, location.y, i));
+                }
             }
         }
     }
