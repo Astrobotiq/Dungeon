@@ -6,13 +6,16 @@ using UnityEngine;
 public class GridManager : Singleton<GridManager>
 {
     [SerializeField] private GameObject GridPrefab;
-    [SerializeField] public GameObject selectedGrid { set; get; }
+    
+    public GameObject selectedGrid = null;
 
     [SerializeField] public int StartPosition; 
     
     [SerializeField] public int EndPosition; 
     
     public List<List<GameObject>> GridList;
+
+    public bool IsInSearchState = false;
 
     void Start()
     {
@@ -88,30 +91,6 @@ public class GridManager : Singleton<GridManager>
     {
         return (StartPosition + EndPosition) / 2;
     }
-
-    public void SetSelectedGrid(GameObject Grid)
-    {
-        if (selectedGrid == null || PlayerManager.Instance.GetSelectedPlayer() == null)
-        {
-            //Bu demek oluyor ki biz bir adet boş grid'e tıklamışız. Ozaman bir adet UI açılır.
-            //Belki bu gridde önemli birşeyler vardır. ve onu gösteririz
-        }
-        if (selectedGrid == Grid)
-        {
-            return;
-        }
-
-        if (selectedGrid != null)
-        {
-            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
-        }
-        selectedGrid = Grid;
-        selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
-        //Burada zaten bu fonksiyon Player Manager tarafından çağırılıyorsa ozaman
-        //SetPlayerPosition() fonksiyonunda hemen geri dönecek çünkü oradaki grid ile buraki grid aynı
-        PlayerManager.Instance.SetPlayerPosition(selectedGrid);
-    }
-
     void DeSelectGrid()
     {
         Debug.Log("Deselect");
@@ -137,4 +116,108 @@ public class GridManager : Singleton<GridManager>
         Grid temp = GridList[(int)input_vector3.x][(int)input_vector3.z].GetComponent<Grid>();
         return temp;
     }
+
+    public void ResetTable()
+    {
+        foreach (var list in GridList)
+        {
+            foreach (var grid in list)
+            {
+                grid.GetComponent<Grid>().IsAvailable = false;
+                grid.GetComponent<Grid>().MaterialController.SetMaterialDefault();
+            }
+        }
+    }
+
+    public void SetSelectedGridFromOutside(Vector3 pos, bool willTravel, int range = 0)
+    {
+        if (selectedGrid != null)
+        {
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        }
+        selectedGrid = getGridFromLocation(pos).gameObject;
+        selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
+
+        if (willTravel)
+        {
+            Algorithm algorithm = new Algorithm();
+            algorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(), range);
+            IsInSearchState = true;
+        }
+    }
+
+    public void SetSelectedGridFromGrid(GameObject grid)
+    {
+        //Grid değilse return et
+        if (grid.GetComponent<Grid>() == null)
+        {
+            return;
+        }
+        
+        //önceki grid'in scale shader'ını resetle
+        selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        selectedGrid = grid;
+        selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
+
+        //search ediyorsak.
+        if (IsInSearchState)
+        {
+            if (selectedGrid.GetComponent<Grid>().IsAvailable)
+            {
+                PlayerManager.Instance.SetNewGridForSelectedPlayer(selectedGrid);
+            }
+            else
+            {
+                PlayerManager.Instance.DeselectPlayer();
+            }
+            IsInSearchState = false;
+            ResetTable();
+        }
+        
+        if (selectedGrid.GetComponent<Grid>().GridObject != null)
+        {
+            var gridObject = selectedGrid.GetComponent<Grid>().GridObject;
+            
+            //şuan sadece player var
+            if (gridObject.GetComponent<Player>()!=null)
+            {
+                gridObject.GetComponent<Player>().SetSelectedPlayerFromOutside();
+            }
+        }
+    }
 }
+
+/*
+ * public void SetSelectedGrid(GameObject Grid)
+    {
+        var gridScript = Grid.GetComponent<Grid>();
+        
+        if (gridScript.GridObject != null)
+        {
+            if (gridScript.GridObject.GetComponent<Player>() != null)
+            {
+                PlayerManager.Instance.SetSelectedPlayer(gridScript.GridObject);
+            }
+        }
+        
+        if (selectedGrid == null || PlayerManager.Instance.GetSelectedPlayer() == null)
+        {
+            //Bu demek oluyor ki biz bir adet boş grid'e tıklamışız. Ozaman bir adet UI açılır.
+            //Belki bu gridde önemli birşeyler vardır. ve onu gösteririz
+        }
+        if (selectedGrid == Grid)
+        {
+            return;
+        }
+
+        if (selectedGrid != null)
+        {
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        }
+        selectedGrid = Grid;
+        selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
+        //Burada zaten bu fonksiyon Player Manager tarafından çağırılıyorsa ozaman
+        //SetPlayerPosition() fonksiyonunda hemen geri dönecek çünkü oradaki grid ile buraki grid aynı
+        PlayerManager.Instance.SetPlayerPosition(selectedGrid);
+    }
+ */

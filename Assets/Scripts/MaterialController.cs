@@ -24,12 +24,7 @@ public class MaterialController
         {
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
-
-            // Overlay rengini ayarla (örneğin varsayılan kırmızı)
-            Color overlayColor = new Color(0, 1, 0, alpha); // İstediğiniz renk ve alpha değeri
-            propertyBlock.SetColor("_OverlayColor", overlayColor);
-
-            // Güncellenmiş property block'u geri ata
+            propertyBlock.SetFloat("_LerpScale", 0.7f);
             objRenderer.SetPropertyBlock(propertyBlock);
         } 
     }
@@ -40,13 +35,8 @@ public class MaterialController
         {
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
-
-            // Overlay rengini ayarla (örneğin varsayılan kırmızı)
-            Color overlayColor = new Color(1, 1, 1, 1); // İstediğiniz renk ve alpha değeri
-            propertyBlock.SetColor("_OverlayColor", overlayColor);
-
-            // Güncellenmiş property block'u geri ata
-            objRenderer.SetPropertyBlock(propertyBlock); 
+            propertyBlock.SetFloat("_LerpScale", 0);
+            objRenderer.SetPropertyBlock(propertyBlock);
         }
     }
 
@@ -57,7 +47,7 @@ public class MaterialController
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
             
-            propertyBlock.SetFloat("_Scale", 1.05f);
+            propertyBlock.SetFloat("_Size", 1.05f);
             
             objRenderer.SetPropertyBlock(propertyBlock);
         }
@@ -70,7 +60,7 @@ public class MaterialController
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
             
-            propertyBlock.SetFloat("_Scale", 1f);
+            propertyBlock.SetFloat("_Size", 1f);
             
             objRenderer.SetPropertyBlock(propertyBlock);
         }

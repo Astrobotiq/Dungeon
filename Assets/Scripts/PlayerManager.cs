@@ -16,11 +16,6 @@ public class PlayerManager : Singleton<PlayerManager>
         InputManager.Instance.onRightClicked += DeSelectPlayer;
     }
 
-    void OnDisable()
-    {
-        InputManager.Instance.onRightClicked -= DeSelectPlayer;
-    }
-
     void Start()
     {
         StartCoroutine(findPlayerPosition());
@@ -37,15 +32,6 @@ public class PlayerManager : Singleton<PlayerManager>
         var PlayerScript = PlayerGO.GetComponent<Player>();
         PlayerScript.SetGridStart(grid, offset);
     }
-
-    public void SetPlayerPosition(GameObject grid)
-    {
-        if (SelectedPlayer == null || SelectedPlayer.GetComponent<Player>().Grid == grid)
-        {
-            return;
-        }
-        SelectedPlayer.GetComponent<Player>().SetGrid(grid, offset);
-    }
     
     void DeSelectPlayer()
     {
@@ -54,22 +40,32 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void SetSelectedPlayer(GameObject Player)
     {
-        if (Player == null)
-        {
-            SelectedPlayer = null;
-            return;
-        }
-        
-        if (SelectedPlayer == Player)
-            return;
-
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
-        GridManager.Instance.SetSelectedGrid(PlayerScript.Grid);
+        GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position, !PlayerScript.HasTraveled, PlayerScript.range);
+    }
+
+    public void SetSelectedPlayerFromOutside(GameObject Player)
+    {
+        SelectedPlayer = Player;
+    }
+
+    public void SetNewGridForSelectedPlayer(GameObject grid)
+    {
+        if (SelectedPlayer == null)
+            return;
+        
+        SelectedPlayer.GetComponent<Player>().SetGrid(grid,offset);
     }
     
     public GameObject GetSelectedPlayer()
     {
         return SelectedPlayer;
+    }
+
+    public void DeselectPlayer()
+    {
+        SelectedPlayer.GetComponent<Player>().onDeselected();
+        SelectedPlayer = null;
     }
 }

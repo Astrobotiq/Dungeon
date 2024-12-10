@@ -6,10 +6,9 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     public MaterialController MaterialController;
-    
-    private List<Vector3> nearNodes = new List<Vector3>();
-    
-    private bool isAvailable;
+    private List<Vector3> _nearNodes = new List<Vector3>();
+    public bool IsAvailable;
+    public GameObject GridObject = null;
 
     void Start()
     {
@@ -17,10 +16,16 @@ public class Grid : MonoBehaviour
     }
 
     public void setNearNodes(List<Vector3> input_arraylist){
-        nearNodes=input_arraylist;
+        _nearNodes=input_arraylist;
     }
     public List<Vector3> getNearNodes(){
-        return nearNodes;
+        return _nearNodes;
+    }
+
+    //Bu fonksiyon grid clickable'dan gelecek
+    public void SetSelectedGrid()
+    {
+        GridManager.Instance.SetSelectedGridFromGrid(this.gameObject);
     }
     
 }
