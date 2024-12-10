@@ -80,13 +80,13 @@ public class Algorithm
         
         IterativeDeepeningAlgorithmV3(input_grid,grids,input_deepeningCount);
 
-        foreach (Vector3 gridPos in grids)
+        /*foreach (Vector3 gridPos in grids)
         {
             //Debug.Log("1-gridPos :"+gridPos);
             MaterialController controller = GridManager.Instance.getGridFromLocation(gridPos).gameObject
                 .GetComponent<Grid>().MaterialController;
             controller.SetMaterialWalkable();
-        }
+        }*/
         
         return grids;
     }
@@ -98,16 +98,17 @@ public class Algorithm
             return;
         }
         
-        if (!input_grid.getIsAvailable()) //available değil ise dönsün
+        //Bunu anlamadım. neden yaptığını konuşmamız lazım bence
+        /*if (input_grid.IsAvailable) //available değil ise dönsün
         {
             return;
-        }
+        }*/
         
         //bu kısım body gibi (abstract için not)
         calculateNearNodes(input_grid.gameObject.transform.position); //yakınklarını hesaplatır
         List<Vector3> açılacakNodelar = new List<Vector3>(); //şuan üzerine işlem yapılacak node'un komşularının vec3 değerlerini tutar
         foreach(Vector3 grid in input_grid.getNearNodes()){ //yakın nodeları listeye ekler
-            if (GridManager.Instance.getGridFromLocation(grid).getIsAvailable())
+            if (GridManager.Instance.getGridFromLocation(grid).GridObject == null)
             {
                 açılacakNodelar.Add(grid);
             }
@@ -124,7 +125,6 @@ public class Algorithm
     public void forCheck() //Grid classı içindeki checkIsThereObjectUpside methodunu test etmek için (Code review sonrasında silinecek)
     {
         Grid temp = GridManager.Instance.getGridFromLocation(new Vector3(1, 0, 0));
-        temp.checkIsThereObjectUpside();
     }
     
     //Şuan kullanılmıyor ama durmasında fayda var diye tutuyorum

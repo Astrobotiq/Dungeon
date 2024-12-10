@@ -141,7 +141,14 @@ public class GridManager : Singleton<GridManager>
         if (willTravel)
         {
             Algorithm algorithm = new Algorithm();
-            algorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(), range);
+            HashSet<Vector3> set = algorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(), range);
+            Debug.Log(set.Count);
+            foreach (var position in set)
+            {
+                var grid = getGridFromLocation(position);
+                grid.MaterialController.SetMaterialWalkable();
+                grid.IsAvailable = true;
+            }
             IsInSearchState = true;
         }
     }
