@@ -30,15 +30,19 @@ public class Algorithm
             grids.Remove(oldVarInSet);
             //Debug.Log("Cleared old loc is " + oldVarInSet);
         }
-        Debug.Log(input_grid.gameObject.transform.position);
+        //Debug.Log(input_grid.gameObject.transform.position);
 
         IterativeDeepeningAlgorithmV3(input_grid,grids,input_deepeningCount);
+        
+        //Debug.Log(grids.Count);
 
         foreach (Vector3 gridPos in grids)
         {
             //Debug.Log("1-gridPos :"+gridPos);
-            MaterialController controller = GridManager.Instance.getGridFromLocation(gridPos).gameObject
-                .GetComponent<Grid>().MaterialController;
+            var grid = GridManager.Instance.getGridFromLocation(gridPos).gameObject
+                .GetComponent<Grid>();
+            grid.IsAvailable = true;
+            MaterialController controller = grid.MaterialController;
             controller.SetMaterialWalkable();
         }
     }
@@ -59,7 +63,7 @@ public class Algorithm
 
         //bu da iterate eden kısım gibi (abstract için not)
         foreach(Vector3 grid in açılacakNodelar) {  //yukarıdaki liste içindeki nodeların için aynı işlemi yapar
-            Debug.Log("2-grid: "+grid);
+            //Debug.Log("2-grid: "+grid);
             IterativeDeepeningAlgorithmV3(GridManager.Instance.getGridFromLocation(grid),input_set, input_deepeningCount-1);
             input_set.Add(grid);
         }

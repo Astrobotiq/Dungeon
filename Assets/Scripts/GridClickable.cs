@@ -2,9 +2,11 @@
 
 public class GridClickable : IClickable
 {
+    [SerializeField]
+    Grid grid;
     public override void onLeftClick()
     {
-        GridManager.Instance.SetSelectedGrid(this.gameObject);    
+        grid.SetSelectedGrid();
     }
     
     public override void onRightClick()
