@@ -49,6 +49,10 @@ public class Player : MonoBehaviour
             Command command = new Command(this, this.Grid, offset);
             CommandManager.Instance.AddCommand(command);
 
+            AStarPathfinding path = new AStarPathfinding();
+            var list = path.startAlgorithm(this.Grid.GetComponent<Grid>(), Grid.GetComponent<Grid>());
+            Debug.Log("Dönen listenin sayısı : " + list.Count);
+
             onPositionChange(Grid);
             
             Travel();
