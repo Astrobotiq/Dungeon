@@ -102,13 +102,13 @@ MonoBehaviour:
   Rotating: 1
   RotationSpace: 1
   UpdateMode: 2
-  RotationSpeed: {x: 0, y: 0, z: 0}
+  RotationSpeed: {x: 0, y: 20, z: 0}
   Orbiting: 1
   AdditiveOrbitRotation: 0
   OrbitCenterTransform: {fileID: 0}
   OrbitCenterOffset: {x: 0, y: 0, z: 0}
   OrbitRotationAxis: {x: 0, y: 1, z: 0}
-  OrbitRotationSpeed: 100
+  OrbitRotationSpeed: 60
   OrbitRadius: 1
   OrbitCorrectionSpeed: 100
   DrawGizmos: 1
