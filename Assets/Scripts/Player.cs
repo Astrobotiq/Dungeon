@@ -52,6 +52,9 @@ public class Player : MonoBehaviour
             AStarPathfinding path = new AStarPathfinding();
             var list = path.startAlgorithm(this.Grid.GetComponent<Grid>(), Grid.GetComponent<Grid>());
             Debug.Log("Dönen listenin sayısı : " + list.Count);
+            foreach (var VARIABLE in list) {
+                Debug.Log("dönen locations" + VARIABLE.transform.position);
+            }
 
             onPositionChange(Grid);
             

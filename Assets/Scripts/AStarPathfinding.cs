@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -19,75 +20,68 @@ public class AStarPathfinding : MonoBehaviour
     }
 
     public List<Grid> startAlgorithm(Grid startGrid, Grid targetGrid) {
-        return AlgorithmV4(startGrid, targetGrid);
+        return AlgorithmV5(startGrid, targetGrid);
     }
-    
-    public List<Grid> AlgorithmV4(Grid startGrid, Grid targetGrid) {
-        List<Node> openGridNodes = new List<Node>(); //açılacak nodeları tutar
-        List<Node> closedGridNodes = new List<Node>(); // açılmış nodeları tutar
 
+    public List<Grid> AlgorithmV5(Grid startGrid, Grid targetGrid) {
+        List<Node> openGridNodes = new List<Node>(); // açılacak nodelar
+        HashSet<Node> closedGridNodes = new HashSet<Node>(); // açılmış nodelar
+    
         Node startNode = new Node(startGrid.gameObject.transform.position);
         Node targetNode = new Node(targetGrid.gameObject.transform.position);
         startNode.GCost = 0;
         startNode.HCost = calculateHCost(startNode, targetNode);
         openGridNodes.Add(startNode);
-
-        Node lowest = new Node(new Vector3(100, 100, 100));
-        lowest.GCost = 999;
-        lowest.HCost = 999;
-        
-        while (true) {
-            foreach (Node node in openGridNodes) {
-                if (node.FCost < lowest.FCost || (node.FCost == lowest.FCost && node.HCost < lowest.HCost)) {
-                    lowest = node;
+    
+        while (openGridNodes.Count > 0) {
+            // Find the node with the lowest FCost in openGridNodes
+            Node currentNode = openGridNodes[0];
+            foreach (var node in openGridNodes) {
+                if (node.FCost < currentNode.FCost || (node.FCost == currentNode.FCost && node.HCost < currentNode.HCost)) {
+                    currentNode = node;
                 }
             }
-
-            Node currentNode = lowest;
+            
+            // current node'u opeendan çıkar, close'a ekle
             openGridNodes.Remove(currentNode);
             closedGridNodes.Add(currentNode);
-
+            
             if (currentNode.Position == targetNode.Position) {
-                return returnedPath(currentNode); // currentNode'dan geriye doğru ekleye ekleye list yapacak metoda gönderir
+                return returnedPath(currentNode); // Trace back the path
             }
-
+    
+            // komşuların vec3 değerleri ile bul, node'a çevir ve nearNodes içine kaydet
             List<Vector3> nearNodesVec3 = calculateNearNodes(currentNode.Position);
-            List<Node> temp = turnNeighborsIntoNodes(nearNodesVec3, currentNode);
-            foreach (Node neighborNode in temp) { // Her bir dönen komşu node için işlemlerin yapıldığı döngü
+            List<Node> nearNodes = turnNeighborsIntoNodes(nearNodesVec3, currentNode);
+    
+            foreach (Node neighbor in nearNodes) { // her neighbor'i değerlendirmece
                 
-                bool isAlreadyInClosed = false;
-                foreach (Node closedNode in closedGridNodes) { // Zaten eskiden açılmış mı diye bakıyoruz
-                    if (closedNode.Position == neighborNode.Position) {
-                        isAlreadyInClosed = true;
-                    }
+                if (closedGridNodes.Contains(neighbor)) { // zaten değerlendirdiysek geç
+                    continue;
                 }
                 
-                // Eğer eskiden açılmış ya da üstü dolu ise atlayıp geçiyoruz
-                if (GridManager.Instance.getGridFromLocation(neighborNode.Position).GetComponent<Grid>().GridObject != null 
-                    || isAlreadyInClosed) { continue;}
-                
-                bool isAlreadyInOpen = false;
-                Node foundNodeWithSameLocaiton = null;
-                foreach (Node openNode in openGridNodes) { // Açılacak nodeların içinde hali hazırda var mı diye bakıyoruz
-                    if (openNode.Position == neighborNode.Position) {
-                        isAlreadyInOpen = true;
-                        // Aynı locatinda olup daha düşük movement costu olanı tercih ederiz ondan burada referans olarak tuttuk diğer bulduğumuzu da
-                        foundNodeWithSameLocaiton = openNode;  
-                    }
-                }
-                
-                // Aynı konumda olup daha düşük costa sahip olan varsa ya da hali hazırda açılmış değilse
-                // Bu kısmın ilk if partı konusunda ben de anlamadım ama attığın videodaki adam yapıyor diye yapmaya çalıştım
-                if (neighborNode.GCost < foundNodeWithSameLocaiton.GCost || !isAlreadyInOpen) { 
-                    neighborNode.HCost = calculateHCost(neighborNode, targetNode);
-                    neighborNode.Parent = currentNode;
-                    if (isAlreadyInOpen == false) {
-                        openGridNodes.Add(neighborNode);
+                currentNode.HCost=calculateHCost(currentNode, neighbor); // Current node Heuristic costunu hesapla
+                float tentativeGCost = currentNode.GCost + currentNode.HCost; // Current Node'un total costunu tutmak için bu da
+    
+                // Zaten open grid içinde değilse ya da bahsi geçen neighbor'a giden daha az total costlu bir yol bulduysak
+                // "tentativeGCost < neighbor.GCost" bu kısım neighbor'a giden daha kısa bir yol bulduğumuzda o node'u güncellemek için
+                if (openGridNodes.Contains(neighbor) == false || tentativeGCost < neighbor.GCost) { 
+                    neighbor.GCost = tentativeGCost;
+                    neighbor.HCost = calculateHCost(neighbor, targetNode);
+                    neighbor.Parent = currentNode;
+    
+                    // Add neighbor to openGridNodes if not already there
+                    if (!openGridNodes.Contains(neighbor)) {
+                        openGridNodes.Add(neighbor);
                     }
                 }
             }
         }
+        // No path found
+        return new List<Grid>();
     }
+
+
 
     public float calculateHCost(Node input_node, Node target_node) { // heuristic costunu hesaplamak için tamamen
         return Vector3.Distance(input_node.Position, target_node.Position);
@@ -189,5 +183,72 @@ public class AStarPathfinding : MonoBehaviour
         gridPath.Reverse();
         return gridPath;
     }
+    
+    /*public List<Grid> AlgorithmV4(Grid startGrid, Grid targetGrid) {
+        List<Node> openGridNodes = new List<Node>(); //açılacak nodeları tutar
+        List<Node> closedGridNodes = new List<Node>(); // açılmış nodeları tutar
+
+        Node startNode = new Node(startGrid.gameObject.transform.position);
+        Node targetNode = new Node(targetGrid.gameObject.transform.position);
+        startNode.GCost = 0;
+        startNode.HCost = calculateHCost(startNode, targetNode);
+        openGridNodes.Add(startNode);
+
+        Node lowest = new Node(new Vector3(100, 100, 100));
+        lowest.GCost = 999;
+        lowest.HCost = 999;
+        
+        while (true) {
+            foreach (Node node in openGridNodes) {
+                if (node.FCost < lowest.FCost || (node.FCost == lowest.FCost && node.HCost < lowest.HCost)) {
+                    lowest = node;
+                }
+            }
+
+            Node currentNode = lowest;
+            openGridNodes.Remove(currentNode);
+            closedGridNodes.Add(currentNode);
+
+            if (currentNode.Position == targetNode.Position) {
+                return returnedPath(currentNode); // currentNode'dan geriye doğru ekleye ekleye list yapacak metoda gönderir
+            }
+
+            List<Vector3> nearNodesVec3 = calculateNearNodes(currentNode.Position);
+            List<Node> temp = turnNeighborsIntoNodes(nearNodesVec3, currentNode);
+            foreach (Node neighborNode in temp) { // Her bir dönen komşu node için işlemlerin yapıldığı döngü
+                
+                bool isAlreadyInClosed = false;
+                foreach (Node closedNode in closedGridNodes) { // Zaten eskiden açılmış mı diye bakıyoruz
+                    if (closedNode.Position == neighborNode.Position) {
+                        isAlreadyInClosed = true;
+                    }
+                }
+                
+                // Eğer eskiden açılmış ya da üstü dolu ise atlayıp geçiyoruz
+                if (GridManager.Instance.getGridFromLocation(neighborNode.Position).GetComponent<Grid>().GridObject != null 
+                    || isAlreadyInClosed) { continue;}
+                
+                bool isAlreadyInOpen = false;
+                Node foundNodeWithSameLocaiton = null;
+                foreach (Node openNode in openGridNodes) { // Açılacak nodeların içinde hali hazırda var mı diye bakıyoruz
+                    if (openNode.Position == neighborNode.Position) {
+                        isAlreadyInOpen = true;
+                        // Aynı locatinda olup daha düşük movement costu olanı tercih ederiz ondan burada referans olarak tuttuk diğer bulduğumuzu da
+                        foundNodeWithSameLocaiton = openNode;  
+                    }
+                }
+                
+                // Aynı konumda olup daha düşük costa sahip olan varsa ya da hali hazırda açılmış değilse
+                // Bu kısmın ilk if partı konusunda ben de anlamadım ama attığın videodaki adam yapıyor diye yapmaya çalıştım
+                if (neighborNode.GCost < foundNodeWithSameLocaiton.GCost || !isAlreadyInOpen) { 
+                    neighborNode.HCost = calculateHCost(neighborNode, targetNode);
+                    neighborNode.Parent = currentNode;
+                    if (isAlreadyInOpen == false) {
+                        openGridNodes.Add(neighborNode);
+                    }
+                }
+            }
+        }
+    }*/
 }
 
