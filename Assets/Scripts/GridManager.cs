@@ -113,6 +113,10 @@ public class GridManager : Singleton<GridManager>
 
     public Grid getGridFromLocation(Vector3 input_vector3)
     {
+        if (input_vector3.x < 0 || input_vector3.z < 0 || input_vector3.x >= GridList.Count || input_vector3.z >= GridList.Count)
+        {
+            return null;
+        }
         Grid temp = GridList[(int)input_vector3.x][(int)input_vector3.z].GetComponent<Grid>();
         return temp;
     }
@@ -127,6 +131,8 @@ public class GridManager : Singleton<GridManager>
                 grid.GetComponent<Grid>().MaterialController.SetMaterialDefault();
             }
         }
+
+        IsInSearchState = false;
     }
 
     public void SetSelectedGridFromOutside(Vector3 pos, bool willTravel, int range = 0)
@@ -143,12 +149,7 @@ public class GridManager : Singleton<GridManager>
             Algorithm algorithm = new Algorithm();
             HashSet<Vector3> set = algorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(), range);
             Debug.Log(set.Count);
-            foreach (var position in set)
-            {
-                var grid = getGridFromLocation(position);
-                grid.MaterialController.SetMaterialWalkable();
-                grid.IsAvailable = true;
-            }
+            OpenGrids(set);
             IsInSearchState = true;
         }
     }
@@ -190,6 +191,55 @@ public class GridManager : Singleton<GridManager>
             {
                 gridObject.GetComponent<Player>().SetSelectedPlayerFromOutside();
             }
+        }
+    }
+
+    public void StartSearchForSkill(SearchType searchType)
+    {
+        ResetTable();
+
+        IsInSearchState = true;
+        
+        AlgorithmSkillFourDirection searchAlgorithm = new AlgorithmSkillFourDirection();
+        HashSet<Vector3> selectedGrids = null;
+        
+        //Buranın içerisinde algoritmayı başlatmamız gerek. 
+        //Sanırım şuan bir tane algoritma var. Can'a sor
+        
+        switch (searchType)
+        {
+            case SearchType.FourSideAll:
+                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,false) ;
+                Debug.Log("Search alghorithm for skill count : " + selectedGrids.Count);
+                break;
+            case SearchType.FourSideBetween:
+                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,false) ;
+                break;
+            case SearchType.FourSideFirstExluded:
+                break;
+        }
+
+        if (selectedGrids != null)
+        {
+            OpenGrids(selectedGrids);
+        }
+        //Burayı da yapamadım. Bilmiyorum.
+        //var list = searchAlgorithm.startAlgorithm(selectedGrid);
+        //Buradan sonra listenin tamamını isAvaliable yapıcam.
+    }
+
+    void OpenGrids(HashSet<Vector3> set)
+    {
+        foreach (var position in set)
+        {
+            var grid = getGridFromLocation(position);
+            grid.MaterialController.SetMaterialWalkable();
+            grid.IsAvailable = true;
+        }
+
+        if (set.Count > 0)
+        {
+            IsInSearchState = true;
         }
     }
 }
