@@ -35,6 +35,12 @@ public class CommandManager : Singleton<CommandManager>
         
         return true;
     }
+
+    public void ClearCommands()
+    {
+        CommandStack.Clear();
+        CommandStack = new Stack<Command>();
+    }
 }
 
 public class Command

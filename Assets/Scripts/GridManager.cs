@@ -181,12 +181,19 @@ public class GridManager : Singleton<GridManager>
             IsInSearchState = false;
             ResetTable();
         }
+        else
+        {
+            if (selectedGrid.GetComponent<Grid>().GridObject != PlayerManager.Instance.GetSelectedPlayer())
+            {
+                PlayerManager.Instance.DeselectPlayer();
+            }
+        }
+        
         
         if (selectedGrid.GetComponent<Grid>().GridObject != null)
         {
             var gridObject = selectedGrid.GetComponent<Grid>().GridObject;
             
-            //şuan sadece player var
             if (gridObject.GetComponent<Player>()!=null)
             {
                 gridObject.GetComponent<Player>().SetSelectedPlayerFromOutside();
@@ -202,9 +209,6 @@ public class GridManager : Singleton<GridManager>
         
         AlgorithmSkillFourDirection searchAlgorithm = new AlgorithmSkillFourDirection();
         HashSet<Vector3> selectedGrids = null;
-        
-        //Buranın içerisinde algoritmayı başlatmamız gerek. 
-        //Sanırım şuan bir tane algoritma var. Can'a sor
         
         switch (searchType)
         {
@@ -223,9 +227,6 @@ public class GridManager : Singleton<GridManager>
         {
             OpenGrids(selectedGrids);
         }
-        //Burayı da yapamadım. Bilmiyorum.
-        //var list = searchAlgorithm.startAlgorithm(selectedGrid);
-        //Buradan sonra listenin tamamını isAvaliable yapıcam.
     }
 
     void OpenGrids(HashSet<Vector3> set)
