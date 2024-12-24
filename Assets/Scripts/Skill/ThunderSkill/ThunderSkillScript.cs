@@ -1,9 +1,32 @@
 using System;
+using DG.Tweening;
 using MoreMountains.Tools;
 using UnityEngine;
 
-public class ThunderSkillScript :MonoBehaviour
+public class ThunderSkillScript : ISkillEffect
 {
+    [SerializeField] private float duration;
+    [SerializeField] private int damageAmount;
+    
+    public override void StartMoving(Grid targetGrid) {
+        transform.DOMove(targetGrid.gameObject.transform.position, duration).
+            OnComplete(() => {
+                ApplyEffect(targetGrid);
+            });
+    }
+
+    public override void ApplyEffect(Grid targetGrid) {
+        if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
+        {
+            targetGrid.GridObject.GetComponent<IDamagable>().Damage(damageAmount);
+        }
+        
+        targetGrid.GridObject.GetComponent<Enemy>().openThunderPng();
+    }
+}
+
+/*
+
     [SerializeField] private GameObject thunderSprite;
     [SerializeField] private GameObject orbitingSphere;
     [SerializeField] private GameObject playerRef;
@@ -13,11 +36,7 @@ public class ThunderSkillScript :MonoBehaviour
     }
 
     public void strikeLightning(GameObject input_gameobject) {
-        //Player etrafında topçuk dönsün diye prefabdaki "OrbitingThunderSphere" instanciate ettim.
-        GameObject sphereRef=Instantiate(orbitingSphere, playerRef.transform.position, playerRef.transform.rotation);
-        MMAutoRotate mmRef =sphereRef.GetComponent<MMAutoRotate>();
-        mmRef.Orbiting = true; //burada player etrafında dönsün diye MMAutoRotate scrpitindeki orbiting değerini true çekip
-        mmRef.OrbitCenterTransform = playerRef.transform; // burada da aynı scriptin orbit centerını player'a eşitledim
+        
         
         //Enemynin kafada yıldırım işareti çıksın diye burada "lightningPNG" instanciate ediyorum
         Transform enemyTransform = input_gameobject.transform;
@@ -28,4 +47,4 @@ public class ThunderSkillScript :MonoBehaviour
         // şu an yok ama enemyyi tam yazdığımızda alttaki gibi bir şey olacak sanırım
         // input_gameobject.GetComponent<Enemy>().setIsStunned(bool input_bool);
     }
-}
+*/
