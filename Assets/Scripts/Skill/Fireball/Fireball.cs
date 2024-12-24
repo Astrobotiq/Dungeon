@@ -43,12 +43,12 @@ public class Fireball : ISkillEffect
             var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x + i, pos.y, pos.z));
             var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x, pos.y, pos.z + i));
 
-            if (xGrid.gameObject != null && xGrid.GridObject != null && xGrid.GridObject.GetComponent<IPushable>() != null)
+            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<IPushable>())
             {
                 xGrid.GridObject.GetComponent<IPushable>().Push(pos);
             }
             
-            if (zGrid.gameObject != null && zGrid.GridObject != null && zGrid.GridObject.GetComponent<IPushable>() != null)
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<IPushable>())
             {
                 zGrid.GridObject.GetComponent<IPushable>().Push(pos);
             }

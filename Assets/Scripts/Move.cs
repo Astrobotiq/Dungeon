@@ -23,7 +23,7 @@ public class Move : MonoBehaviour
     //Maybe this function call a coroutine. This will be decided based on can's code
     public void StartMove(Grid startGrid, Grid endGrid)
     {
-        AStarPathfinding path = new AStarPathfinding();
+        AStarPathfinding path = new();
         var grids = path.startAlgorithm(startGrid, endGrid);
         
         //Test
@@ -66,6 +66,7 @@ public class Move : MonoBehaviour
                 
             }
         }*/
+        InputManager.Instance.canTakeInput = false;
         
         int current = 0;
         while (current + 1 < path.Count)
@@ -92,10 +93,14 @@ public class Move : MonoBehaviour
                 
             current++;
         }
+        
+        InputManager.Instance.canTakeInput = true;
     }
 
     IEnumerator JumpTravel(List<Grid> path)
     {
+        InputManager.Instance.canTakeInput = false;
+        
         int current = 0;
         while (current + 1 < path.Count)
         {
@@ -120,6 +125,9 @@ public class Move : MonoBehaviour
                 
             current++;
         }
+        
+        InputManager.Instance.canTakeInput = true;
+
     }
 
     public IEnumerator Turn(Vector3 yourPosition, Vector3 targetPosition, Action action)
