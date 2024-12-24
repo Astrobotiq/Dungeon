@@ -1,6 +1,5 @@
-using System.Collections;
 using DG.Tweening;
-using Unity.Mathematics.Geometry;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,6 +8,13 @@ public class Player : MonoBehaviour
     [SerializeField] public GameObject Grid;
 
     public WornSkill SelectedSkill;
+    public GameObject _selectedSkillEffect;
+    
+    [SerializeField] 
+    Transform footPivot;
+
+    [SerializeField] 
+    Transform handPivot;
 
     public WornSkills WornSkills;
 
@@ -18,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField, Range(1, 5)] public int range;
 
     [SerializeField, Range(0.1f, 5)] public float travelTime;
+
+    [SerializeField] Move move;
     
     public bool HasTraveled { get; private set; } = false;
     
@@ -28,6 +36,13 @@ public class Player : MonoBehaviour
 
     //UI
     [SerializeField] GameView gameView;
+
+    void Start()
+    {
+        WornSkills = new WornSkills();
+        WornSkill skill = new WornSkill(1);
+        WornSkills.SetWornSkill(skill);
+    }
 
     public void SetGrid(GameObject Grid, float offset)
     {
@@ -48,17 +63,10 @@ public class Player : MonoBehaviour
             //Hareket etmeden önce command oluştulup ekleniyor
             Command command = new Command(this, this.Grid, offset);
             CommandManager.Instance.AddCommand(command);
-
-            AStarPathfinding path = new AStarPathfinding();
-            var list = path.startAlgorithm(this.Grid.GetComponent<Grid>(), Grid.GetComponent<Grid>());
-            Debug.Log("Dönen listenin sayısı : " + list.Count);
-            foreach (var VARIABLE in list) {
-                Debug.Log("dönen locations" + VARIABLE.transform.position);
-            }
-
-            onPositionChange(Grid);
             
-            Travel();
+            move.StartMove(this.Grid.GetComponent<Grid>(),Grid.GetComponent<Grid>());
+            onPositionChange(Grid);
+            //Travel();
             HasTraveled = true;
         }
         else
@@ -72,7 +80,20 @@ public class Player : MonoBehaviour
             //Buradan sonra yapılacak olanlar:
             // 1-Skill'in Throwable'ı instantiate edilecek.
             // 2-Skill'in bitmesi beklenecek (Bu sırada player input veremeyecek.)
-            HasUsedSkill = true;
+            InputManager.Instance.canTakeInput = false;
+            
+            StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position,(InstantiateSkill)));
+
+            void InstantiateSkill()
+            {
+                
+                var skillGo = SelectedSkill.Skill.SkillGO;
+                var go = Instantiate(skillGo, handPivot.position, quaternion.identity);
+                go.GetComponent<ISkillEffect>().StartMoving(Grid.GetComponent<Grid>());
+                DestroyImmediate(_selectedSkillEffect);
+                HasUsedSkill = true;
+                InputManager.Instance.canTakeInput = true;
+            }
         }
     }
 
@@ -102,7 +123,7 @@ public class Player : MonoBehaviour
     {
         if (!HasUsedSkill)
         {
-            gameView.OpenSkillPanel(this);
+            gameView.OpenSkillPanel(true,this);
         }
         gameView.OpenPlayerPanel(this);
         PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
@@ -116,10 +137,22 @@ public class Player : MonoBehaviour
         }
         if (!HasUsedSkill)
         {
-            gameView.OpenSkillPanel(this);
+            gameView.OpenSkillPanel(true,this);
         }
         gameView.OpenPlayerPanel(this);
         PlayerManager.Instance.SetSelectedPlayerFromOutside(this.gameObject);
+    }
+
+    public void SetSelectedSkill(SkillType type)
+    {
+        SelectedSkill = WornSkills.GetSkill(type);
+        Debug.Log("Buraya geldik");
+        if (SelectedSkill != null && (_selectedSkillEffect == null || SelectedSkill.Skill.PlayerEffect != _selectedSkillEffect))
+        {
+            _selectedSkillEffect = SelectedSkill.Skill.PlayerEffect;
+            _selectedSkillEffect =Instantiate(_selectedSkillEffect, footPivot.position, Quaternion.identity);
+            GridManager.Instance.StartSearchForSkill(SelectedSkill.Skill.SearchType);
+        }
     }
 
     #region Travel
@@ -196,6 +229,15 @@ public class Player : MonoBehaviour
 
     public void onDeselected()
     {
+        Debug.Log("onDeselect");
+        if (_selectedSkillEffect != null)
+        {
+            Debug.Log("Buradayım");
+            DestroyImmediate(_selectedSkillEffect.gameObject);
+            _selectedSkillEffect = null;
+        }
+        
+        SelectedSkill = null;
         gameView.OpenSkillPanel(false);
         gameView.OpenPlayerPanel(false);
     }
@@ -211,10 +253,15 @@ public class Player : MonoBehaviour
         Grid.GetComponent<Grid>().GridObject = this.gameObject;
 
     }
-}
 
-public enum TravelType
-{
-    NORMAL,
-    JUMP
+    public void SetSelectedSkill(WornSkill wornSkill)
+    {
+        if (wornSkill == null)
+        {
+            return;
+        }
+
+        SelectedSkill = wornSkill;
+        
+    }
 }
