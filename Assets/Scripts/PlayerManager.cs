@@ -65,6 +65,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void DeselectPlayer()
     {
+        Debug.Log("Player Manager On Deselect");
         SelectedPlayer.GetComponent<Player>().onDeselected();
         SelectedPlayer = null;
     }
