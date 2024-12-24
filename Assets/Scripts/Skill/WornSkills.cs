@@ -50,4 +50,23 @@ public class WornSkills
                 break;
         }
     }
+
+    public WornSkill GetSkill(SkillType type)
+    {
+        WornSkill skill = null;
+        switch (type)
+        {
+            case SkillType.Passive:
+                skill = Passive ;
+                break;
+            case SkillType.Normal:
+                skill = Normal;
+                break;
+            case SkillType.Special:
+                skill = Special;
+                break;
+        }
+
+        return skill;
+    }
 }

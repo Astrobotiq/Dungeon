@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
@@ -8,25 +9,29 @@ public class Fireball : ISkillEffect
     [SerializeField, ReadOnly] int jumpNumber = 1;
     [SerializeField] float jumpDuration = 1;
     public int DamageAmount;
+    [SerializeField] Grid _target;
 
     public override void StartMoving(Grid targetGrid)
     {
-        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration).
-            OnComplete((() =>
-            {
-                ApplyEffect(targetGrid);
-                //At some point we should create an smash particle something
-            }));
+        _target = targetGrid;
+        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration);
+        StartCoroutine(Timer());
+
+        IEnumerator Timer()
+        {
+            yield return new WaitForSeconds(jumpDuration);
+            ApplyEffect();
+        }
     }
 
-    public override void ApplyEffect(Grid targetGrid)
+    public override void ApplyEffect(Grid targetGrid = null)
     {
-        if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
+        if (_target.GridObject && _target.GridObject.GetComponent<IDamagable>() != null)
         {
-            targetGrid.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
+            _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
         }
 
-        var pos = targetGrid.gameObject.transform.position;
+        var pos = _target.gameObject.transform.position;
 
         for (int i = -1; i < 1; i++)
         {
@@ -48,5 +53,7 @@ public class Fireball : ISkillEffect
                 zGrid.GridObject.GetComponent<IPushable>().Push(pos);
             }
         }
+        
+        Destroy(this.gameObject);
     }
 }
