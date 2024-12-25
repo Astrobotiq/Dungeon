@@ -1,15 +1,55 @@
-using System;
+using System.Collections;
 using DG.Tweening;
-using Unity.VisualScripting;
+using Unity.Collections;
 using UnityEngine;
 
 public class RotateSkillScript : ISkillEffect
 {
+    [SerializeField,Range(0.1f,5)] float jumpPower = 1;
+    [SerializeField, ReadOnly] int jumpNumber = 1;
+    [SerializeField] float jumpDuration = 1;
+    public int DamageAmount;
+    [SerializeField] Grid _target;
+    
     public override void StartMoving(Grid targetGrid) {
-        //Bu gidicek bir şey mi emin olamadım ondan burasını boş bıraktım
+        _target = targetGrid;
+        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration);
+        StartCoroutine(Timer());
+
+        IEnumerator Timer()
+        {
+            yield return new WaitForSeconds(jumpDuration);
+            ApplyEffect();
+        }
     }
 
-    public override void ApplyEffect(Grid targetGrid) {
+    public override void ApplyEffect(Grid targetGrid = null) {
         targetGrid.GridObject.gameObject.transform.Rotate(Vector3.up, 90);
+        
+        var pos = _target.gameObject.transform.position;
+
+        for (int i = -1; i < 1; i++)
+        {
+            if (i == 0)
+            {
+                continue;
+            }
+
+            var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x + i, pos.y, pos.z));
+            var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x, pos.y, pos.z + i));
+
+            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<IPushable>())
+            {
+                xGrid.GridObject.GetComponent<IPushable>().Push(pos);
+            }
+            
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<IPushable>())
+            {
+                zGrid.GridObject.GetComponent<IPushable>().Push(pos);
+            }
+        }
+        
+        Destroy(this.gameObject);
+        
     }
 }
