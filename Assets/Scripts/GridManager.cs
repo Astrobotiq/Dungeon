@@ -16,6 +16,7 @@ public class GridManager : Singleton<GridManager>
     public List<List<GameObject>> GridList;
 
     public bool IsInSearchState = false;
+    public bool hasInstantiated = false;
 
     void Start()
     {
@@ -109,6 +110,8 @@ public class GridManager : Singleton<GridManager>
                 AddGrid(pos,GridGO);
             }
         }
+
+        hasInstantiated = true;
     }
 
     public Grid getGridFromLocation(Vector3 input_vector3)
@@ -163,7 +166,11 @@ public class GridManager : Singleton<GridManager>
         }
         
         //önceki grid'in scale shader'ını resetle
-        selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        if (selectedGrid)
+        {
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale(); 
+        }
+        
         selectedGrid = grid;
         selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
 

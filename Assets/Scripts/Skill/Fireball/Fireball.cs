@@ -5,11 +5,23 @@ using UnityEngine;
 
 public class Fireball : ISkillEffect
 {
-    [SerializeField,Range(0.1f,5)] float jumpPower = 1;
-    [SerializeField, ReadOnly] int jumpNumber = 1;
-    [SerializeField] float jumpDuration = 1;
+    [SerializeField,Range(0.1f,5)] 
+    float jumpPower = 1;
+    
+    [SerializeField, ReadOnly] 
+    int jumpNumber = 1;
+    
+    [SerializeField] 
+    float jumpDuration = 1;
+    
+    [SerializeField]
+    private int damage;
+    
+    [SerializeField] 
+    Grid _target;
+    
     public int DamageAmount;
-    [SerializeField] Grid _target;
+    
 
     public override void StartMoving(Grid targetGrid)
     {
@@ -43,14 +55,30 @@ public class Fireball : ISkillEffect
             var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x + i, pos.y, pos.z));
             var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x, pos.y, pos.z + i));
 
-            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<IPushable>())
+            if (xGrid.gameObject && xGrid.GridObject)
             {
-                xGrid.GridObject.GetComponent<IPushable>().Push(pos);
+                if (xGrid.GridObject.GetComponent<IPushable>())
+                {
+                    xGrid.GridObject.GetComponent<IPushable>().Push(pos);
+                }
+
+                if (xGrid.GridObject.GetComponent<IDamagable>())
+                {
+                    xGrid.GridObject.GetComponent<IDamagable>().Damage(damage);
+                }
             }
             
-            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<IPushable>())
+            if (zGrid.gameObject && zGrid.GridObject)
             {
-                zGrid.GridObject.GetComponent<IPushable>().Push(pos);
+                if (zGrid.GridObject.GetComponent<IPushable>())
+                {
+                    zGrid.GridObject.GetComponent<IPushable>().Push(pos);
+                }
+
+                if (zGrid.GridObject.GetComponent<IDamagable>())
+                {
+                    zGrid.GridObject.GetComponent<IDamagable>().Damage(damage);
+                }
             }
         }
         
