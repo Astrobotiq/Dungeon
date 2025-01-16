@@ -129,7 +129,7 @@ public class deneme : MonoBehaviour //Direkt bu SİLİNECEK
         }
         yield return null;*/
     }
-    public List<List<Grid>> dashListPreparation(List<Grid> input_path) { // I tried it on paper and it worked but I couldn't do the testing of it 
+    public List<List<Grid>> dashListPreparation(List<Grid> input_path) { //Düzeltilmiş hali
         bool same_X = false; // İf they has the same x value
         bool same_Z = false; // İf they has the same z value
         List<List<Grid>> listHolder = new List<List<Grid>>();
@@ -145,6 +145,7 @@ public class deneme : MonoBehaviour //Direkt bu SİLİNECEK
             listHolder.Add(tempList);
         }
         else {
+            //Debug.Log("bana pathdeki veri adedini söyle " + input_path.Count);
             for (int i = 0; i<input_path.Count-1; i++) { // By starting from the start it goes to sondan bir onceki
                 if (input_path[i].transform.position.x == input_path[i+1].transform.position.x) { // we check the current one and the next one has same x value or not
                     same_X = true;
@@ -158,6 +159,7 @@ public class deneme : MonoBehaviour //Direkt bu SİLİNECEK
                     tempList.Add(input_path[i]);
                 }
                 else { // If you come here, it states that now both bool values are true so we need to open a new list and add to it
+                    //Debug.Log("ben geldim hacı");
                     tempList.Add(input_path[i]);
                     listHolder.Add(tempList);
                     tempList = new List<Grid>();
@@ -166,27 +168,32 @@ public class deneme : MonoBehaviour //Direkt bu SİLİNECEK
                 }
             }
             
+            
             // This block is for to handle last index. The previous for loop only able to look until sondan bir onceki index.
             // The logic is I compare sondan 3. index ve sonuncu index and I also look for our bool values which still holds the compare between sondan bir onceki ve sonuncu değer
             // eğer same_x ve sondan 3. index ile sonuncu arasındaki x değeri karşılaştırması olmusuz ise demektir ki bizim son değer sondan 3. değerin çaprazında. Bunun z versiyonu da else if durumundaki. else ise sondan 3 değer de aynı x veya z yönünde ise çalışır
-            if(!(same_X & (input_path[input_path.Count-3].transform.position.x == input_path[input_path.Count-1].transform.position.x))) {
-                listHolder.Add(tempList);
-                tempList = new List<Grid>();
-                tempList.Add(input_path[input_path.Count-1]);
-                listHolder.Add(tempList);
-                same_X = false;
-                same_Z = false;
+            if (input_path[input_path.Count - 1].transform.position.x == input_path[input_path.Count - 2].transform.position.x) {
+                same_X = true;
             }
-            else if(!(same_Z & (input_path[input_path.Count-3].transform.position.z == input_path[input_path.Count-1].transform.position.z))) {
-                listHolder.Add(tempList);
-                tempList = new List<Grid>();
+            else if (input_path[input_path.Count - 1].transform.position.z == input_path[input_path.Count - 2].transform.position.z) {
+                same_Z = true;
+            }
+            
+            if(same_X && ( input_path[input_path.Count-1].transform.position.x == input_path[input_path.Count-3].transform.position.x )) {
                 tempList.Add(input_path[input_path.Count-1]);
-                listHolder.Add(tempList);
-                same_X = false;
-                same_Z = false;
+            }
+            else if(same_Z && ( input_path[input_path.Count-1].transform.position.z == input_path[input_path.Count-3].transform.position.z )) {
+                tempList.Add(input_path[input_path.Count-1]);
             }
             else {
                 tempList.Add(input_path[input_path.Count-1]);
+                listHolder.Add(tempList);
+            }
+
+            //Debug.Log("bane templist içindeki veri adedini söyle " + tempList.Count);
+            if (tempList.Count == input_path.Count)
+            {
+                listHolder.Add(tempList);
             }
         }
         return listHolder;

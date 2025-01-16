@@ -20,36 +20,16 @@ public class RotateSkillScript : ISkillEffect
         {
             yield return new WaitForSeconds(jumpDuration);
             ApplyEffect();
+            Destroy(gameObject);
         }
     }
 
     public override void ApplyEffect(Grid targetGrid = null) {
-        targetGrid.GridObject.gameObject.transform.Rotate(Vector3.up, 90);
-        
-        var pos = _target.gameObject.transform.position;
 
-        for (int i = -1; i < 1; i++)
+        if (targetGrid.gameObject && targetGrid.GridObject && targetGrid.GridObject.GetComponent<IRotatable>())
         {
-            if (i == 0)
-            {
-                continue;
-            }
-
-            var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x + i, pos.y, pos.z));
-            var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(pos.x, pos.y, pos.z + i));
-
-            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<IPushable>())
-            {
-                xGrid.GridObject.GetComponent<IPushable>().Push(pos);
-            }
-            
-            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<IPushable>())
-            {
-                zGrid.GridObject.GetComponent<IPushable>().Push(pos);
-            }
+            targetGrid.GridObject.GetComponent<IRotatable>().Rotate(Vector3.up, 90); //This will do not rotate because Rotate didn't overriden by
         }
-        
-        Destroy(this.gameObject);
         
     }
 }
