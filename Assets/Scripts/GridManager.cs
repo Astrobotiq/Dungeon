@@ -116,12 +116,17 @@ public class GridManager : Singleton<GridManager>
 
     public Grid getGridFromLocation(Vector3 input_vector3)
     {
-        if (input_vector3.x < 0 || input_vector3.z < 0 || input_vector3.x >= GridList.Count || input_vector3.z >= GridList.Count)
+        if (IsInBoard(input_vector3))
         {
             return null;
         }
         Grid temp = GridList[(int)input_vector3.x][(int)input_vector3.z].GetComponent<Grid>();
         return temp;
+    }
+
+    public bool IsInBoard(Vector3 input_vector3)
+    {
+        return input_vector3.x < 0 || input_vector3.z < 0 || input_vector3.x >= GridList.Count || input_vector3.z >= GridList.Count;
     }
 
     public void ResetTable()
