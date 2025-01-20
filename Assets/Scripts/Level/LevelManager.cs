@@ -8,6 +8,7 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] LevelSO currentLevel;
 
     [SerializeField] GameObject Player;
+    [SerializeField] GameObject Enemy;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,8 +55,10 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('$'))
                 {
                     Debug.Log("EnemyBulundu");
-                    //var Enemy = Instantiate(currentLevel.GetRandomEnemy().Enemy, new Vector3(i, 1.4f, j),
-                        //Quaternion.identity);
+                    var EnemyObj = Instantiate(Enemy, new Vector3(i, 1.4f, j),
+                        Quaternion.identity);
+
+                    GridManager.Instance.getGridFromLocation(new Vector3(i, 1.4f, j)).GridObject = EnemyObj;
                 }
             }
         }

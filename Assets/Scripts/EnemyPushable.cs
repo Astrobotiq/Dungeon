@@ -1,45 +1,40 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public class PlayerPushable : IPushable
+public class EnemyPushable : IPushable
 {
     [SerializeField]
     private float duration;
-    
-    [SerializeField]
-    private Player player;
     
     [SerializeField]
     private Move move;
     
     [SerializeField]
     private IDamagable damagable;
-
-    void Awake()
-    {
-        player = GetComponent<Player>();
-
-        move = GetComponent<Move>();
-    }
-    
     public override void Push(Vector3 position)
     {
         var diffrence = transform.position - position;
         var newPosition = transform.position + diffrence;
+        
+        Debug.Log("diffrence : "+diffrence + "\n" +
+                  "newPos  : " + newPosition + "\n" +
+                  "transform pos :" + transform.position);
 
         var currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
         var targetGrid = GridManager.Instance.getGridFromLocation(newPosition);
 
         if (targetGrid)
         {
+            Debug.Log("gidecek yerim var");
             if (targetGrid.GridObject)
             {
+                Debug.Log("Mersin");
                 Crash(targetGrid,currentGrid);
             }
             else
             {
+                Debug.Log("yalova");
                 move.StartMove(currentGrid,targetGrid);
-                player.onPositionChange(targetGrid.gameObject);
             }
         }
         else
