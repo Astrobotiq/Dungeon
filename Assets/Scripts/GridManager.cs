@@ -16,6 +16,7 @@ public class GridManager : Singleton<GridManager>
     public List<List<GameObject>> GridList;
 
     public bool IsInSearchState = false;
+    public bool hasInstantiated = false;
 
     void Start()
     {
@@ -109,16 +110,23 @@ public class GridManager : Singleton<GridManager>
                 AddGrid(pos,GridGO);
             }
         }
+
+        hasInstantiated = true;
     }
 
     public Grid getGridFromLocation(Vector3 input_vector3)
     {
-        if (input_vector3.x < 0 || input_vector3.z < 0 || input_vector3.x >= GridList.Count || input_vector3.z >= GridList.Count)
+        if (IsInBoard(input_vector3))
         {
             return null;
         }
         Grid temp = GridList[(int)input_vector3.x][(int)input_vector3.z].GetComponent<Grid>();
         return temp;
+    }
+
+    public bool IsInBoard(Vector3 input_vector3)
+    {
+        return input_vector3.x < 0 || input_vector3.z < 0 || input_vector3.x >= GridList.Count || input_vector3.z >= GridList.Count;
     }
 
     public void ResetTable()
@@ -163,7 +171,11 @@ public class GridManager : Singleton<GridManager>
         }
         
         //önceki grid'in scale shader'ını resetle
-        selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
+        if (selectedGrid)
+        {
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale(); 
+        }
+        
         selectedGrid = grid;
         selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
 

@@ -9,4 +9,6 @@ public class CustomizationManager : Singleton<CustomizationManager>
     public SkillSO GetSkillById(uint ID) => skillDB.GetSkillByID(ID);
 
     public List<SkillSO> GetSkillList() => skillDB.GetSkillList();
+
+    public SkillSO GetRandomSkill() => skillDB.GetSkillList().GetRandom();
 }

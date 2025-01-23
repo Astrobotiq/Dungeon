@@ -25,6 +25,20 @@ public class Move : MonoBehaviour
     {
         AStarPathfinding path = new();
         var grids = path.startAlgorithm(startGrid, endGrid);
+
+        var listlist =dashListPreparation(grids);
+
+        int i = 1;
+        foreach (var list in listlist)
+        {
+            Debug.Log("list index :" + i);
+            foreach (var vector in list)
+            {
+                Debug.Log("asdad" + vector.gameObject.transform.position);
+            }
+
+            i++;
+        }
         
         //Test
         Debug.Log(grids.Count);
@@ -43,29 +57,6 @@ public class Move : MonoBehaviour
     //Kendi kafamdaki şeyi bulamadım
     IEnumerator NormalTravel(List<Grid> path)
     {   
-        /*int current = 0;
-        while (current<path.Count)
-        {
-            var startGrid = path[current];
-
-            var nextGrid = path[++current];
-
-            var diff = nextGrid.transform.position -startGrid.transform.position;
-
-            bool isOnX = diff.x != 0;
-            bool isOnZ = diff.z != 0;
-
-            if (isOnX && isOnZ)
-            {
-                Debug.Log("Çapraza yol bulundu");
-                yield break;
-            }
-
-            while (path[])
-            {
-                
-            }
-        }*/
         InputManager.Instance.canTakeInput = false;
         
         int current = 0;
@@ -148,5 +139,52 @@ public class Move : MonoBehaviour
         }
         
         action?.Invoke();
+    }
+    
+    public List<List<Grid>> dashListPreparation(List<Grid> input_path) { // I tried it on paper and it worked but I couldn't do the testing of it 
+        bool same_X = false; // İf they has the same x value
+        bool same_Z = false; // İf they has the same z value
+        List<List<Grid>> listHolder = new List<List<Grid>>();
+        List<Grid> tempList = new List<Grid>();
+        
+        if (input_path.Count < 2) { // Just for error handling
+            return null;
+        }
+        
+        if (input_path.Count == 2) { // İf it has 2 values we don't care about its direction. One way or another they are at the same direction. So just put them on temp, add temp to listholder and sent back
+            tempList.Add(input_path[0]);
+            tempList.Add(input_path[1]);
+            listHolder.Add(tempList);
+        }
+        else {
+            for (int i = 0; i<input_path.Count-1; i++) { // By starting from the start it goes to sondan bir onceki
+                if (input_path[i].transform.position.x == input_path[i+1].transform.position.x) { // we check the current one and the next one has same x value or not
+                    same_X = true;
+                }
+                else {
+                    same_Z = true;
+                }
+                
+                // One way or another, same_x and same_z value only be true when there is a change in direction and this if statement becomes false. Btw I mean a direction change like (1,0), (2,0), (3,0), (3,1)
+                if (!(same_X & same_Z)) { // When only one of them is true and the other one is false, this if statement becomes true and it states that we don't have a change so continue to add the same temp list
+                    tempList.Add(input_path[i]);
+                }
+                else { // If you come here, it states that now both bool values are true so we need to open a new list and add to it
+                    tempList.Add(input_path[i]);
+                    listHolder.Add(tempList);
+                    tempList = new List<Grid>();
+                    same_X = false;
+                    same_Z = false;
+                }
+            }
+            
+            // This block is for to handle last index. The previous for loop only able to look until sondan bir onceki index.
+            // The logic is I compare sondan 3. index ve sonuncu index and I also look for our bool values which still holds the compare between sondan bir onceki ve sonuncu değer
+            // eğer same_x ve sondan 3. index ile sonuncu arasındaki x değeri karşılaştırması olmusuz ise demektir ki bizim son değer sondan 3. değerin çaprazında. Bunun z versiyonu da else if durumundaki. else ise sondan 3 değer de aynı x veya z yönünde ise çalışır
+            
+            tempList.Add(input_path[input_path.Count-1]);
+            
+        }
+        return listHolder;
     }
 }

@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
         HandleUI(false);
     }
 
-    private void onPositionChange(GameObject newOne)
+    public void onPositionChange(GameObject newOne)
     {
         if (Grid != null)
         {
