@@ -18,7 +18,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     void Start()
     {
-        StartCoroutine(findPlayerPosition());
+        
     }
 
     IEnumerator findPlayerPosition()
