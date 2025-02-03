@@ -229,9 +229,10 @@ public class GridManager : Singleton<GridManager>
                 Debug.Log("Search alghorithm for skill count : " + selectedGrids.Count);
                 break;
             case SearchType.FourSideBetween:
-                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,false) ;
+                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),1,false) ;
                 break;
             case SearchType.FourSideFirstExluded:
+                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,true) ;
                 break;
         }
 

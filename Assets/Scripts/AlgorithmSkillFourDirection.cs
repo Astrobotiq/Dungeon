@@ -36,10 +36,10 @@ public class AlgorithmSkillFourDirection
                 if (temp_grid.GridObject == null) {
                     input_set.Add(new Vector3(i, location.y, location.z));
                 }
-                else if (temp_grid.GridObject != null & isLikeMortar) {
-                    continue;
+                else if (temp_grid.GridObject != null && isLikeMortar) {
+                    input_set.Add(new Vector3(i, location.y, location.z));
                 }
-                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject && isLikeMortar == false) {
                     input_set.Add(new Vector3(i, location.y, location.z));
                     break;
                 }
@@ -53,10 +53,10 @@ public class AlgorithmSkillFourDirection
                 if (temp_grid.GridObject == null){ //Şu an sadece block mu değil mi check ediyor
                     input_set.Add(new Vector3(i, location.y, location.z));
                 }
-                else if (temp_grid.GridObject != null & isLikeMortar) {
-                    continue;
+                else if (temp_grid.GridObject != null && isLikeMortar) {
+                    input_set.Add(new Vector3(i, location.y, location.z));
                 }
-                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject && isLikeMortar == false) {
                     input_set.Add(new Vector3(i, location.y, location.z));
                     break;
                 }
@@ -68,10 +68,10 @@ public class AlgorithmSkillFourDirection
                 if (temp_grid.GridObject == null){ //Şu an sadece block mu değil mi check ediyor
                     input_set.Add(new Vector3(location.x, location.y, i));
                 }
-                else if (temp_grid.GridObject != null & isLikeMortar) {
-                    continue;
+                else if (temp_grid.GridObject != null && isLikeMortar) {
+                    input_set.Add(new Vector3(location.x, location.y, i));
                 }
-                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject && isLikeMortar == false) {
                     input_set.Add(new Vector3(location.x, location.y, i));
                     break;
                 }
@@ -83,10 +83,10 @@ public class AlgorithmSkillFourDirection
                 if (temp_grid.GridObject == null){ //Şu an sadece block mu değil mi check ediyor
                     input_set.Add(new Vector3(location.x, location.y, i));
                 }
-                else if (temp_grid.GridObject != null & isLikeMortar) {
-                    continue;
+                else if (temp_grid.GridObject != null && isLikeMortar) {
+                    input_set.Add(new Vector3(location.x, location.y, i));
                 }
-                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject && isLikeMortar == false) {
                     input_set.Add(new Vector3(location.x, location.y, i));
                     break;
                 }
