@@ -16,7 +16,7 @@ MonoBehaviour:
   SkillName: SmiteWordSwing
   SkillType: 0
   SkillDamageType: 0
-  SearchType: 1
+  SearchType: 2
   ClassSpeciality: 1
   UseLimit: -1
   GUISprite: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}

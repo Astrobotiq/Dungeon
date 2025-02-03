@@ -17,22 +17,18 @@ public class SwordSwingSkill : ISkillEffect {
         {
             yield return new WaitForSeconds(swingDuration);
             ApplyEffect();
-            Destroy(gameObject);
         }
     }
 
     public override void ApplyEffect(Grid targetGrid = null) {
-        if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IDamagable>())
-        {
+        if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IDamagable>()) {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
         }
+
+        if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IPushable>()) {
+            _target.GridObject.GetComponent<IPushable>().Push( PlayerManager.Instance.GetSelectedPlayer().GetComponent<Player>().Grid.transform.position);
+        }
         
-        //Burada bi sıkıntı yaşıyorum slash effekti veren particle effectin yönünü ayarlamak konusunda. Ondan geri deönüp bakmam lazım buraya
-        //Aynı ayarı smite için olan sword swing için de yapmam lazım
-        /*
-        ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
-        Transform transformOfPlayer = PlayerManager.Instance.GetSelectedPlayer().transform;
-        gameObject.GetComponent<ParticleSystem>().startRotation3D = new Vector3(transformOfPlayer.rotation.x,transformOfPlayer.rotation.y, transformOfPlayer.rotation.z);
-        */
+        Destroy(gameObject);
     }
 }

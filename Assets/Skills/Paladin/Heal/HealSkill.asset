@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a88867a98d3b9743bd045424afa5679, type: 3}
   m_Name: HealSkill
   m_EditorClassIdentifier: 
-  ID: 10
+  ID: 6
   SkillName: 
   SkillType: 0
   SkillDamageType: 0
