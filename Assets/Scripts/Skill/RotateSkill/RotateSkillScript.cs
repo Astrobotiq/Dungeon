@@ -15,7 +15,8 @@ public class RotateSkillScript : ISkillEffect
     float jumpDuration = 1;
     
     public override void StartMoving(Grid targetGrid) {
-        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration);
+        Vector3 targetLoc = targetGrid.gameObject.transform.position;
+        transform.position = new Vector3(targetLoc.x, targetLoc.y + 0.6f, targetLoc.z);
         StartCoroutine(Timer());
 
         IEnumerator Timer()
