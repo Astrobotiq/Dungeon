@@ -15,7 +15,7 @@ public class ThunderSkillScript : ISkillEffect
     
     public override void StartMoving(Grid targetGrid) {
         Vector3 targetLoc = targetGrid.gameObject.transform.position;
-        transform.DOMove(new Vector3(targetLoc.x, 1.4f, targetLoc.z), duration);
+        transform.position = new Vector3(targetLoc.x, targetLoc.y + 0.6f, targetLoc.z);
         StartCoroutine(Timer());
         
         IEnumerator Timer()
@@ -26,8 +26,6 @@ public class ThunderSkillScript : ISkillEffect
     }
 
     public override void ApplyEffect(Grid targetGrid) {
-        Debug.LogError("naber canım ben amcanım");
-        Debug.LogError(" naber işte bunun destroy olması lazım " + gameObject);
         if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
         {
             targetGrid.GridObject.GetComponent<IDamagable>().Damage(damageAmount);
