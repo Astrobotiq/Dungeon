@@ -20,13 +20,16 @@ public class Fireball : ISkillEffect
     [SerializeField] 
     Grid _target;
     
+    [SerializeField]
+    AnimationCurve curve;
+    
     public int DamageAmount;
     
 
     public override void StartMoving(Grid targetGrid)
     {
         _target = targetGrid;
-        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration);
+        transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration).SetEase(curve);
         StartCoroutine(Timer());
 
         IEnumerator Timer()
