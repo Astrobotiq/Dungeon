@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Fireball
+  m_Name: Mat_Flare
   m_Shader: {fileID: -6465566751694194690, guid: 4feed82e6c86fc74386fd948b69d42c3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -41,7 +41,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: eef775f0426e9e34095d6ea4ae6420d1, type: 3}
+        m_Texture: {fileID: 2800000, guid: f23cd2c6303a33e419ed122040f6c910, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -60,11 +60,11 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _Blend: 2
+    - _Blend: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _DstBlend: 1
-    - _MainTexPower: 3.31
+    - _DstBlend: 10
+    - _MainTexPower: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 5
@@ -73,8 +73,8 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 31.626797, g: 31.626797, b: 31.626797, a: 0.3921569}
-    - _MainTexSpeed: {r: 0.1, g: 0.5, b: 0, a: 0}
+    - _Color: {r: 0.2735849, g: 0.014195444, b: 0.014195444, a: 1}
+    - _MainTexSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _MainTexTiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
