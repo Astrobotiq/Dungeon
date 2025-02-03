@@ -1,9 +1,24 @@
+using System;
+using System.Collections;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class Heal : ISkillEffect
 {
     [SerializeField]
     private int heal;
+    
+    [SerializeField]
+    private float healTime = 4;
+    
+    [SerializeField]
+    private MMF_Player effect;
+
+    void OnValidate()
+    {
+        effect = GetComponent<MMF_Player>();
+    }
+
     public override void StartMoving(Grid targetGrid)
     {
         ApplyEffect(targetGrid);
@@ -18,9 +33,16 @@ public class Heal : ISkillEffect
             if (targetGrid.GridObject.GetComponent<IHealth>())
             {
                 targetGrid.GridObject.GetComponent<IHealth>().Heal(heal);
+                effect.PlayFeedbacks();
             }
         }
         
-        Destroy(this.gameObject);
+        //StartCoroutine(Timer());
+
+        IEnumerator Timer()
+        {
+            yield return new WaitForSeconds(healTime);
+            Destroy(this.gameObject);
+        }
     }
 }
