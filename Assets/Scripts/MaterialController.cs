@@ -24,7 +24,7 @@ public class MaterialController
         {
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
-            propertyBlock.SetFloat("_LerpScale", 0.7f);
+            propertyBlock.SetColor("_BaseColor", Color.green);
             objRenderer.SetPropertyBlock(propertyBlock);
         } 
     }
@@ -35,7 +35,7 @@ public class MaterialController
         {
             // Mevcut property block'u al
             objRenderer.GetPropertyBlock(propertyBlock);
-            propertyBlock.SetFloat("_LerpScale", 0);
+            propertyBlock.SetColor("_BaseColor", Color.white);
             objRenderer.SetPropertyBlock(propertyBlock);
         }
     }

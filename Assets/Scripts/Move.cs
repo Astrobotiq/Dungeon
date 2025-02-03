@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using MoreMountains.Feedbacks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Move : MonoBehaviour
@@ -16,6 +18,12 @@ public class Move : MonoBehaviour
 
     [SerializeField, Range(0.1f,5)]
     float normalDuration = 1;
+    
+    [SerializeField]
+    private GameObject dust;
+    
+    [SerializeField]
+    private Transform dustPos;
 
     [SerializeField]
     TravelType travelType = TravelType.NORMAL;
@@ -76,6 +84,8 @@ public class Move : MonoBehaviour
 
                 yield return new WaitForSeconds(normalDuration);
             }
+            
+            Instantiate(dust, dustPos.position, quaternion.identity);
 
             var pos = new Vector3(path[current+1].transform.position.x,transform.position.y,path[current+1].transform.position.z);
             transform.DOMove(pos,normalDuration);
@@ -109,11 +119,14 @@ public class Move : MonoBehaviour
 
                 yield return new WaitForSeconds(jumpDuration);
             }
+
+            Instantiate(dust, dustPos.position, quaternion.identity);
+            
             var pos = new Vector3(path[current+1].transform.position.x,transform.position.y,path[current+1].transform.position.z);
             transform.DOJump(pos, jumpPower, jumpNumber, jumpDuration);
 
             yield return new WaitForSeconds(jumpDuration);
-                
+            
             current++;
         }
         
