@@ -20,7 +20,6 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
         {
             yield return new WaitForSeconds(swingDuration);
             ApplyEffect();
-            Destroy(gameObject);
         }
     }
 
@@ -30,6 +29,11 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
         {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
         }
+        if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IPushable>())
+        {
+            _target.GridObject.GetComponent<IPushable>().Push( PlayerManager.Instance.GetSelectedPlayer().GetComponent<Player>().Grid.transform.position);
+        }
+        
         
         Vector3 targetGridPos = _target.gameObject.transform.position;
         
@@ -65,6 +69,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
                 nextGrid.GridObject.GetComponent<IDamagable>().Damage((int) (DamageAmount * DamageFallOf));
             }
         }
-
+        
+        Destroy(gameObject);
     }
 }

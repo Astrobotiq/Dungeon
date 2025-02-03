@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] Move move;
 
-    [Header("Selecteds")] [SerializeField] GameObject Grid;
+    [Header("Selecteds")] public GameObject Grid { get; private set; }
     [SerializeField] GameObject _selectedSkillEffect;
 
     #endregion
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         gameView = GameObject.FindWithTag("UI").GetComponent<GameView>();
         //Burası şimdilik duruyor. Elle girmemiz gereken bir noktadayız
         WornSkills = new WornSkills();
-        WornSkill skill = new WornSkill(10);
+        WornSkill skill = new WornSkill(2);
         WornSkills.SetWornSkill(skill);
     }
 
