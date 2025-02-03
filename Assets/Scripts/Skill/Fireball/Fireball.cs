@@ -42,12 +42,9 @@ public class Fireball : ISkillEffect
         {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
         }
-        Debug.Log("Fireball");
 
         var pos = _target.gameObject.transform.position;
-
-        Debug.Log("Fireball pos :" + pos);
-
+        
         for (int i = -1; i <= 1; i++)
         {
             if (i == 0)

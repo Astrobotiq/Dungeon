@@ -40,6 +40,7 @@ public class AlgorithmSkillFourDirection
                     continue;
                 }
                 else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                    input_set.Add(new Vector3(i, location.y, location.z));
                     break;
                 }
                 //grid blockedsa ve havan değilse break yap
@@ -56,6 +57,7 @@ public class AlgorithmSkillFourDirection
                     continue;
                 }
                 else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                    input_set.Add(new Vector3(i, location.y, location.z));
                     break;
                 }
             }
@@ -70,6 +72,7 @@ public class AlgorithmSkillFourDirection
                     continue;
                 }
                 else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                    input_set.Add(new Vector3(location.x, location.y, i));
                     break;
                 }
             }
@@ -84,6 +87,7 @@ public class AlgorithmSkillFourDirection
                     continue;
                 }
                 else if (temp_grid.GridObject != null  && temp_grid.GridObject != input_grid.GridObject & isLikeMortar == false) {
+                    input_set.Add(new Vector3(location.x, location.y, i));
                     break;
                 }
             }

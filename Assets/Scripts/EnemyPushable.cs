@@ -7,7 +7,7 @@ public class EnemyPushable : IPushable
     private float duration;
     
     [SerializeField]
-    private Move move;
+    private AnimationCurve curve;
     
     [SerializeField]
     private IDamagable damagable;
@@ -25,16 +25,13 @@ public class EnemyPushable : IPushable
 
         if (targetGrid)
         {
-            Debug.Log("gidecek yerim var");
             if (targetGrid.GridObject)
             {
-                Debug.Log("Mersin");
                 Crash(targetGrid,currentGrid);
             }
             else
             {
-                Debug.Log("yalova");
-                move.StartMove(currentGrid,targetGrid);
+                Push(targetGrid);
             }
         }
         else
@@ -54,5 +51,11 @@ public class EnemyPushable : IPushable
                 targetGrid.GridObject.GetComponent<IDamagable>().Damage(1);
             }
         }));
+    }
+
+    private void Push(Grid targetGrid)
+    {
+        var pos = new Vector3(targetGrid.transform.position.x,transform.position.y, targetGrid.transform.position.z);
+        transform.DOMove(pos, duration).SetEase(curve);
     }
 }
