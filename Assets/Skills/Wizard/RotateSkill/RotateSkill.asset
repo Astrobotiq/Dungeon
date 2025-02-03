@@ -20,5 +20,5 @@ MonoBehaviour:
   ClassSpeciality: 0
   UseLimit: -1
   GUISprite: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}
-  SkillGO: {fileID: 78255121319495919, guid: 0251d4696fb37a542aee8207c9911841, type: 3}
+  SkillGO: {fileID: 4932808532036717994, guid: 1495810a0221918429ca41559bd9d1ce, type: 3}
   PlayerEffect: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
