@@ -157,7 +157,7 @@ public class GridManager : Singleton<GridManager>
             Algorithm algorithm = new Algorithm();
             HashSet<Vector3> set = algorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(), range);
             Debug.Log(set.Count);
-            OpenGrids(set);
+            OpenGrids(set, false);
             IsInSearchState = true;
         }
     }
@@ -238,16 +238,24 @@ public class GridManager : Singleton<GridManager>
 
         if (selectedGrids != null)
         {
-            OpenGrids(selectedGrids);
+            OpenGrids(selectedGrids, true);
         }
     }
 
-    void OpenGrids(HashSet<Vector3> set)
+    void OpenGrids(HashSet<Vector3> set, bool forSkill)
     {
         foreach (var position in set)
         {
             var grid = getGridFromLocation(position);
-            grid.MaterialController.SetMaterialWalkable();
+            if (forSkill)
+            {
+                grid.MaterialController.SetMaterialAttackable();
+            }
+            else
+            {
+                grid.MaterialController.SetMaterialWalkable();
+            }
+            
             grid.IsAvailable = true;
         }
 

@@ -29,6 +29,17 @@ public class MaterialController
         } 
     }
 
+    public void SetMaterialAttackable()
+    {
+        if (objRenderer != null && propertyBlock != null)
+        {
+            // Mevcut property block'u al
+            objRenderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_BaseColor", Color.red);
+            objRenderer.SetPropertyBlock(propertyBlock);
+        } 
+    }
+
     public void SetMaterialDefault()
     {
         if (objRenderer != null && propertyBlock != null)
