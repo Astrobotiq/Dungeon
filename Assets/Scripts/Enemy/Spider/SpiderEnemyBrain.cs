@@ -1,0 +1,107 @@
+using System.Collections.Generic;
+using DG.Tweening;
+using Unity.Mathematics;
+using UnityEngine;
+
+public class SpiderEnemyBrain : EnemyBrain
+{
+    [SerializeField]
+    private GameObject web;
+    
+    [SerializeField]
+    private GameObject attackEffect;
+    
+    [SerializeField]
+    private float attackStartTime = 0.5f;
+    
+    [SerializeField]
+    private float attackDashTime = 0.15f;
+    
+    [SerializeField]
+    private float attackRecoveryTime = 0.4f;
+    
+
+    public override Vector3 Dedice()
+    {
+        List<List<GameObject>> GridList = GridManager.Instance.GridList;
+
+        foreach (var list in GridList)
+        {
+            foreach (var gridObj in list)
+            {
+                if (gridObj.GetComponent<Grid>().GridObject && gridObj.GetComponent<Grid>().GridObject.tag.Equals("Player"))
+                {
+                    return new Vector3(gridObj.transform.position.x-1, gridObj.transform.position.y, gridObj.transform.position.z);
+                }
+            }
+        }
+
+        return currentGrid.transform.position;
+    }
+    
+    protected override void DecideAttackTile()
+    {
+        currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
+        var currentGridPos = currentGrid.transform.position;
+
+        List<Grid> targetGrids = new List<Grid>();
+
+        for (int i = -1; i <= 1; i++)
+        {
+            if (i==0)
+            {
+                continue;
+            }
+            
+            var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x + i, currentGridPos.y, currentGridPos.z));
+            var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x, currentGridPos.y, currentGridPos.z + i));
+
+            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.tag.Equals("Player"))
+            {
+                targetGrids.Add(xGrid);
+            }
+            
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.tag.Equals("Player"))
+            {
+                targetGrids.Add(zGrid);
+            }
+        }
+
+        TargetGrid = targetGrids.GetRandom();
+    }
+
+    public override void PreAttack()
+    {
+        if (!TargetGrid)
+        {
+            Debug.LogError("Spider ağ atacak target bulamadı.");
+            return;
+        }
+
+        move.Turn(transform.position, TargetGrid.transform.position, null);
+        
+        Instantiate(web,
+            new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
+                TargetGrid.transform.position.z), Quaternion.identity);
+
+    }
+
+    public override void Attack()
+    {
+        var effectStartPos = transform.position;
+
+        var diffrence = TargetGrid.transform.position - transform.position;
+        diffrence = new Vector3(diffrence.x, 0, diffrence.z);
+
+        //Instantiate(attackEffect, effectStartPos, quaternion.identity);
+
+        transform.DOMove(transform.position - (diffrence / 4), attackStartTime).OnComplete((() =>
+        {
+            transform.DOMove(transform.position + (diffrence / 2), attackDashTime).OnComplete((() =>
+            {
+                transform.DOMove(effectStartPos, attackRecoveryTime);
+            }));
+        }));
+
+    }
+}
