@@ -189,6 +189,7 @@ public class GridManager : Singleton<GridManager>
             else
             {
                 PlayerManager.Instance.DeselectPlayer();
+                EnemyManager.Instance.DeselectEnemy();
             }
             IsInSearchState = false;
             ResetTable();
