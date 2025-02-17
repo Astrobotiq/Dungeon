@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Mathematics;
@@ -67,6 +68,12 @@ public class SpiderEnemyBrain : EnemyBrain
             }
         }
 
+        if (targetGrids.Count == 0)
+        {
+            Debug.LogError("Target grid listesi boş. Koduna bak");
+            return;
+        }
+
         TargetGrid = targetGrids.GetRandom();
     }
 
@@ -78,7 +85,7 @@ public class SpiderEnemyBrain : EnemyBrain
             return;
         }
 
-        move.Turn(transform.position, TargetGrid.transform.position, null);
+        StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, null));
         
         Instantiate(web,
             new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
@@ -92,16 +99,26 @@ public class SpiderEnemyBrain : EnemyBrain
 
         var diffrence = TargetGrid.transform.position - transform.position;
         diffrence = new Vector3(diffrence.x, 0, diffrence.z);
+        
+        var effect =Instantiate(attackEffect, effectStartPos, quaternion.identity);
 
-        //Instantiate(attackEffect, effectStartPos, quaternion.identity);
+        StartCoroutine(DestroyEffect(effect));
 
         transform.DOMove(transform.position - (diffrence / 4), attackStartTime).OnComplete((() =>
         {
             transform.DOMove(transform.position + (diffrence / 2), attackDashTime).OnComplete((() =>
             {
+                FeelManager.Instance.ShakeCamera();
+                TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
                 transform.DOMove(effectStartPos, attackRecoveryTime);
             }));
         }));
+
+        IEnumerator DestroyEffect(GameObject effect)
+        {
+            yield return new WaitForSeconds(2f);
+            Destroy(effect);
+        }
 
     }
 }

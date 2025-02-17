@@ -57,8 +57,12 @@ public class LevelManager : Singleton<LevelManager>
                     Debug.Log("EnemyBulundu");
                     var EnemyObj = Instantiate(Enemy, new Vector3(i, 1.4f, j),
                         Quaternion.identity);
-
-                    GridManager.Instance.getGridFromLocation(new Vector3(i, 1.4f, j)).GridObject = EnemyObj;
+                    
+                    var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 1.4f, j));
+                    grid.GridObject = EnemyObj;
+                    
+                    if(EnemyObj.GetComponent<EnemyBrain>() != null)
+                        EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
                 }
             }
         }

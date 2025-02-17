@@ -141,6 +141,8 @@ public class Move : MonoBehaviour
         Vector3 currentDirection = transform.forward;
 
         float angle = Vector3.SignedAngle(currentDirection, targetDirection, Vector3.up);
+        
+        Debug.Log($"angle : {angle}");
 
         if (Mathf.Abs(angle)>0.01)
         {

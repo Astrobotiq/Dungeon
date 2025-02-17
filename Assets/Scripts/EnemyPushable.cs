@@ -11,6 +11,13 @@ public class EnemyPushable : IPushable
     
     [SerializeField]
     private IDamagable damagable;
+    
+    [SerializeField]
+    private float crashStartTime;
+    
+    [SerializeField]
+    private float crashRecoveryTime;
+    
     public override void Push(Vector3 position)
     {
         var diffrence = transform.position - position;
@@ -38,11 +45,26 @@ public class EnemyPushable : IPushable
         {
             Crash(targetGrid,currentGrid); 
         }
-        damagable.Damage(1);
+        //damagable.Damage(1);
     }
 
     private void Crash(Grid targetGrid, Grid currentGrid)
     {
+        var StartPos = transform.position;
+
+        var diffrence = targetGrid.transform.position - transform.position;
+        diffrence = new Vector3(diffrence.x, 0, diffrence.z);
+        
+
+        transform.DOMove(transform.position + (diffrence / 2), crashStartTime).OnComplete((() =>
+        {
+            transform.DOMove(StartPos, crashRecoveryTime).OnComplete((() =>
+            {
+                FeelManager.Instance.ShakeCamera();
+                targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
+            }));
+        }));
+        /*
         transform.DOMove(targetGrid.transform.position, duration).OnComplete((() =>
         {
             transform.DOMove(currentGrid.transform.position,duration);
@@ -50,7 +72,7 @@ public class EnemyPushable : IPushable
             {
                 targetGrid.GridObject.GetComponent<IDamagable>().Damage(1);
             }
-        }));
+        }));*/
     }
 
     private void Push(Grid targetGrid)

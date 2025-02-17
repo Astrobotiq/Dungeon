@@ -19,6 +19,8 @@ public abstract class EnemyBrain : MonoBehaviour
     
     [SerializeField] 
     protected GameObject AttackBTN2;
+    
+    
     //In one turn enemy do this action one by one
     //Decide where to go (Can)
     //Go (Ready)
@@ -47,6 +49,8 @@ public abstract class EnemyBrain : MonoBehaviour
     {
         EnemyManager.Unsubscribe(this);
     }
+
+    public void SetGrid(Grid grid) => currentGrid = grid;
 
     public IEnumerator Template()
     {
