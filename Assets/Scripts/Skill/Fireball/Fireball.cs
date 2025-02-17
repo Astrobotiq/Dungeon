@@ -35,6 +35,7 @@ public class Fireball : ISkillEffect
         IEnumerator Timer()
         {
             yield return new WaitForSeconds(jumpDuration);
+            FeelManager.Instance.ShakeCamera();
             ApplyEffect();
         }
     }
@@ -76,11 +77,6 @@ public class Fireball : ISkillEffect
                     Debug.Log("XPushable");
                     xGrid.GridObject.GetComponent<IPushable>().Push(pos);
                 }
-
-                if (xGrid.GridObject.GetComponent<IDamagable>())
-                {
-                    xGrid.GridObject.GetComponent<IDamagable>().Damage(damage);
-                }
             }
             
             if (zGrid.gameObject && zGrid.GridObject)
@@ -90,11 +86,6 @@ public class Fireball : ISkillEffect
                 {
                     Debug.Log("ZPushable");
                     zGrid.GridObject.GetComponent<IPushable>().Push(pos);
-                }
-
-                if (zGrid.GridObject.GetComponent<IDamagable>())
-                {
-                    zGrid.GridObject.GetComponent<IDamagable>().Damage(damage);
                 }
             }
         }
