@@ -177,10 +177,6 @@ MonoBehaviour:
   enemyHitValue: -2
   statueHitValue: 5
   mapEdgeValue: -99
-  allAttackableObjectTypes: 
-  Player: {fileID: 7375778406333701460}
-  Enemy: {fileID: 0}
-  updateUIValues: 0
 --- !u!114 &6415463294687669630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,10 +189,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
+  players:
+  - {fileID: 7375778406333701460}
+  statues: []
+  enemies: []
   chosenEnemy: {fileID: 0}
-  enemyChooseRange: 2
+  enemyChooseRange: 3
   showSelectedOptions: 0
+  allAttackableObjectTypes: 
 --- !u!1 &8276953545208464607
 GameObject:
   m_ObjectHideFlags: 0
