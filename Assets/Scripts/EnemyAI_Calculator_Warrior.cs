@@ -8,6 +8,193 @@ using UnityEngine.InputSystem.Controls;
 public class EnemyAI_Calculator_Warrior : MonoBehaviour
 {
 
+    #region Rewards
+    
+        [SerializeField]
+        private int playerHitValue = 5;
+    
+        [SerializeField]
+        private int enemyHitValue = -2;
+    
+        [SerializeField]
+        private int statueHitValue = 5;
+        
+        [SerializeField]
+        private int mapEdgeValue  = -99;
+    
+    #endregion
+    
+    public enum AttackedObjectType {
+        PlayerType,
+        EnemyType,
+        StatueType
+    }
+
+    public void CalculateGridAttackValues(GameObject gameObject, AttackedObjectType type) {
+        GridManager gridManager = GridManager.Instance;
+
+        Vector3 position = gameObject.transform.position;
+        
+        Grid inputGridConverted = gridManager.getGridFromLocation(position);
+
+        if (inputGridConverted.getNearNodes().Count == 0) {
+            calculateNearNodes(position);
+        }
+        
+        foreach (Vector3 grid in inputGridConverted.getNearNodes()) {
+            Grid temp = gridManager.getGridFromLocation(grid);
+            GameObject gridCanvas = temp.transform.GetChild(0).gameObject;
+            TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+            
+            switch (type)
+            {
+                case AttackedObjectType.PlayerType:
+                    textObject.text = (Int32.Parse(textObject.text) + playerHitValue).ToString();
+                    break;
+                case AttackedObjectType.EnemyType: 
+                    textObject.text = (Int32.Parse(textObject.text) + enemyHitValue).ToString();
+                    break;
+                case AttackedObjectType.StatueType:
+                    textObject.text = (Int32.Parse(textObject.text) + statueHitValue).ToString();
+                    break;
+                default:
+                    Debug.Log("Calling from EnemyAICalculator_Warrior. I think you refer a type which is not put in here");
+                    break;
+            }
+        }
+    }
+
+    public void CalculateGridMoveValues(GameObject gameObject, AttackedObjectType type) {
+        int value = 0;
+        
+        switch (type)
+        {
+            case AttackedObjectType.PlayerType:
+                value = playerHitValue;
+                break;
+            case AttackedObjectType.EnemyType:
+                value = enemyHitValue;
+                break;
+            case AttackedObjectType.StatueType:
+                value = statueHitValue; 
+                break;
+            default:
+                Debug.Log("Calling from EnemyAICalculator_Warrior. I think you refer a type which is not put in here");
+                break;
+        }
+        
+        Vector3 pos = gameObject.transform.position;
+        workOnNearNodes(pos,value);
+    }
+
+    public void workOnNearNodes(Vector3 inputGrid, int value) {
+        GridManager gridManager = GridManager.Instance;
+
+        Grid inputGridConverted = gridManager.getGridFromLocation(inputGrid);
+        
+        foreach (Vector3 grid in inputGridConverted.getNearNodes()) {
+            setGridUIValue(gridManager.getGridFromLocation(grid),value);
+            if (value > 1) {
+                workOnNearNodes(grid,value-1);
+            }
+        }
+    }
+
+    public void setGridUIValue(Grid gridReference, int value) {
+        GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
+        TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+
+        if (Int32.Parse(textObject.text) > -1 && Int32.Parse(textObject.text) < value) {
+            textObject.SetText(value.ToString());
+            //Debug.Log("grid location: " + gridGameobject.transform.position + " and value: " + textObject.text);
+        }
+        
+        else if (gridReference.GridObject && gridReference.GridObject.GetComponent<EnemyHealth>()) {
+            textObject.SetText(enemyHitValue.ToString());
+        }
+        
+        if(gridReference.transform.position.x==0 || gridReference.transform.position.x==7
+            || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) 
+        {
+            textObject.SetText(mapEdgeValue.ToString());
+        }
+    }
+    
+    private void calculateNearNodes(Vector3 coordinates) { // Bizim eski komşu gridleri bulma methodu
+        Vector3 location = coordinates;
+        List<Vector3> nearNodes = new List<Vector3>();
+        
+
+        if(location.z==0){ // y=0 ise
+            if(location.x==0){ //hem x hem y = 0 ise
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+            }
+            else if(location.x==7){ //hem x hem de y 7 ise
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+            }
+            else{
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+            }
+        }
+        else if(location.z==7){ // y=7 ise
+            if(location.x==7){ //hem x hem de y 7 ise
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            }
+            else if(location.x==0){ //hem x=0 y 7 ise
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            }
+            else{
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            }
+        }
+        else if(location.x==0){ // x=0 ise
+            /*if(location.z==7){ // x=0 y=7 ise
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
+            }*/
+            //else{
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            //}
+        }
+        else if (location.x==7){ // x=7 ise
+            /*if(location.z==0){ // hem x=7 y=0 ise
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
+                nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
+            }*/
+            //else{
+                nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+                nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+                nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+            //}
+        }
+        else{
+            nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
+            nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
+            nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
+            nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
+        }
+
+        //Debug.Log("3-Location : " + location);
+        GridManager.Instance.getGridFromLocation(location).setNearNodes(nearNodes);
+        
+    }
+    
+}
+
+/*
+public class EnemyAI_Calculator_Warrior : MonoBehaviour
+{
+
     #region HitRewards
     
         [SerializeField]
@@ -185,7 +372,7 @@ public class EnemyAI_Calculator_Warrior : MonoBehaviour
             /*if(location.z==7){ // x=0 y=7 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
                 nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
-            }*/
+            }* /
             //else{
                 nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
@@ -196,7 +383,7 @@ public class EnemyAI_Calculator_Warrior : MonoBehaviour
             /*if(location.z==0){ // hem x=7 y=0 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
                 nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-            }*/
+            }* /
             //else{
                 nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
@@ -216,3 +403,4 @@ public class EnemyAI_Calculator_Warrior : MonoBehaviour
     }
     
 }
+ */

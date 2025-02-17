@@ -7,6 +7,197 @@ using UnityEngine;
 
 public class EnemyAI_Organizer : MonoBehaviour
 {
+    #region GameObjectHolders
+    
+    [Header("GameobjectHolders")]
+    
+    [SerializeField] 
+    private List<GameObject> players;
+
+    [SerializeField] 
+    private List<GameObject> statues;
+
+    [SerializeField] 
+    private List<GameObject> enemies;
+    
+    #endregion
+    
+
+    #region EnemyValues
+    
+    [Header("Enemy")]
+    
+    [SerializeField]
+    private GameObject chosenEnemy;
+    
+    [SerializeField] 
+    private int enemyChooseRange;
+    
+    #endregion
+
+    #region General
+    
+    [SerializeField]
+    private List<EnemyAI_Calculator_Warrior.AttackedObjectType> allAttackableObjectTypes;
+    
+    private EnemyAI_Calculator_Warrior enemyAICalculator;
+    
+    #endregion
+    
+    //SİLİNECEK
+    public bool showSelectedOptions;
+    
+    public void Start() // SİLİNECEK
+    {
+        chosenEnemy = GameObject.Find("EnemyDummy(Clone)");
+        enemies.Add(chosenEnemy); // !!!!! Kendini eklememesi lazım ama check etmek için şimdilik ekledim
+        
+        
+        allAttackableObjectTypes.Add(EnemyAI_Calculator_Warrior.AttackedObjectType.PlayerType);
+        allAttackableObjectTypes.Add(EnemyAI_Calculator_Warrior.AttackedObjectType.EnemyType);
+        //allAttackableObjectTypes.Add(EnemyAI_Calculator_Warrior.AttackedObjectType.StatueType);
+    }
+
+    public void Update() { // Bool degeri uzerinden yaptigim check icin burada
+        if (enemyAICalculator == null) {
+            //Burada get component ile alınan componeneti abstract bir classın child'ı yapmak istiyorum ki içine verilen claasın kurallarına göre hesap yapsın yani archer da yapılınca değişecek
+            enemyAICalculator = GetComponent<EnemyAI_Calculator_Warrior>(); 
+        }
+        
+        if (showSelectedOptions) {
+             Vector3 temp = ReturnBestOption(chosenEnemy); // This is for returning the single best location
+             Debug.Log("seçtiğim en iyi loc " + temp);
+        }
+    }
+
+    public Vector3 ReturnBestOption(GameObject enemy)
+    {
+        Dictionary<Vector3, int> TotalOptions = new Dictionary<Vector3, int>();
+        
+        chosenEnemy = enemy;
+        
+        foreach (EnemyAI_Calculator_Warrior.AttackedObjectType type in allAttackableObjectTypes)
+        {
+            CalculateAllGridValues(type);
+        }
+        
+        TotalOptions = DecideBestActions_3();
+        
+        foreach (var VARIABLE in TotalOptions) {
+            Debug.Log("bulduğum en iyi loc biri : " + VARIABLE.Key + " sayısal değeri " + VARIABLE.Value);
+        }
+            
+        Vector3 bestLoc = new Vector3(99, 99, 99);
+        int bestValue = -99;
+            
+        foreach (KeyValuePair<Vector3, int> tile in TotalOptions) {
+            //Debug.Log("en iyi sayı " + bestValue + " şu anki sayı " + tile.Value);
+            if (tile.Value > bestValue) {
+                bestLoc = tile.Key;
+                bestValue = tile.Value;
+            }
+        }
+        //Debug.Log("boş");
+        //Debug.Log("bulduğum en iyi loc " + bestLoc + " değeri " + bestValue);
+        showSelectedOptions = false; // SİLİNECEK
+        
+        return bestLoc;
+    }
+    
+    public void CalculateAllGridValues(EnemyAI_Calculator_Warrior.AttackedObjectType type){
+        switch (type) 
+        {
+            case EnemyAI_Calculator_Warrior.AttackedObjectType.PlayerType:
+                if (players.Count != 0) {
+                    foreach (GameObject player in players) {
+                        enemyAICalculator.CalculateGridMoveValues(player, type);
+                        enemyAICalculator.CalculateGridAttackValues(player, type);
+                    }
+                }
+                else {
+                    Debug.Log("EnemyAIOrganizer's players list is empty"); 
+                }
+                break;
+            
+            case EnemyAI_Calculator_Warrior.AttackedObjectType.EnemyType:
+                if (enemies.Count != 0) {
+                    foreach (GameObject enemy in enemies) { // !!!!!!!! I think there is no need to calc move value addition by enemies
+                        enemyAICalculator.CalculateGridMoveValues(enemy, type);
+                        enemyAICalculator.CalculateGridAttackValues(enemy, type);
+                    }
+                }
+                else {
+                    Debug.Log("EnemyAIOrganizer's enemies list is empty");
+                }
+                break;
+            
+            case EnemyAI_Calculator_Warrior.AttackedObjectType.StatueType:
+                if (statues.Count != 0) {
+                    foreach (GameObject statue in statues) {
+                        enemyAICalculator.CalculateGridMoveValues(statue, type);
+                        enemyAICalculator.CalculateGridAttackValues(statue, type);
+                    }
+                }
+                else {
+                    Debug.Log("EnemyAIOrganizer's statues list is empty"); 
+                }
+                break;
+            default:
+                Debug.Log("Calling from EnemyAI_Organizer. I think you refer a type which is not put in here");
+                break;
+        }
+    }
+    
+    public Dictionary<Vector3, int> DecideBestActions_3(){
+        GridManager gridManager = GridManager.Instance;
+        Algorithm algorithm = new Algorithm();
+        
+        HashSet<Vector3> lookableTiles = algorithm.startAlgorithm(gridManager.getGridFromLocation(chosenEnemy.transform.position), enemyChooseRange);
+        Dictionary<Vector3, int> dictionaryTiles = new Dictionary<Vector3, int>();
+        
+        
+        //Debug.Log("lookabletile sayısı " + lookableTiles.Count);
+        foreach (Vector3 grid in lookableTiles) {
+            Grid temp = gridManager.getGridFromLocation(grid);
+            GameObject grid_canvas = temp.transform.GetChild(0).gameObject;
+            TextMeshProUGUI text_object = grid_canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+
+            int gridValue = Int32.Parse(text_object.text);
+            dictionaryTiles.Add(grid, gridValue);
+        }
+        //Debug.Log("dictionarytile sayısı " + dictionaryTiles.Count);
+        
+        Dictionary<Vector3, int> bestThreeOption = new Dictionary<Vector3, int>();
+
+        for (int i = 0; i < 3; i++) {
+            Vector3 bestLoc = new Vector3(99, 99, 99);
+            int bestValue = -99;
+            
+            foreach (KeyValuePair<Vector3, int> tile in dictionaryTiles) {
+                //Debug.Log("en iyi sayı " + bestValue + " şu anki sayı " + tile.Value);
+                if (tile.Value > bestValue) {
+                    bestLoc = tile.Key;
+                    bestValue = tile.Value;
+                }
+            }
+            //Debug.Log("boş");
+            //Debug.Log("bulduğum en iyi loc " + bestLoc + " değeri " + bestValue);
+            bestThreeOption.Add(bestLoc, bestValue);
+            dictionaryTiles.Remove(bestLoc);
+        }
+        
+        /*Debug.Log("option sayısı " + bestThreeOption.Count);
+        foreach (var VARIABLE in bestThreeOption) {
+           Debug.Log("!!! optıon loc degerı " + VARIABLE.Key + " option sayısal değeri " + VARIABLE.Value);
+        }*/
+        
+        return bestThreeOption;
+    }
+}
+
+/*
+public class EnemyAI_Organizer : MonoBehaviour
+{
     [SerializeField] 
     private List<GameObject> players;
 
@@ -112,7 +303,7 @@ public class EnemyAI_Organizer : MonoBehaviour
         /*Debug.Log("option sayısı " + bestThreeOption.Count);
         foreach (var VARIABLE in bestThreeOption) {
            Debug.Log("!!! optıon loc degerı " + VARIABLE.Key + " option sayısal değeri " + VARIABLE.Value);
-        }*/
+        }#1#
         
         return bestThreeOption;
     }
@@ -211,7 +402,7 @@ public class EnemyAI_Organizer : MonoBehaviour
         foreach (var VARIABLE in options)
         {
             Debug.Log("????? optıon loc degerı " + VARIABLE.Key + " option sayısal değeri " + VARIABLE.Value);
-        }*/
+        }#1#
         
         /*foreach (Vector3 grid in lookableTiles) {
             Grid temp = gridManager.getGridFromLocation(grid);
@@ -250,7 +441,7 @@ public class EnemyAI_Organizer : MonoBehaviour
                 Debug.Log("????? optıon loc degerı " + VARIABLE.Key + " option sayısal değeri " + VARIABLE.Value);
             }
             
-        }*/
+        }#1#
         
         return options;
     }
@@ -331,7 +522,7 @@ public class EnemyAI_Organizer : MonoBehaviour
 
 
         }
-        */
+        #1#
         return options;
     }
 
@@ -343,3 +534,4 @@ public class EnemyAI_Organizer : MonoBehaviour
     }
     
 }
+*/
