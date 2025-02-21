@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem.Controls;
 
-public class EnemyAI_Calculator_Warrior : MonoBehaviour
+public class EnemyAI_Calculator_Warrior : AbstractEnemyAI_Calculator
 {
-
     #region Rewards
     
         [SerializeField]
@@ -24,13 +21,9 @@ public class EnemyAI_Calculator_Warrior : MonoBehaviour
     
     #endregion
     
-    public enum AttackedObjectType {
-        PlayerType,
-        EnemyType,
-        StatueType
-    }
 
-    public void CalculateGridAttackValues(GameObject gameObject, AttackedObjectType type) {
+    public override void CalculateGridAttackValues(GameObject gameObject, AttackedObjectType type)
+    {
         GridManager gridManager = GridManager.Instance;
 
         Vector3 position = gameObject.transform.position;
@@ -64,7 +57,7 @@ public class EnemyAI_Calculator_Warrior : MonoBehaviour
         }
     }
 
-    public void CalculateGridMoveValues(GameObject gameObject, AttackedObjectType type) {
+    public override void CalculateGridMoveValues(GameObject gameObject, AttackedObjectType type, int enemyWalkDistance) {
         int value = 0;
         
         switch (type)
