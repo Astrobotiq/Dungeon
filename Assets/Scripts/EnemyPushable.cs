@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 public class EnemyPushable : IPushable
@@ -18,6 +19,13 @@ public class EnemyPushable : IPushable
     [SerializeField]
     private float crashRecoveryTime;
     
+    private EnemyBrain _enemyBrain;
+
+    void Start()
+    {
+        _enemyBrain = GetComponent<EnemyBrain>();
+    }
+
     public override void Push(Vector3 position)
     {
         var diffrence = transform.position - position;
@@ -38,14 +46,13 @@ public class EnemyPushable : IPushable
             }
             else
             {
-                Push(targetGrid);
+                Push(targetGrid, diffrence);
             }
         }
         else
         {
             Crash(targetGrid,currentGrid); 
         }
-        //damagable.Damage(1);
     }
 
     private void Crash(Grid targetGrid, Grid currentGrid)
@@ -75,9 +82,28 @@ public class EnemyPushable : IPushable
         }));*/
     }
 
-    private void Push(Grid targetGrid)
+    private void Push(Grid targetGrid, Vector3 diffrence)
     {
+        if (GetComponent<LineController>() is var lineController)
+        {
+            lineController.RemoveLine();
+        }
+
+        var grid = _enemyBrain.GetTargetGrid();
+        Grid newGrid = null;
+        if (grid != null)
+        {
+            var gridPos = grid.transform.position;
+            var newGridPos = gridPos + diffrence;
+            newGrid = GridManager.Instance.getGridFromLocation(newGridPos);
+            Debug.Log($"new Grid : {newGrid.transform.position}");
+        }
+        
         var pos = new Vector3(targetGrid.transform.position.x,transform.position.y, targetGrid.transform.position.z);
-        transform.DOMove(pos, duration).SetEase(curve);
+        transform.DOMove(pos, duration).SetEase(curve).OnComplete((() =>
+        {
+            if (newGrid != null)
+                _enemyBrain.SetTargetGrid(newGrid);
+        }));
     }
 }
