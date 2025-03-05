@@ -18,23 +18,27 @@ public class RangerEnemyBrain : EnemyBrain
     [SerializeField]
     private float attackRecoveryTime = 0.4f;
     
-    [SerializeField]
-    private LineRenderer lineRenderer;
+    private LineController _targetLineController;
 
     void Awake()
     {
+        _targetLineController = GetComponent<LineController>();
         EventManager.onMove += RecalculateTarget;
     }
 
-    private void RecalculateTarget()
+    public override void RecalculateTarget(string tag)
     {
-        if (TargetGrid == null)
-        {
+
+        if (!tag.Equals("Player"))
             return;
-        }
+        
+        if (TargetGrid == null)
+            return;
+        
         Vector3 difference = TargetGrid.transform.position - transform.position;
         difference = new Vector3(difference.x, 0, difference.z);
         Vector3 currentPos = transform.position;
+
 
         Vector2Int direction;
         if (Mathf.Abs(difference.x) > Mathf.Abs(difference.z))
@@ -45,10 +49,12 @@ public class RangerEnemyBrain : EnemyBrain
         {
             direction = difference.z > 0 ? Vector2Int.up : Vector2Int.down;
         }
-
+        
         for (int i = 0; i < 10; i++)
         {
             Vector3 nextPos = new Vector3(currentPos.x + direction.x,currentPos.y,currentPos.z + direction.y);
+            
+            Debug.Log($"next pos : {nextPos}");
                 
             Grid grid = GridManager.Instance.getGridFromLocation(nextPos);
             if (grid == null)
@@ -57,20 +63,23 @@ public class RangerEnemyBrain : EnemyBrain
                           $"Next pos : {nextPos}");
                 break;
             }
-            Debug.Log($"Grid Pos : {grid.transform.position}");
+            
 
             if (grid.GridObject != null)
             {
-                Debug.Log("Yeni Grid bulundu." +
-                          $"name : {grid.GridObject.gameObject.name}" +
-                          $"pos  : {grid.transform.position}");
                 TargetGrid = grid;
-                DrawLine(transform.position,TargetGrid.GridObject.transform.position);
+                _targetLineController.DrawLine(transform.position,TargetGrid.GridObject.transform.position);
                 return;
             }
 
             currentPos = nextPos;
         }
+    }
+
+    public override void Move(Vector3 attackPos)
+    {
+        _targetLineController.RemoveLine();
+        base.Move(attackPos);
     }
 
     protected override void DecideAttackTile()
@@ -126,8 +135,8 @@ public class RangerEnemyBrain : EnemyBrain
 
     public override void PreAttack()
     {
-        StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, null));
-        DrawLine(transform.position, TargetGrid.GridObject.transform.position);
+        StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, (
+            () => _targetLineController.DrawLine(transform.position, TargetGrid.GridObject.transform.position))));
     }
 
     public override void Attack()
@@ -147,12 +156,8 @@ public class RangerEnemyBrain : EnemyBrain
         sequence.Append(transform.DOMove(transform.position - (diff / 5), attackDashTime));
         sequence.Append(transform.DOMove(effectStartPos, attackRecoveryTime));
         sequence.Play();
+        _targetLineController.RemoveLine();
     }
     
-    void DrawLine(Vector3 startPoint, Vector3 endPoint)
-    {
-        Vector3[] points = new Vector3[2]{startPoint,endPoint};
-        lineRenderer.positionCount = points.Length;
-        lineRenderer.SetPositions(points);
-    }
+    
 }

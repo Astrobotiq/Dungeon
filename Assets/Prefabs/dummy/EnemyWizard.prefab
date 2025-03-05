@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 2449869014637842404}
   - component: {fileID: 6044380848506226700}
   - component: {fileID: 137043124315573577}
+  - component: {fileID: 8886837815250843573}
   m_Layer: 0
   m_Name: EnemyWizard
   m_TagString: Untagged
@@ -389,6 +390,20 @@ MonoBehaviour:
     m_RotationOrder: 4
   attackDashTime: 0.5
   attackRecoveryTime: 0.1
+--- !u!114 &8886837815250843573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331496170541435644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9d23e2f4bc4a479244fede780e309b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peakHeight: 1.5
+  segmentCount: 5
 --- !u!1 &1430482240511494937
 GameObject:
   m_ObjectHideFlags: 0

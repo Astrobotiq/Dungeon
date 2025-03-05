@@ -85,7 +85,7 @@ public class Move : MonoBehaviour
             GridManager.Instance.getGridFromLocation(transform.position).GridObject = gameObject;
             current++;
         }
-        EventManager.Instance.InvokeOnMove();
+        EventManager.Instance.InvokeOnMove(gameObject.tag);
 
         InputManager.Instance.canTakeInput = true;
     }
@@ -114,14 +114,19 @@ public class Move : MonoBehaviour
 
             Instantiate(dust, dustPos.position, quaternion.identity);
             
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+            
             var pos = new Vector3(path[current+1].transform.position.x,transform.position.y,path[current+1].transform.position.z);
             transform.DOJump(pos, jumpPower, jumpNumber, jumpDuration);
-
+            
             yield return new WaitForSeconds(jumpDuration);
+            
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = gameObject;
             
             current++;
         }
-        
+        EventManager.Instance.InvokeOnMove(gameObject.tag);
+
         InputManager.Instance.canTakeInput = true;
 
     }

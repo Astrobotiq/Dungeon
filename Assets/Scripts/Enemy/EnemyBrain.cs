@@ -33,6 +33,8 @@ public abstract class EnemyBrain : MonoBehaviour
         EnemyManager.Subscribe(this);
 
         currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
+
+        currentGrid.GridObject = gameObject;
         
         AttackBTN.GetComponent<Button>().onClick.AddListener((() =>
         {
@@ -52,6 +54,14 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void SetGrid(Grid grid) => currentGrid = grid;
 
+    public Grid GetTargetGrid() =>  TargetGrid;
+
+    public void SetTargetGrid(Grid newTarget)
+    {
+        TargetGrid = newTarget;
+        RecalculateTarget("Player");
+    }
+
     public IEnumerator Template()
     {
         var attackPos = Dedice();
@@ -66,11 +76,13 @@ public abstract class EnemyBrain : MonoBehaviour
         PreAttack();
     }
 
+    public virtual void RecalculateTarget(string tag){}
+
     protected abstract void DecideAttackTile();
 
     public abstract Vector3 Dedice();
 
-    public void Move(Vector3 attackPos)
+    public virtual void Move(Vector3 attackPos)
     {
         move.StartMove(currentGrid,GridManager.Instance.getGridFromLocation(attackPos));
     }

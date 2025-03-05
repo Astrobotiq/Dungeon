@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class EventManager : Singleton<EventManager>
 {
-    public static event Action onMove;
+    public static event Action<string> onMove;
 
-    public void InvokeOnMove()
+    public void InvokeOnMove(string name)
     {
-        onMove?.Invoke();
+        onMove?.Invoke(name);
     }
 }
