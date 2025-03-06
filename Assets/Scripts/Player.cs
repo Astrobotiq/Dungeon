@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         gameView = GameObject.FindWithTag("UI").GetComponent<GameView>();
         //Burası şimdilik duruyor. Elle girmemiz gereken bir noktadayız
         WornSkills = new WornSkills();
-        WornSkill skill = new WornSkill(1);
+        WornSkill skill = new WornSkill(3);
         WornSkills.SetWornSkill(skill);
     }
 
