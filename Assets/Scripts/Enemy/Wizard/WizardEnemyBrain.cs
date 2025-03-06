@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WizardEnemyBrain : EnemyBrain
 {
@@ -20,6 +22,13 @@ public class WizardEnemyBrain : EnemyBrain
     [SerializeField]
     private float attackRecoveryTime = 0.4f;
     
+    private LineController _targetLineController;
+
+    void Awake()
+    {
+        _targetLineController = GetComponent<LineController>();
+    }
+
     protected override void DecideAttackTile()
     {
         AlgorithmSkillFourDirection algorithm = new AlgorithmSkillFourDirection();
@@ -32,6 +41,8 @@ public class WizardEnemyBrain : EnemyBrain
         foreach (var pos in hashSet)
         {
             var grid = GridManager.Instance.getGridFromLocation(pos);
+            
+            grid.MaterialController.SetMaterialAttackable();
 
             if (grid.GridObject == null)
             {
@@ -73,7 +84,10 @@ public class WizardEnemyBrain : EnemyBrain
 
     public override void PreAttack()
     {
-        StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, null));
+        StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, (
+            () => _targetLineController.DrawLine(transform.position,TargetGrid.GridObject.transform.position) 
+                )));
+        
     }
 
     public override void Attack()
@@ -91,5 +105,6 @@ public class WizardEnemyBrain : EnemyBrain
             effect.GetComponent<ISkillEffect>().StartMoving(TargetGrid);
         })));
         sequence.Play();
+        _targetLineController.RemoveLine();
     }
 }

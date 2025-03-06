@@ -7,21 +7,30 @@ public class ParabolicLineController : LineController
     public override void DrawLine(Vector3 startPoint, Vector3 endPoint)
     {
         Vector3[] points = new Vector3[segmentCount];
-        
-        // X ekseninde başlangıç ve bitiş noktalarını belirle
+
+// X ve Z eksenlerinde başlangıç ve bitiş noktalarını belirle
         float x1 = startPoint.x;
         float x2 = endPoint.x;
-        float peakX = (x1 + x2) / 2; // Zirve X ekseninde ortada olacak
-        
-        // Parabol katsayısı hesaplama (geçici katsayı, yüksekliği kontrol etmek için)
-        float a = -4 * peakHeight / ((x1 - x2) * (x1 - x2));
+        float z1 = startPoint.z;
+        float z2 = endPoint.z;
+
+// Zirve noktasını orta noktada belirle
+        float peakX = (x1 + x2) / 2;
+        float peakZ = (z1 + z2) / 2;
+
+// Parabol katsayısı hesaplama (Yüksekliği ayarlamak için)
+        float a = -4 * peakHeight / ((x1 - x2) * (x1 - x2) + (z1 - z2) * (z1 - z2));
 
         for (int i = 0; i < segmentCount; i++)
         {
             float t = (float)i / (segmentCount - 1);
+    
+            // X ve Z ekseninde doğrusal interpolasyon
             float x = Mathf.Lerp(x1, x2, t);
-            float y = a * (x - x1) * (x - x2) + peakHeight;
-            float z = Mathf.Lerp(startPoint.z, endPoint.z, t);
+            float z = Mathf.Lerp(z1, z2, t);
+
+            // Y ekseni için parabolik eğri
+            float y = a * ((x - x1) * (x - x2) + (z - z1) * (z - z2)) + peakHeight;
 
             points[i] = new Vector3(x, y, z);
         }
