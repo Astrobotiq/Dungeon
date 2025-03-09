@@ -9,12 +9,16 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField] GameObject Player;
     [SerializeField] GameObject Enemy;
+    
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentLevel = LevelDB.Instance.GetRandomLevel();
         StartCoroutine(LevelDesign());
+        
+        
     }
 
     // Update is called once per frame
@@ -24,6 +28,9 @@ public class LevelManager : Singleton<LevelManager>
 
     IEnumerator LevelDesign()
     {
+        PlayerManager playerManager = PlayerManager.Instance;
+        EnemyManager enemyManager = EnemyManager.Instance;
+        
         Debug.Log("Level");
         while (!GridManager.Instance.hasInstantiated)
         {
@@ -50,11 +57,13 @@ public class LevelManager : Singleton<LevelManager>
                     var player = Instantiate(Player, new Vector3(i, 1.4f, j), quaternion.identity);
                     var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
                     player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+                    
+                    playerManager.playerListForEnemyAI.Add(player);
                 }
 
                 if (line[j].Equals('$'))
                 {
-                    Debug.Log("EnemyBulundu");
+                    //Debug.Log("EnemyBulundu");
                     var EnemyObj = Instantiate(Enemy, new Vector3(i, 1.4f, j),
                         Quaternion.identity);
                     
@@ -63,6 +72,19 @@ public class LevelManager : Singleton<LevelManager>
                     
                     if(EnemyObj.GetComponent<EnemyBrain>() != null)
                         EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
+                    
+                    enemyManager.enemyListForEnemyAI.Add(EnemyObj);
+                    // enemyManager.enemyListForEnemyAIDeneme.Add(EnemyObj.transform.position);
+                    //
+                    // foreach (var enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+                    // {
+                    //     if (EnemyObj.transform.position == enemy.transform.position)
+                    //     {
+                    //         Debug.Log("naber");
+                    //         enemyManager.enemyListForEnemyAI.Add(enemy);
+                    //     }
+                    // }
+                    //Debug.Log("enemy ekleme loc " + EnemyObj.transform.position + " ismi "+ EnemyObj.gameObject.name);
                 }
             }
         }

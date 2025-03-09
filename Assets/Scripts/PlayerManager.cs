@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -8,17 +9,14 @@ public class PlayerManager : Singleton<PlayerManager>
     GameObject PlayerGO;
     GameObject SelectedPlayer;
     
+    public List<GameObject> playerListForEnemyAI;
+    
     [SerializeField,Range(0,5)]
     float offset;
 
     void OnEnable()
     {
         InputManager.Instance.onRightClicked += DeSelectPlayer;
-    }
-
-    void Start()
-    {
-        
     }
 
     IEnumerator findPlayerPosition()

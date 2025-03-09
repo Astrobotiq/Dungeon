@@ -21,9 +21,11 @@ GameObject:
   - component: {fileID: 6044380848506226700}
   - component: {fileID: 3386686734450406452}
   - component: {fileID: 756989350185510881}
+  - component: {fileID: 6802005883831303978}
+  - component: {fileID: 3504726711523271000}
   m_Layer: 0
   m_Name: EnemyRanger
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -378,6 +380,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d7a1e4dd20347dfa2b051f9b329571b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6802005883831303978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331496170541435644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHitValue: 5
+  enemyHitValue: -2
+  statueHitValue: 5
+  mapEdgeValue: -99
+  enemyMovePunish: -1
+  lookedGrids: []
+--- !u!114 &3504726711523271000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331496170541435644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
+  statues: []
+  enemies: []
+  chosenEnemy: {fileID: 0}
+  enemyChooseRange: 3
+  allAttackableObjectTypes: 
+  AI_Type: 1
 --- !u!1 &1430482240511494937
 GameObject:
   m_ObjectHideFlags: 0
