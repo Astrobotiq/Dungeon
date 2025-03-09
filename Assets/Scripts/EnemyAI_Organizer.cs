@@ -172,7 +172,7 @@ public class EnemyAI_Organizer : MonoBehaviour
             case AbstractEnemyAI_Calculator.AttackedObjectType.EnemyType:
                 if (enemies.Count != 0) {
                     foreach (GameObject enemy in enemies) { // !!!!!!!! I think there is no need to calc move value addition by enemies
-                        if(enemy == chosenEnemy && enemyAICalculator.Equals(new EnemyAI_Calculator_CloseRanged())) { // Warrior AI icinde bizim enemy disindakiler icin bunu yapmali bu o yuzden var
+                        if(enemy == chosenEnemy && AI_Type == EnemyAIType.Close) { // Warrior AI icinde bizim enemy disindakiler icin bunu yapmali bu o yuzden var
                             continue; 
                         }
                         
