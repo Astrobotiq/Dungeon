@@ -2185,7 +2185,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: {fileID: 11400000, guid: 95637b50d2fa6f341802c085f3b354e1, type: 2}
   Player: {fileID: 7375778406333701460, guid: 8b8cdc37a1195db46b4435ac07e3b27f, type: 3}
-  Enemy: {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
+  EnemyList:
+  - {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
+  - {fileID: 331496170541435644, guid: 8934f6d79511aea41958f260309a3fb8, type: 3}
+  - {fileID: 331496170541435644, guid: 101946366d7d0f84b9a8d99cfe577f3e, type: 3}
 --- !u!1 &791970952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,10 +2349,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3887,6 +3890,7 @@ GameObject:
   - component: {fileID: 1996766607}
   - component: {fileID: 1996766609}
   - component: {fileID: 1996766608}
+  - component: {fileID: 1996766610}
   m_Layer: 5
   m_Name: SkillPanel
   m_TagString: Untagged
@@ -3953,6 +3957,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996766606}
   m_CullTransparentMesh: 1
+--- !u!114 &1996766610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996766606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &2146372121
 GameObject:
   m_ObjectHideFlags: 0

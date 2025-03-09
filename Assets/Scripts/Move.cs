@@ -86,6 +86,11 @@ public class Move : MonoBehaviour
             current++;
         }
         EventManager.Instance.InvokeOnMove(gameObject.tag);
+        
+        if (gameObject.tag.Equals("Enemy"))
+        {
+            GetComponent<EnemyBrain>().SetFinishMove(true);
+        }
 
         InputManager.Instance.canTakeInput = true;
     }
@@ -126,6 +131,11 @@ public class Move : MonoBehaviour
             current++;
         }
         EventManager.Instance.InvokeOnMove(gameObject.tag);
+        
+        if (gameObject.tag.Equals("Enemy"))
+        {
+            GetComponent<EnemyBrain>().SetFinishMove(true);
+        }
 
         InputManager.Instance.canTakeInput = true;
 

@@ -41,6 +41,7 @@ public class PlayerManager : Singleton<PlayerManager>
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
         GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position, !PlayerScript.HasTraveled, PlayerScript.range);
+        EnemyManager.Instance.DeselectEnemy();
     }
 
     public void SetSelectedPlayerFromOutside(GameObject Player)
@@ -64,7 +65,10 @@ public class PlayerManager : Singleton<PlayerManager>
     public void DeselectPlayer()
     {
         Debug.Log("Player Manager On Deselect");
-        SelectedPlayer.GetComponent<Player>().onDeselected();
-        SelectedPlayer = null;
+        if (SelectedPlayer)
+        {
+            SelectedPlayer.GetComponent<Player>().onDeselected();
+            SelectedPlayer = null;
+        }
     }
 }
