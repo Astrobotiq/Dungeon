@@ -9,6 +9,11 @@ public class EnemyManager : Singleton<EnemyManager>
     public List<GameObject> enemyListForEnemyAI;
 
     private EnemyBrain selectedEnemy;
+    
+    public EnemyBrain EnemyBrain
+    {
+        get  => selectedEnemy;
+    }
 
     public static void Subscribe(EnemyBrain enemy)
     {
@@ -36,7 +41,10 @@ public class EnemyManager : Singleton<EnemyManager>
             Subscribe(enemy);
         }
 
+        DeselectEnemy();
         selectedEnemy = enemy;
+        PlayerManager.Instance.DeselectPlayer();
+        GridManager.Instance.ResetTable();
     }
 
     public void DeselectEnemy()
