@@ -25,6 +25,9 @@ public class LevelManager : Singleton<LevelManager>
 
     IEnumerator LevelDesign()
     {
+        PlayerManager playerManager = PlayerManager.Instance;
+        EnemyManager enemyManager = EnemyManager.Instance;
+        
         Debug.Log("Level");
         while (!GridManager.Instance.hasInstantiated)
         {
@@ -51,6 +54,7 @@ public class LevelManager : Singleton<LevelManager>
                     var player = Instantiate(Player, new Vector3(i, 1.4f, j), quaternion.identity);
                     var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
                     player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+                    playerManager.playerListForEnemyAI.Add(player);
                 }
 
                 if (line[j].Equals('$'))
@@ -65,6 +69,8 @@ public class LevelManager : Singleton<LevelManager>
                     
                     if(EnemyObj.GetComponent<EnemyBrain>() != null)
                         EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
+                    
+                    enemyManager.enemyListForEnemyAI.Add(EnemyObj);
                 }
             }
         }
