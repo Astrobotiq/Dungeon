@@ -39,7 +39,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.73, y: 0.73, z: 0.73}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3877705921003897303}
@@ -273,7 +273,8 @@ MonoBehaviour:
   AttackBTN: {fileID: 1430482240511494937}
   AttackBTN2: {fileID: 3527003875833066980}
   web: {fileID: 5870507291269245312, guid: a9ea09b5dc062084eabb4d99066048c7, type: 3}
-  attackEffect: {fileID: 2998391414408006296, guid: b7a9dcfaa6bfffe4bbfb355e5a4c2ff9, type: 3}
+  attackEffect: {fileID: 2998391414408006296, guid: b7a9dcfaa6bfffe4bbfb355e5a4c2ff9,
+    type: 3}
   attackStartTime: 0.5
   attackDashTime: 0.15
   attackRecoveryTime: 0.4
@@ -421,7 +422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3806101865725522387
 RectTransform:
   m_ObjectHideFlags: 0
@@ -650,7 +651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3570499556327190393
 RectTransform:
   m_ObjectHideFlags: 0

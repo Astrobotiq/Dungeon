@@ -19,6 +19,13 @@ public abstract class EnemyBrain : MonoBehaviour
     
     [SerializeField] 
     protected GameObject AttackBTN2;
+
+    protected bool _hasFinishedMoving;
+
+    public void SetFinishMove(bool hasFinished)
+    {
+        _hasFinishedMoving = hasFinished;
+    }
     
     
     //In one turn enemy do this action one by one
@@ -35,6 +42,8 @@ public abstract class EnemyBrain : MonoBehaviour
         currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
 
         currentGrid.GridObject = gameObject;
+
+        _hasFinishedMoving = false;
         
         AttackBTN.GetComponent<Button>().onClick.AddListener((() =>
         {
@@ -64,15 +73,19 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public IEnumerator Template()
     {
+        _hasFinishedMoving = false;
         var attackPos = Dedice();
         TargetGrid = GridManager.Instance.getGridFromLocation(attackPos);
         Move(attackPos);
-        while (transform.position.x != TargetGrid.transform.position.x && transform.position.z != TargetGrid.transform.position.z)
+        while (!_hasFinishedMoving)
         {
-            //Debug.Log($"position : {transform.position}" + $"target : {TargetGrid.transform.position}");
+            Debug.Log($"position : {transform.position}" +
+                      $"target : {TargetGrid.transform.position}");
             yield return null;
         }
+        Debug.Log("Template 1");
         yield return new WaitForSeconds(2f);
+        Debug.Log("Template 2");
         DecideAttackTile();
         PreAttack();
     }
@@ -97,8 +110,10 @@ public abstract class EnemyBrain : MonoBehaviour
         Debug.Log($"Enemy seçilmiş : {isActivate}");
         if (AttackBTN != null)
         {
-            EnemyManager.Instance.SelectEnemy(this);
+            if (isActivate)
+                EnemyManager.Instance.SelectEnemy(this);
             AttackBTN.SetActive(isActivate);
+            AttackBTN2.SetActive(isActivate);
         }
     }
 }
