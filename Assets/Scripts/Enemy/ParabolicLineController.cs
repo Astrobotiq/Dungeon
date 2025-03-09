@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 
 public class ParabolicLineController : LineController
 {
@@ -35,12 +36,16 @@ public class ParabolicLineController : LineController
             points[i] = new Vector3(x, y, z);
         }
 
+        TargetTexture.SetActive(true);
+        TargetTexture.transform.position = new Vector3(endPoint.x, 0.5f, endPoint.z);
+
         _lineRenderer.positionCount = points.Length;
         _lineRenderer.SetPositions(points);
     }
 
     public override void RemoveLine()
     {
+        TargetTexture.SetActive(false);
         _lineRenderer.positionCount = 0;
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +21,11 @@ public abstract class EnemyBrain : MonoBehaviour
 
     protected bool _hasFinishedMoving;
 
+    public int InitiationPoint;
+    
+    [SerializeField]
+    private int InitiationBonus = 0;
+
     public void SetFinishMove(bool hasFinished)
     {
         _hasFinishedMoving = hasFinished;
@@ -44,6 +48,8 @@ public abstract class EnemyBrain : MonoBehaviour
         currentGrid.GridObject = gameObject;
 
         _hasFinishedMoving = false;
+
+        InitiationPoint = Random.Range(1, 10) + InitiationBonus;
         
         AttackBTN.GetComponent<Button>().onClick.AddListener((() =>
         {
