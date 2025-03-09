@@ -15,6 +15,8 @@ public class EnemyManager : Singleton<EnemyManager>
         get  => selectedEnemy;
     }
 
+    public static List<EnemyBrain> GetEnemies => enemies;
+
     public static void Subscribe(EnemyBrain enemy)
     {
         if (enemies.Contains(enemy))

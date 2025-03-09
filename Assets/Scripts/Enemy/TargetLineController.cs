@@ -4,6 +4,9 @@ using UnityEngine;
 public abstract class LineController : MonoBehaviour
 {
     protected LineRenderer _lineRenderer;
+    
+    [SerializeField]
+    protected GameObject TargetTexture;
 
     void Start()
     {

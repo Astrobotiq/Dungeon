@@ -42,8 +42,6 @@ public class WizardEnemyBrain : EnemyBrain
         {
             var grid = GridManager.Instance.getGridFromLocation(pos);
             
-            grid.MaterialController.SetMaterialAttackable();
-
             if (grid.GridObject == null)
             {
                 continue;
