@@ -4,7 +4,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 
-public class EnemyAI_Calculator_Archer : AbstractEnemyAI_Calculator
+public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
 {
     #region Rewards
     

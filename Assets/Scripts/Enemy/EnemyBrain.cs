@@ -69,8 +69,7 @@ public abstract class EnemyBrain : MonoBehaviour
         Move(attackPos);
         while (transform.position.x != TargetGrid.transform.position.x && transform.position.z != TargetGrid.transform.position.z)
         {
-            Debug.Log($"position : {transform.position}" +
-                      $"target : {TargetGrid.transform.position}");
+            //Debug.Log($"position : {transform.position}" + $"target : {TargetGrid.transform.position}");
             yield return null;
         }
         yield return new WaitForSeconds(2f);

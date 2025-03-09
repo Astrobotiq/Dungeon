@@ -118,7 +118,7 @@ public class RangerEnemyBrain : EnemyBrain
 
     public override Vector3 Dedice()
     {
-        List<List<GameObject>> GridList = GridManager.Instance.GridList;
+        /*List<List<GameObject>> GridList = GridManager.Instance.GridList;
 
         foreach (var list in GridList)
         {
@@ -134,7 +134,11 @@ public class RangerEnemyBrain : EnemyBrain
             }
         }
 
-        return currentGrid.transform.position;
+        return currentGrid.transform.position;*/
+        
+        Vector3 bestOption = gameObject.GetComponent<EnemyAI_Organizer>().ReturnBestOption(gameObject);
+        Debug.Log("seçtiğim en iyi loc " + bestOption);
+        return bestOption;
     }
 
     public override void PreAttack()

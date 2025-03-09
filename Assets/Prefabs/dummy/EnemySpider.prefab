@@ -20,9 +20,11 @@ GameObject:
   - component: {fileID: 4378677347077549027}
   - component: {fileID: 2449869014637842404}
   - component: {fileID: 6044380848506226700}
+  - component: {fileID: 4668488805988493705}
+  - component: {fileID: 1230620266423603008}
   m_Layer: 0
   m_Name: EnemySpider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -366,6 +368,41 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   StartShakingButton: 0
+--- !u!114 &4668488805988493705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331496170541435644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0cdf201a24ebee40a11b39d4d2d6d17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHitValue: 5
+  enemyHitValue: -2
+  statueHitValue: 5
+  mapEdgeValue: -99
+--- !u!114 &1230620266423603008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331496170541435644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
+  statues: []
+  enemies: []
+  chosenEnemy: {fileID: 0}
+  enemyChooseRange: 3
+  allAttackableObjectTypes: 
+  showSelectedOptions: 0
 --- !u!1 &1430482240511494937
 GameObject:
   m_ObjectHideFlags: 0

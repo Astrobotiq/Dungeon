@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     private static List<EnemyBrain> enemies = new();
     
+    public List<GameObject> enemyListForEnemyAI;
+
     private EnemyBrain selectedEnemy;
 
     public static void Subscribe(EnemyBrain enemy)
