@@ -82,7 +82,7 @@ public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
     }
 
     public void workOnNearNodes(Vector3 inputGrid, int value) {
-        Debug.Log("grid loc " + inputGrid + " value " + value);
+         Debug.Log("grid loc " + inputGrid + " value " + value);
         GridManager gridManager = GridManager.Instance;
 
         Grid inputGridConverted = gridManager.getGridFromLocation(inputGrid);
