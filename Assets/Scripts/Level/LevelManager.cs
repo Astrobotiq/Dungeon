@@ -9,7 +9,7 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] LevelSO currentLevel;
 
     [SerializeField] GameObject Player;
-    [SerializeField] List<GameObject> EnemyList;
+    public List<GameObject> EnemyList;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -9,6 +9,9 @@ public class PlayerManager : Singleton<PlayerManager>
     GameObject PlayerGO;
     GameObject SelectedPlayer;
     
+    [SerializeField]
+    private List<GameObject> players; 
+    
     public List<GameObject> playerListForEnemyAI;
     
     [SerializeField,Range(0,5)]
@@ -40,7 +43,8 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
-        GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position, !PlayerScript.HasTraveled, PlayerScript.range);
+        GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position,
+            !PlayerScript.HasTraveled && !PlayerScript.IsPlayerWebbed && PlayerScript.IsPlayerTurn , PlayerScript.range);
         EnemyManager.Instance.DeselectEnemy();
     }
 
@@ -70,5 +74,26 @@ public class PlayerManager : Singleton<PlayerManager>
             SelectedPlayer.GetComponent<Player>().onDeselected();
             SelectedPlayer = null;
         }
+    }
+
+    public List<GameObject> GetPlayers() => players;
+    
+    public void Subscribe(Player player)
+    {
+        if (players.Contains(player.gameObject))
+        {
+            return;
+        }
+        players.Add(player.gameObject);
+    }
+
+    public void Unsubscribe(Player player)
+    {
+        if (!players.Contains(player.gameObject))
+        {
+            return;
+        }
+
+        players.Remove(player.gameObject);
     }
 }

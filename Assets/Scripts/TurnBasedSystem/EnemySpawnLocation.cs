@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawnLocation : ITurn
@@ -23,6 +24,7 @@ public class EnemySpawnLocation : ITurn
         {
             var spawnNumber = Random.Range(minSpawnNumber, maxSpawnNumber);
             var spawnedEnemyNum = 0;
+            List<GameObject> spawners = new List<GameObject>();
             while (spawnedEnemyNum<spawnNumber)
             {
                 var grid = gridList.GetRandom().GetRandom();
@@ -34,12 +36,15 @@ public class EnemySpawnLocation : ITurn
 
                 var Spawner = Instantiate(spawner,
                     new Vector3(grid.transform.position.x, 0.5f, grid.transform.position.z), Quaternion.identity);
+                spawners.Add(Spawner);
+                
+                
 
                 spawnedEnemyNum++;
 
                 yield return new WaitForSeconds(waitInterval);
             }
-            
+            EnemyManager.Instance.SetSpawners(spawners);
             ExitTurn();
         }
     }

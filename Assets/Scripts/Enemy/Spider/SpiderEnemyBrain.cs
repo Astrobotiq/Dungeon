@@ -21,6 +21,8 @@ public class SpiderEnemyBrain : EnemyBrain
     [SerializeField]
     private float attackRecoveryTime = 0.4f;
     
+    private GameObject _web;
+    
 
     public override Vector3 Dedice()
     {
@@ -92,10 +94,14 @@ public class SpiderEnemyBrain : EnemyBrain
 
         StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, null));
         
-        Instantiate(web,
+        _web =Instantiate(web,
             new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
                 TargetGrid.transform.position.z), Quaternion.identity);
 
+        if (TargetGrid.GridObject.TryGetComponent<Player>(out var player))
+        {
+            player.SetPlayerWebbed(true);
+        }
     }
 
     public override void Attack()
@@ -113,6 +119,9 @@ public class SpiderEnemyBrain : EnemyBrain
         {
             transform.DOMove(transform.position + (diffrence / 2), attackDashTime).OnComplete((() =>
             {
+                if (_web)
+                    Destroy(_web);
+                
                 FeelManager.Instance.ShakeCamera();
                 TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
                 transform.DOMove(effectStartPos, attackRecoveryTime);

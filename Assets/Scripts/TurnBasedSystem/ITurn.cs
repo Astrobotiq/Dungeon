@@ -13,6 +13,12 @@ public abstract class ITurn : MonoBehaviour
                 return GetComponent<EnemyCombatPositionTurn>();
             case TurnNames.EnemySpawnLocation:
                 return GetComponent<EnemySpawnLocation>();
+            case TurnNames.PlayerTurn:
+                return GetComponent<PlayerTurn>();
+            case TurnNames.EnemyAttacks:
+                return GetComponent<EnemyAttack>();
+            case TurnNames.EnemySpawns:
+                return GetComponent<EnemySpawnTurn>();
             default:
                 return null;
         }
