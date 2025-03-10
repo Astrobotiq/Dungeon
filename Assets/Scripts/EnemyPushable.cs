@@ -84,7 +84,7 @@ public class EnemyPushable : IPushable
 
     private void Push(Grid targetGrid, Vector3 diffrence)
     {
-        if (GetComponent<LineController>() is var lineController)
+        if (TryGetComponent<LineController>( out var lineController))
         {
             lineController.RemoveLine();
         }

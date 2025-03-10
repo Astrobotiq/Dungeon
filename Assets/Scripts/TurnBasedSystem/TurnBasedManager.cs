@@ -24,4 +24,6 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         _currentTurn.EnterTurn();
         button.interactable = false;
     }
+
+    public ITurn GetCurrentTurn() => _currentTurn;
 }

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
@@ -19,6 +20,10 @@ public class Player : MonoBehaviour
     [SerializeField] Transform handPivot;
 
     [SerializeField] Move move;
+    
+    private bool _isPlayerTurn = false;
+    
+    private bool _hasWebbed = false;
 
     [Header("Selecteds")] public GameObject Grid { get; private set; }
     [SerializeField] GameObject _selectedSkillEffect;
@@ -42,6 +47,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        PlayerManager.Instance.Subscribe(this);
         gameView = GameObject.FindWithTag("UI").GetComponent<GameView>();
         //Burası şimdilik duruyor. Elle girmemiz gereken bir noktadayız
         WornSkills = new WornSkills();
@@ -49,10 +55,35 @@ public class Player : MonoBehaviour
         WornSkills.SetWornSkill(skill);
     }
 
+    void OnDestroy()
+    {
+        PlayerManager.Instance?.Unsubscribe(this);
+    }
+
+    public void SetPlayerTurn(bool isIt)
+    {
+        _isPlayerTurn = isIt;
+    }
+
+    public bool IsPlayerTurn => _isPlayerTurn;
+
+    public void SetPlayerWebbed(bool hasWebbed) => _hasWebbed = hasWebbed;
+
+    public bool IsPlayerWebbed => _hasWebbed;
+
     public void SetGrid(GameObject Grid, float offset)
     {
+        if (!_isPlayerTurn)
+            return;
+        
+        
         if (SelectedSkill == null && !HasTraveled)
         {
+            if (_hasWebbed)
+            {
+                return;
+            }
+            
             if (this.Grid == Grid)
             {
                 return;
@@ -86,8 +117,12 @@ public class Player : MonoBehaviour
                 gameView.ResetGameView();
                 CommandManager.Instance.ClearCommands();
                 HasUsedSkill = true;
+                var playerTurn = TurnBasedManager.Instance.GetCurrentTurn() as PlayerTurn;
+                playerTurn?.SetPlayerAsPlayed(this);
                 InputManager.Instance.canTakeInput = true;
             }
+
+            _hasWebbed = false;
         }
     }
 
@@ -128,7 +163,7 @@ public class Player : MonoBehaviour
 
     void HandleUI(bool isActive, Player player = null)
     {
-        if (!HasUsedSkill)
+        if (!HasUsedSkill && _isPlayerTurn)
         {
             gameView.OpenSkillPanel(isActive, player);
         }

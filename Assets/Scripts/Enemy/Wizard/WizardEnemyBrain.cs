@@ -104,7 +104,10 @@ public class WizardEnemyBrain : EnemyBrain
         {
             FeelManager.Instance.ShakeCamera();
             var effect =Instantiate(attackEffect, TargetGrid.transform.position + diffrence, Quaternion.identity);
-            effect.GetComponent<ISkillEffect>().StartMoving(TargetGrid);
+            if (effect)
+            {
+                effect.GetComponent<ISkillEffect>().StartMoving(TargetGrid);
+            }
         })));
         sequence.Play();
         _targetLineController.RemoveLine();

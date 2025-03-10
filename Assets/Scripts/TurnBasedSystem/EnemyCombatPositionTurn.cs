@@ -5,7 +5,7 @@ public class EnemyCombatPositionTurn : ITurn
 {
     public override void EnterTurn()
     {
-        var enemyList = EnemyManager.GetEnemies;
+        var enemyList = EnemyManager.Enemies;
         
         enemyList.Sort((a, b) => a.InitiationPoint.CompareTo(b.InitiationPoint));
 

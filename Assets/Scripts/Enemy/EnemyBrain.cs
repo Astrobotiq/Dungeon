@@ -85,8 +85,6 @@ public abstract class EnemyBrain : MonoBehaviour
         Move(attackPos);
         while (!_hasFinishedMoving)
         {
-            Debug.Log($"position : {transform.position}" +
-                      $"target : {TargetGrid.transform.position}");
             yield return null;
         }
         Debug.Log("Template 1");

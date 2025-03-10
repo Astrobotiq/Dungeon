@@ -201,7 +201,7 @@ public class GridManager : Singleton<GridManager>
                 PlayerManager.Instance.DeselectPlayer();
             }
 
-            if (selectedGrid.GetComponent<Grid>().GridObject != EnemyManager.Instance.EnemyBrain.gameObject)
+            if (selectedGrid.GetComponent<Grid>().GridObject != EnemyManager.Instance.EnemyBrain?.gameObject)
             {
                 EnemyManager.Instance.DeselectEnemy();
             }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyManager : Singleton<EnemyManager>
 {
     private static List<EnemyBrain> enemies = new();
+
+    [SerializeField] List<GameObject> spawners = new();
     
     public List<GameObject> enemyListForEnemyAI;
 
@@ -15,7 +17,19 @@ public class EnemyManager : Singleton<EnemyManager>
         get  => selectedEnemy;
     }
 
-    public static List<EnemyBrain> GetEnemies => enemies;
+    public static List<EnemyBrain> Enemies => enemies;
+
+    public List<GameObject> Spawners => spawners;
+
+    public void SetSpawners(List<GameObject> spawners)
+    {
+        this.spawners = spawners;
+    }
+
+    public void ResetSpawnerList()
+    {
+        spawners.Clear();
+    }
 
     public static void Subscribe(EnemyBrain enemy)
     {
