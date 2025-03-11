@@ -3,15 +3,20 @@
     <engine:VisualElement name="CharacterBlock" style="left: 10px; top: 400px; bottom: auto; position: absolute; flex-direction: column;">
         <engine:VisualElement name="Character_1" enabled="true" class="characterContainer" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
             <engine:Label name="Character_1_Sprite" class="character" />
-            <engine:ProgressBar value="25" name="Character_1_Hp" class="characterHpBar characterHpBarProgress" />
+            <engine:VisualElement name="HealthBoxContainer" class="characterHpBarBox">
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+            </engine:VisualElement>
         </engine:VisualElement>
         <engine:VisualElement name="Character_2" class="characterContainer">
             <engine:Label name="Character_2_Sprite" class="character" />
-            <engine:ProgressBar value="50" name="Character_2_Hp" class="characterHpBar characterHpBarProgress" />
         </engine:VisualElement>
         <engine:VisualElement name="Character_3" class="characterContainer">
             <engine:Label name="Character_3_Sprite" class="character" />
-            <engine:ProgressBar value="75" name="Character_3_Hp" class="characterHpBar characterHpBarProgress" />
         </engine:VisualElement>
     </engine:VisualElement>
     <engine:VisualElement name="StatueBlock" style="position: absolute; left: 10px; top: 10px; flex-direction: row;">

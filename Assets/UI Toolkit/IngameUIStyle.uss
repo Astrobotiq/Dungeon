@@ -2,6 +2,19 @@
     flex-direction: row;
     margin-top: 5px;
     display: none;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-left-color: rgba(0, 0, 0, 0.67);
+    border-right-color: rgba(0, 0, 0, 0.67);
+    border-top-color: rgba(0, 0, 0, 0.67);
+    border-bottom-color: rgba(0, 0, 0, 0.67);
+    background-color: rgba(178, 178, 178, 0.47);
 }
 
 .character {
@@ -13,7 +26,7 @@
     align-content: center;
 }
 
-.characterHpBar {
+.characterHpBarProgress {
     width: 200px;
     height: 100px;
     justify-content: flex-end;
@@ -66,4 +79,38 @@
     -unity-font-definition: url("project://database/Assets/Feel/MMTools/Demos/MMTween/Fonts/Lato/TTF/Lato-BoldItalic.ttf?fileID=12800000&guid=b5b9db77b259a12469a05063c52d1d11&type=3#Lato-BoldItalic");
     color: rgb(170, 226, 8);
     display: none;
+}
+
+.toggle:focus {
+}
+
+.unitycheckmark {
+}
+
+.characterHpBarBox {
+    justify-content: flex-end;
+    align-self: auto;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.characterHpBar {
+    width: 30px;
+    height: 50px;
+    top: auto;
+    right: auto;
+    position: relative;
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: rgb(168, 171, 167);
 }

@@ -54,7 +54,7 @@ public class InGameUI : MonoBehaviour
     public void Update() {
         statue.value = statueHeealthFloat;
 
-        if (playerCheck) {
+        /*if (playerCheck) {
             playerGameObjects = new List<GameObject>();
             playerGameObjects.Add(player);
             for (int i = 0; i < playerGameObjects.Count; i++) {
@@ -63,6 +63,32 @@ public class InGameUI : MonoBehaviour
                 temp_element.style.display = DisplayStyle.Flex;
                 float playerHealth = playerGameObjects[i].GetComponent<PlayerHealth>().getHealthPercentage();
                 temp_element.Q<ProgressBar>().value = playerHealth;
+            }
+            playerCheck = false;
+        }*/
+        
+        if (playerCheck) {
+            playerGameObjects = new List<GameObject>();
+            playerGameObjects.Add(player);
+            for (int i = 0; i < playerGameObjects.Count; i++) {
+                String temp = "Character_" + (i+1).ToString();
+                VisualElement temp_element = playerContainer.Q(temp);
+                temp_element.style.display = DisplayStyle.Flex;
+                int playerHealth = playerGameObjects[i].GetComponent<PlayerHealth>().getHealth() / 2;
+
+                VisualElement HealthBoxContainer = temp_element.Q("HealthBoxContainer");
+                HealthBoxContainer.style.display = DisplayStyle.Flex;
+                List<Label> temp_list = HealthBoxContainer.Query<Label>().ToList();
+
+                for (int j = 0; j < temp_list.Count; j++){
+                    if (j < Mathf.Floor(playerHealth)) {
+                        temp_list[j].style.backgroundColor = new Color(0.3058824f,0.8666667f,0.08627451f,1f);
+                    }
+                    else {
+                        temp_list[j].style.backgroundColor = new Color(0.282353f,1f,0.08627451f,0.2509804f);
+                    }
+                }
+
             }
             playerCheck = false;
         }
