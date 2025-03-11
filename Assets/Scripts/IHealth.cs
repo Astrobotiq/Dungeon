@@ -30,4 +30,15 @@ public class IHealth : MonoBehaviour
             currentHealth = maxHealth;
         }
     }
+
+    public int getHealth() {
+        return currentHealth;
+    }
+
+    public float getHealthPercentage()
+    {
+        float temp_1 = (float)(currentHealth);
+        float temp_2 = (float)(maxHealth);
+        return  temp_1/temp_2  * 100;
+    }
 }
