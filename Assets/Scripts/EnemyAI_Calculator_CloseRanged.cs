@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class EnemyAI_Calculator_Warrior : AbstractEnemyAI_Calculator
+public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
 {
     #region Rewards
     
@@ -63,6 +63,7 @@ public class EnemyAI_Calculator_Warrior : AbstractEnemyAI_Calculator
         switch (type)
         {
             case AttackedObjectType.PlayerType:
+                Debug.Log("move value switch caseden geldim");
                 value = playerHitValue;
                 break;
             case AttackedObjectType.EnemyType:
@@ -77,13 +78,15 @@ public class EnemyAI_Calculator_Warrior : AbstractEnemyAI_Calculator
         }
         
         Vector3 pos = gameObject.transform.position;
-        workOnNearNodes(pos,value);
+        workOnNearNodes(pos, value);
     }
 
     public void workOnNearNodes(Vector3 inputGrid, int value) {
+         //Debug.Log("grid loc " + inputGrid + " value " + value);
         GridManager gridManager = GridManager.Instance;
 
         Grid inputGridConverted = gridManager.getGridFromLocation(inputGrid);
+        calculateNearNodes(inputGrid);
         
         foreach (Vector3 grid in inputGridConverted.getNearNodes()) {
             setGridUIValue(gridManager.getGridFromLocation(grid),value);
@@ -99,17 +102,20 @@ public class EnemyAI_Calculator_Warrior : AbstractEnemyAI_Calculator
 
         if (Int32.Parse(textObject.text) > -1 && Int32.Parse(textObject.text) < value) {
             textObject.SetText(value.ToString());
+            //Debug.Log("1 numara");
             //Debug.Log("grid location: " + gridGameobject.transform.position + " and value: " + textObject.text);
         }
         
         else if (gridReference.GridObject && gridReference.GridObject.GetComponent<EnemyHealth>()) {
             textObject.SetText(enemyHitValue.ToString());
+            //Debug.Log("2 numara");
         }
         
         if(gridReference.transform.position.x==0 || gridReference.transform.position.x==7
             || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) 
         {
             textObject.SetText(mapEdgeValue.ToString());
+            //Debug.Log("3 numara");
         }
     }
     

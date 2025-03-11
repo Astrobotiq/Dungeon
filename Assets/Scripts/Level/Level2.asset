@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: Level2
   m_EditorClassIdentifier: 
   levelLayout: {fileID: 4900000, guid: 51d5e97eaf7d61c4f924900e17e839d6, type: 3}
-  enemies:
-  - {fileID: 11400000, guid: d0ad564aff4822e42b53bd6ace8d4867, type: 2}
+  enemies: 000000000100000002000000

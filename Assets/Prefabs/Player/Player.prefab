@@ -45,12 +45,10 @@ GameObject:
   - component: {fileID: 1029285654706939780}
   - component: {fileID: 165450888797340350}
   - component: {fileID: 4216562348037928378}
-  - component: {fileID: 4492300304818563939}
-  - component: {fileID: 2647422700076235567}
-  - component: {fileID: 4760871369330322952}
+  - component: {fileID: -1865325853239297727}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,7 +160,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 12
   damageMultiplier: 1
---- !u!114 &4492300304818563939
+--- !u!114 &-1865325853239297727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,55 +169,75 @@ MonoBehaviour:
   m_GameObject: {fileID: 7375778406333701460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0cdf201a24ebee40a11b39d4d2d6d17, type: 3}
+  m_Script: {fileID: 11500000, guid: f0a82a086afdc494db67a8b50f091d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHitValue: 3
-  enemyHitValue: -2
-  statueHitValue: 5
-  mapEdgeValue: -99
---- !u!114 &2647422700076235567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7375778406333701460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHitValue: 3
-  enemyHitValue: -2
-  statueHitValue: 5
-  mapEdgeValue: -99
-  enemy: {fileID: 0}
-  player: {fileID: 0}
-  showArcherValues: 0
-  enemyWalkDistance: 3
-  enemyMovePunish: -1
-  lookedGrids: []
---- !u!114 &4760871369330322952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7375778406333701460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players:
-  - {fileID: 7375778406333701460}
-  statues: []
-  enemies: []
-  chosenEnemy: {fileID: 0}
-  enemyChooseRange: 3
-  allAttackableObjectTypes: 
-  showSelectedOptions: 0
+  ChannelMode: 0
+  Channel: 0
+  MMChannelDefinition: {fileID: 0}
+  ShakeDuration: 0.5
+  PlayOnAwake: 0
+  PermanentShake: 0
+  Interruptible: 1
+  AlwaysResetTargetValuesAfterShake: 0
+  OnlyUseShakerValues: 0
+  CooldownBetweenShakes: 0
+  Shaking: 0
+  ForwardDirection: 1
+  TimescaleMode: 0
+  Mode: 0
+  TargetTransform: {fileID: 0}
+  TargetRectTransform: {fileID: 0}
+  ShakeSpeed: 20
+  ShakeRange: 0.5
+  OscillationOffset: 0
+  ShakeMainDirection: {x: 0, y: 1, z: 0}
+  RandomizeDirection: 0
+  ShakeAltDirection: {x: 0, y: 1, z: 0}
+  RandomizeDirectionOnPlay: 0
+  RandomizeDirectionX: 1
+  RandomizeDirectionY: 1
+  RandomizeDirectionZ: 1
+  AddDirectionalNoise: 1
+  DirectionalNoiseStrengthMin: {x: 0.25, y: 0.25, z: 0.25}
+  DirectionalNoiseStrengthMax: {x: 0.25, y: 0.25, z: 0.25}
+  RandomnessSeed: {x: 0, y: 0, z: 0}
+  RandomizeSeedOnShake: 1
+  UseAttenuation: 1
+  AttenuationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  StartShakingButton: 0
 --- !u!1 &8276953545208464607
 GameObject:
   m_ObjectHideFlags: 0

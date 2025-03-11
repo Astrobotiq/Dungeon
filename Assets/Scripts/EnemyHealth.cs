@@ -1,4 +1,5 @@
 ﻿using System;
+using MoreMountains.Feedbacks;
 
 public class EnemyHealth : IHealth
 {
@@ -8,6 +9,16 @@ public class EnemyHealth : IHealth
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
+
+        if (TryGetComponent<SpiderEnemyBrain>(out var spider))
+        {
+            spider.DestroyWeb();
+        }
+        
+        if (GetComponent<MMPositionShaker>() is var shaker)
+        {
+            FeelManager.Instance.ShakeGameObject(shaker);
+        }
 
         if (currentHealth <= 0)
         {

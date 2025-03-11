@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EnemyRotateable : IRotatable
 {
@@ -11,12 +10,60 @@ public class EnemyRotateable : IRotatable
 
     [SerializeField] 
     private AnimationCurve curve;
+    
+    private EnemyBrain _enemyBrain;
+
+    void Start()
+    {
+        _enemyBrain = GetComponent<EnemyBrain>();
+    }
 
     
     
     public override void Rotate(Vector3 direction, int rotateDegree)
     {
+        if (GetComponent<LineController>() is var lineController)
+        {
+            lineController.RemoveLine();
+        }
+        
+        var grid = _enemyBrain.GetTargetGrid();
+        Grid newGrid = null;
+        if (grid != null)
+        {
+            var diffrence = new Vector3(grid.transform.position.x - transform.position.x, 0,
+                grid.transform.position.z - transform.position.z);
+            var newGridPos = new Vector3(transform.position.x + diffrence.z, transform.position.y, transform.position.z + diffrence.x);
+            
+            if (newGridPos.x>=GridManager.Instance.EndPosition)
+            {
+                newGridPos = new Vector3(7, transform.position.y, transform.position.z - diffrence.x);
+            }else if (newGridPos.x<0)
+            {
+                newGridPos = new Vector3(0, transform.position.y, transform.position.z - diffrence.x);
+            }
+            
+            if (newGridPos.z>=GridManager.Instance.EndPosition)
+            {
+                newGridPos = new Vector3(transform.position.x - diffrence.z, transform.position.y, 7);
+            }else if (newGridPos.x<0)
+            {
+                newGridPos = new Vector3(transform.position.x - diffrence.z, transform.position.y, 0);
+            }
+            
+            newGrid = GridManager.Instance.getGridFromLocation(newGridPos);
+            Debug.Log($"new Grid : {newGrid.transform.position}");
+        }
+        
         Vector3 temp = transform.rotation.eulerAngles;
-        transform.DORotate(new Vector3(temp.x, temp.y + RotateValue, temp.z), duration).SetEase(curve);
+        transform.DORotate(new Vector3(temp.x, temp.y + RotateValue, temp.z), duration).SetEase(curve).OnComplete(
+            (() =>
+            {
+                if (newGrid != null)
+                {
+                    _enemyBrain.SetTargetGrid(newGrid);
+                    lineController.DrawLine(transform.position,new Vector3(newGrid.transform.position.x,transform.position.y,newGrid.transform.position.z));
+                }
+            }));
     }
 }

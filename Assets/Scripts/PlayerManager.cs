@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -8,17 +9,17 @@ public class PlayerManager : Singleton<PlayerManager>
     GameObject PlayerGO;
     GameObject SelectedPlayer;
     
+    [SerializeField]
+    private List<GameObject> players; 
+    
+    public List<GameObject> playerListForEnemyAI;
+    
     [SerializeField,Range(0,5)]
     float offset;
 
     void OnEnable()
     {
         InputManager.Instance.onRightClicked += DeSelectPlayer;
-    }
-
-    void Start()
-    {
-        
     }
 
     IEnumerator findPlayerPosition()
@@ -42,7 +43,9 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
-        GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position, !PlayerScript.HasTraveled, PlayerScript.range);
+        GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position,
+            !PlayerScript.HasTraveled && !PlayerScript.IsPlayerWebbed && PlayerScript.IsPlayerTurn , PlayerScript.range);
+        EnemyManager.Instance.DeselectEnemy();
     }
 
     public void SetSelectedPlayerFromOutside(GameObject Player)
@@ -66,7 +69,31 @@ public class PlayerManager : Singleton<PlayerManager>
     public void DeselectPlayer()
     {
         Debug.Log("Player Manager On Deselect");
-        SelectedPlayer.GetComponent<Player>().onDeselected();
-        SelectedPlayer = null;
+        if (SelectedPlayer)
+        {
+            SelectedPlayer.GetComponent<Player>().onDeselected();
+            SelectedPlayer = null;
+        }
+    }
+
+    public List<GameObject> GetPlayers() => players;
+    
+    public void Subscribe(Player player)
+    {
+        if (players.Contains(player.gameObject))
+        {
+            return;
+        }
+        players.Add(player.gameObject);
+    }
+
+    public void Unsubscribe(Player player)
+    {
+        if (!players.Contains(player.gameObject))
+        {
+            return;
+        }
+
+        players.Remove(player.gameObject);
     }
 }
