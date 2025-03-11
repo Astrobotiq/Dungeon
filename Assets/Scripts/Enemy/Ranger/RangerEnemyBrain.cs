@@ -26,11 +26,12 @@ public class RangerEnemyBrain : EnemyBrain
         EventManager.onMove += RecalculateTarget;
     }
 
-    public override void RecalculateTarget(string tag)
+    public override void RecalculateTarget(string name)
     {
-
-        if (!tag.Equals("Player"))
+        if (name.Equals(gameObject.name))
+        {
             return;
+        }
         
         if (TargetGrid == null)
             return;

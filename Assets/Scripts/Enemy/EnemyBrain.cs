@@ -74,7 +74,7 @@ public abstract class EnemyBrain : MonoBehaviour
     public void SetTargetGrid(Grid newTarget)
     {
         TargetGrid = newTarget;
-        RecalculateTarget("Player");
+        RecalculateTarget("");
     }
 
     public IEnumerator Template()
@@ -94,7 +94,7 @@ public abstract class EnemyBrain : MonoBehaviour
         PreAttack();
     }
 
-    public virtual void RecalculateTarget(string tag){}
+    public virtual void RecalculateTarget(string name){}
 
     protected abstract void DecideAttackTile();
 

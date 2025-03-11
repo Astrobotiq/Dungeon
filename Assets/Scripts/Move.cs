@@ -85,7 +85,7 @@ public class Move : MonoBehaviour
             GridManager.Instance.getGridFromLocation(transform.position).GridObject = gameObject;
             current++;
         }
-        EventManager.Instance.InvokeOnMove(gameObject.tag);
+        EventManager.Instance.InvokeOnMove(gameObject.name);
         
         if (gameObject.tag.Equals("Enemy"))
         {
@@ -130,7 +130,7 @@ public class Move : MonoBehaviour
             
             current++;
         }
-        EventManager.Instance.InvokeOnMove(gameObject.tag);
+        EventManager.Instance.InvokeOnMove(gameObject.name);
         
         if (gameObject.tag.Equals("Enemy"))
         {

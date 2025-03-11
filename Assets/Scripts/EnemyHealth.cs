@@ -9,6 +9,11 @@ public class EnemyHealth : IHealth
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
+
+        if (TryGetComponent<SpiderEnemyBrain>(out var spider))
+        {
+            spider.DestroyWeb();
+        }
         
         if (GetComponent<MMPositionShaker>() is var shaker)
         {
