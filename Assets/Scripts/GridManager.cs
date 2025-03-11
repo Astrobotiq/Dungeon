@@ -189,6 +189,7 @@ public class GridManager : Singleton<GridManager>
             else
             {
                 PlayerManager.Instance.DeselectPlayer();
+                EnemyManager.Instance.DeselectEnemy();
             }
             IsInSearchState = false;
             ResetTable();
@@ -198,6 +199,11 @@ public class GridManager : Singleton<GridManager>
             if (selectedGrid.GetComponent<Grid>().GridObject != PlayerManager.Instance.GetSelectedPlayer())
             {
                 PlayerManager.Instance.DeselectPlayer();
+            }
+
+            if (selectedGrid.GetComponent<Grid>().GridObject != EnemyManager.Instance.EnemyBrain?.gameObject)
+            {
+                EnemyManager.Instance.DeselectEnemy();
             }
         }
         

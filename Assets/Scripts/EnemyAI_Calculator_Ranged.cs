@@ -4,7 +4,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 
-public class EnemyAI_Calculator_Archer : AbstractEnemyAI_Calculator
+public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
 {
     #region Rewards
     
@@ -167,7 +167,7 @@ public class EnemyAI_Calculator_Archer : AbstractEnemyAI_Calculator
             
             if (Mathf.Abs(temp) <= enemyWalkDistance && !lookedGrids.Contains(grid)) {
                 //lookedGrids.Add(grid);
-                setGridUIValue(gridManager.getGridFromLocation(grid), temp_mult);
+                setGridUIValueMove(gridManager.getGridFromLocation(grid), temp_mult);
                 //Debug.Log("sayiyi da yazdim");
                 workOnNearNodes(grid, enemyRef, enemyWalkDistance);
             }
@@ -179,7 +179,7 @@ public class EnemyAI_Calculator_Archer : AbstractEnemyAI_Calculator
         return (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z));
     }
 
-    public void setGridUIValue(Grid gridReference, int value) {
+    public void setGridUIValueMove(Grid gridReference, int value) {
         GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
         TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         

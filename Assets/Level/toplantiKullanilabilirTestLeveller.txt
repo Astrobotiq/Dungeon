@@ -1,0 +1,49 @@
+Ranged 3 playerli toplam hesap versiyonu
+0000#000\n
+00000000\n
+00000000\n
+00000000\n
+#000000#\n
+000000$0\n
+00000000\n
+0000$000\n
+
+Ranged 3 playerli toplam hesap capraz hareket
+00#00000\n
+00000000\n
+00000000\n
+00000000\n
+00000000\n
+#000000#\n
+00000000\n
+0$000000\n
+
+!!!Bunu konusmamiz lazim bunda mesela kosede kalmamak icin bir ileri hareket ediyor ama optimal olan kose durumu mesela
+0000#000\n
+00000000\n
+00000000\n
+00000000\n
+00000000\n
+00000000\n
+00000000\n
+#000$00#\n
+
+Closed ranged 2 tane optimal durumda secim yapma (2 tane 10 grid player yani)
+00000000\n
+00000000\n
+00000000\n
+00000$00\n
+$000#00$\n
+000$00#0\n
+00000000\n
+00000000\n
+
+Close ranged enemy ve 2playerli konum vs. 2 playerli konum
+00000000\n
+00000000\n
+0000$000\n
+000#0#00\n
+0000$0#0\n
+00000000\n
+00000000\n
+00000000\n
