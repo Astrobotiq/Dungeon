@@ -46,7 +46,7 @@ public class EnemyPushable : IPushable
             }
             else
             {
-                Push(targetGrid, diffrence);
+                Push(targetGrid,currentGrid, diffrence);
             }
         }
         else
@@ -82,7 +82,7 @@ public class EnemyPushable : IPushable
         }));*/
     }
 
-    private void Push(Grid targetGrid, Vector3 diffrence)
+    private void Push(Grid targetGrid,Grid currentGrid, Vector3 diffrence)
     {
         if (TryGetComponent<LineController>( out var lineController))
         {
@@ -102,6 +102,8 @@ public class EnemyPushable : IPushable
         var pos = new Vector3(targetGrid.transform.position.x,transform.position.y, targetGrid.transform.position.z);
         transform.DOMove(pos, duration).SetEase(curve).OnComplete((() =>
         {
+            currentGrid.GridObject = null;
+            targetGrid.GridObject = gameObject;
             if (newGrid != null)
                 _enemyBrain.SetTargetGrid(newGrid);
         }));

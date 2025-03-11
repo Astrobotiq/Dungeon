@@ -94,13 +94,16 @@ public class SpiderEnemyBrain : EnemyBrain
 
         StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, null));
         
-        _web =Instantiate(web,
-            new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
-                TargetGrid.transform.position.z), Quaternion.identity);
-
+        
         if (TargetGrid.GridObject.TryGetComponent<Player>(out var player))
         {
-            player.SetPlayerWebbed(true);
+            if (!player.IsPlayerWebbed)
+            {
+                _web =Instantiate(web,
+                    new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
+                        TargetGrid.transform.position.z), Quaternion.identity);
+                player.SetPlayerWebbed(true);
+            }
         }
     }
 
@@ -119,8 +122,7 @@ public class SpiderEnemyBrain : EnemyBrain
         {
             transform.DOMove(transform.position + (diffrence / 2), attackDashTime).OnComplete((() =>
             {
-                if (_web)
-                    Destroy(_web);
+                DestroyWeb();
                 
                 FeelManager.Instance.ShakeCamera();
                 TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
@@ -134,5 +136,16 @@ public class SpiderEnemyBrain : EnemyBrain
             Destroy(effect);
         }
 
+    }
+
+    public void DestroyWeb()
+    {
+        if (_web)
+        {
+            Destroy(_web);
+            Player player = null;
+            TargetGrid.GridObject?.TryGetComponent<Player>(out player);
+            player?.SetPlayerWebbed(false);
+        }
     }
 }

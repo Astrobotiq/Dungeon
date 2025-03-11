@@ -38,8 +38,10 @@ public class LevelManager : Singleton<LevelManager>
 
         string[] lines = currentLevel.LevelLayout.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
 
+        var enemynumber = 0;
         for (int i = 0; i < lines.Length; i++)
         {
+            
             var line = lines[i];
             for (int j = 0; j < line.Length; j++)
             {
@@ -63,6 +65,9 @@ public class LevelManager : Singleton<LevelManager>
                     var Enemy = EnemyList.GetRandom();
                     var EnemyObj = Instantiate(Enemy, new Vector3(i, 1.4f, j),
                         Quaternion.identity);
+
+                    EnemyObj.name = EnemyObj.name + enemynumber;
+                    enemynumber++;
                     
                     var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 1.4f, j));
                     grid.GridObject = EnemyObj;

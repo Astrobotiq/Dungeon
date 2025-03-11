@@ -63,11 +63,16 @@ public class Player : MonoBehaviour
     public void SetPlayerTurn(bool isIt)
     {
         _isPlayerTurn = isIt;
+        HasTraveled = false;
+        HasUsedSkill = false;
     }
 
     public bool IsPlayerTurn => _isPlayerTurn;
 
-    public void SetPlayerWebbed(bool hasWebbed) => _hasWebbed = hasWebbed;
+    public void SetPlayerWebbed(bool hasWebbed)
+    {
+        _hasWebbed = hasWebbed;
+    }
 
     public bool IsPlayerWebbed => _hasWebbed;
 

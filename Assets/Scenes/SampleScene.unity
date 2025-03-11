@@ -1335,8 +1335,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2686,9 +2686,9 @@ MonoBehaviour:
   currentLevel: {fileID: 11400000, guid: 95637b50d2fa6f341802c085f3b354e1, type: 2}
   Player: {fileID: 7375778406333701460, guid: 8b8cdc37a1195db46b4435ac07e3b27f, type: 3}
   EnemyList:
-  - {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
   - {fileID: 331496170541435644, guid: 8934f6d79511aea41958f260309a3fb8, type: 3}
   - {fileID: 331496170541435644, guid: 101946366d7d0f84b9a8d99cfe577f3e, type: 3}
+  - {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
 --- !u!1 &742137334
 GameObject:
   m_ObjectHideFlags: 0
