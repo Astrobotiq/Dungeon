@@ -11,13 +11,7 @@ public class SwordSwingSkill : ISkillEffect {
         _player = PlayerManager.Instance.GetSelectedPlayer();
         _target = targetGrid;
         gameObject.transform.rotation = _player.transform.rotation;
-        StartCoroutine(Timer());
-
-        IEnumerator Timer()
-        {
-            yield return new WaitForSeconds(swingDuration);
-            ApplyEffect();
-        }
+        Timed.Run((() => ApplyEffect()), swingDuration);
     }
 
     public override void ApplyEffect(Grid targetGrid = null) {
