@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using Unity.Collections;
@@ -30,14 +31,12 @@ public class Fireball : ISkillEffect
     {
         _target = targetGrid;
         transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration).SetEase(curve);
-        StartCoroutine(Timer());
-
-        IEnumerator Timer()
+        
+        Timed.Run((() =>
         {
-            yield return new WaitForSeconds(jumpDuration);
             FeelManager.Instance.ShakeCamera();
             ApplyEffect();
-        }
+        }),jumpDuration);
     }
 
     public override void ApplyEffect(Grid targetGrid = null)
@@ -69,7 +68,7 @@ public class Fireball : ISkillEffect
                 Debug.Log("z:" + zGrid.transform.position);
             }
 
-            if (xGrid.gameObject && xGrid.GridObject)
+            if (xGrid && xGrid.gameObject && xGrid.GridObject)
             {
                 Debug.Log("XObject");
                 if (xGrid.GridObject.GetComponent<IPushable>())
@@ -79,7 +78,7 @@ public class Fireball : ISkillEffect
                 }
             }
             
-            if (zGrid.gameObject && zGrid.GridObject)
+            if (zGrid && zGrid.gameObject && zGrid.GridObject)
             {
                 Debug.Log("ZObject");
                 if (zGrid.GridObject.GetComponent<IPushable>())
@@ -89,7 +88,7 @@ public class Fireball : ISkillEffect
                 }
             }
         }
-        
-        Destroy(this.gameObject);
+
+        Timed.Run((() => Destroy(gameObject)), 1.2f);
     }
 }
