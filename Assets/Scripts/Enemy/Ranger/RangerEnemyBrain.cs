@@ -24,6 +24,12 @@ public class RangerEnemyBrain : EnemyBrain
     {
         _targetLineController = GetComponent<LineController>();
         EventManager.onMove += RecalculateTarget;
+        EventManager.onPush += RecalculateTarget;
+    }
+
+    public void RecalculateTarget()
+    {
+        RecalculateTarget("");
     }
 
     public override void RecalculateTarget(string name)

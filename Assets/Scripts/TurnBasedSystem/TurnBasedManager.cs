@@ -5,24 +5,20 @@ using UnityEngine.UI;
 public class TurnBasedManager : Singleton<TurnBasedManager>
 {
     private ITurn _currentTurn;
-    
-    [SerializeField]
-    private Button button; 
     void Start()
     {
-        _currentTurn = GetComponent<EnemyCombatPositionTurn>();
+        NextTurn(GetComponent<EnemyCombatPositionTurn>());
     }
 
     public void NextTurn(ITurn nextTurn)
     {
         _currentTurn = nextTurn;
-        button.interactable = true;
+        Timed.Run((() => StartTurn()), 2f);
     }
 
     public void StartTurn()
     {
         _currentTurn.EnterTurn();
-        button.interactable = false;
     }
 
     public ITurn GetCurrentTurn() => _currentTurn;
