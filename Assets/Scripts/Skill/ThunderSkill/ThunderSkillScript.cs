@@ -16,13 +16,8 @@ public class ThunderSkillScript : ISkillEffect
     public override void StartMoving(Grid targetGrid) {
         Vector3 targetLoc = targetGrid.gameObject.transform.position;
         transform.position = new Vector3(targetLoc.x, targetLoc.y + 0.6f, targetLoc.z);
-        StartCoroutine(Timer());
-        
-        IEnumerator Timer()
-        {
-            yield return new WaitForSeconds(duration+0.1f);
-            ApplyEffect(targetGrid);
-        }
+
+        Timed.Run((() => ApplyEffect(targetGrid)), duration + 0.1f);
     }
 
     public override void ApplyEffect(Grid targetGrid) {

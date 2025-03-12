@@ -116,7 +116,7 @@ public class SpiderEnemyBrain : EnemyBrain
         
         var effect =Instantiate(attackEffect, effectStartPos, quaternion.identity);
 
-        StartCoroutine(DestroyEffect(effect));
+        Timed.Run((() => Destroy(effect)), 2f);
 
         transform.DOMove(transform.position - (diffrence / 4), attackStartTime).OnComplete((() =>
         {
@@ -129,12 +129,6 @@ public class SpiderEnemyBrain : EnemyBrain
                 transform.DOMove(effectStartPos, attackRecoveryTime);
             }));
         }));
-
-        IEnumerator DestroyEffect(GameObject effect)
-        {
-            yield return new WaitForSeconds(2f);
-            Destroy(effect);
-        }
 
     }
 

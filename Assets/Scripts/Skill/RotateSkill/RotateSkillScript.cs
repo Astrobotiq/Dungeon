@@ -17,13 +17,8 @@ public class RotateSkillScript : ISkillEffect
     public override void StartMoving(Grid targetGrid) {
         Vector3 targetLoc = targetGrid.gameObject.transform.position;
         transform.position = new Vector3(targetLoc.x, targetLoc.y + 0.6f, targetLoc.z);
-        StartCoroutine(Timer());
 
-        IEnumerator Timer()
-        {
-            yield return new WaitForSeconds(jumpDuration);
-            ApplyEffect(targetGrid);
-        }
+        Timed.Run((() => ApplyEffect(targetGrid)), jumpDuration);
     }
 
     public override void ApplyEffect(Grid targetGrid) {

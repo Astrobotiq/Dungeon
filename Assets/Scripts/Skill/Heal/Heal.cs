@@ -36,13 +36,7 @@ public class Heal : ISkillEffect
                 effect.PlayFeedbacks();
             }
         }
-        
-        //StartCoroutine(Timer());
 
-        IEnumerator Timer()
-        {
-            yield return new WaitForSeconds(healTime);
-            Destroy(this.gameObject);
-        }
+        Timed.Run((() => Destroy(gameObject)), healTime);
     }
 }
