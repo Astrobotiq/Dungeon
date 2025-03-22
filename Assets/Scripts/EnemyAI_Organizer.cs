@@ -99,11 +99,18 @@ public class EnemyAI_Organizer : MonoBehaviour
     }*/
 
     public void resetGrids() {
+        // foreach (var temp_1 in gridManager.GridList){
+        //     foreach (var temp_2 in temp_1) {
+        //         GameObject gridCanvas = gridManager.getGridFromLocation(temp_2.transform.position).transform.GetChild(0).gameObject;
+        //         TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        //         textObject.SetText("0");
+        //     }
+        // }
+        
         foreach (var temp_1 in gridManager.GridList){
             foreach (var temp_2 in temp_1) {
-                GameObject gridCanvas = gridManager.getGridFromLocation(temp_2.transform.position).transform.GetChild(0).gameObject;
-                TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-                textObject.SetText("0");
+                Grid grid =temp_2.GetComponent<Grid>();
+                grid.GridValue = 0;
             }
         }
     }
@@ -176,8 +183,10 @@ public class EnemyAI_Organizer : MonoBehaviour
                             continue; 
                         }
                         
-                        enemyAICalculator.CalculateGridMoveValues(enemy, type, enemyChooseRange);
-                        enemyAICalculator.CalculateGridAttackValues(enemy, type);
+                        if (enemy == chosenEnemy && AI_Type == EnemyAIType.Range) {
+                            enemyAICalculator.CalculateGridMoveValues(enemy, type, enemyChooseRange);
+                            enemyAICalculator.CalculateGridAttackValues(enemy, type);
+                        }
                     }
                 }
                 else {
@@ -210,12 +219,16 @@ public class EnemyAI_Organizer : MonoBehaviour
         Debug.Log("lookabletile sayısı " + lookableTiles.Count);
         foreach (Vector3 grid in lookableTiles) {
             //Debug.Log("spesifik lookable grid " + grid);
-            Grid temp = gridManager.getGridFromLocation(grid);
-            GameObject grid_canvas = temp.transform.GetChild(0).gameObject;
-            TextMeshProUGUI text_object = grid_canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
-            int gridValue = Int32.Parse(text_object.text);
-            dictionaryTiles.Add(grid, gridValue);
+            // Grid temp = gridManager.getGridFromLocation(grid);
+            // GameObject grid_canvas = temp.transform.GetChild(0).gameObject;
+            // TextMeshProUGUI text_object = grid_canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+            //
+            // int gridValue = Int32.Parse(text_object.text);
+            // dictionaryTiles.Add(grid, gridValue);
+            
+            Grid temp_grid = gridManager.getGridFromLocation(grid);
+            int temp_gridValue = temp_grid.GridValue;
+            dictionaryTiles.Add(grid, temp_gridValue);
         }
         Debug.Log("dictionarytile sayısı " + dictionaryTiles.Count);
         
