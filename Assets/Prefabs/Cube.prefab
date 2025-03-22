@@ -139,6 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsAvailable: 0
   GridObject: {fileID: 0}
+  GridValue: 0
 --- !u!1 &1256326709649471211
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7951621268771461712
 RectTransform:
   m_ObjectHideFlags: 0

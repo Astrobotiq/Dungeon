@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -35,7 +36,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
     // [SerializeField] 
     // private int enemyWalkDistance = 2;
     //
-    //private Algorithm alg;
+    private Algorithm alg;
 
     [SerializeField] 
     private int enemyMovePunish = -1;
@@ -134,10 +135,11 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
     }
     
     public void setGridUIValueAttack(Grid gridReference, int value) {
-        GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
-        TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        //GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
+        //TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
 
-        textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
+        //textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
+        gridReference.GridValue += value;
     }
     
     public override void CalculateGridMoveValues(GameObject gameObject, AttackedObjectType type, int enemyWalkDistance) {
@@ -156,9 +158,13 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         GridManager gridManager = GridManager.Instance;
 
         Grid inputGridConverted = gridManager.getGridFromLocation(inputGrid);
+
+        if (inputGridConverted.getNearNodes().Count < 1 & !lookedGrids.Contains(inputGrid)) {
+            calculateNearNodes(inputGrid);
+        }
         
         lookedGrids.Add(new Vector3(inputGrid.x, 0, inputGrid.z));
-        //Debug.Log("ekledim " + inputGrid);
+        Debug.Log("ekledim " + new Vector3(inputGrid.x, 0, inputGrid.z));
         
         foreach (Vector3 grid in inputGridConverted.getNearNodes()) {
             //Debug.Log("atam olan grid " + inputGrid + " ben de " + grid);
@@ -168,32 +174,35 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
             if (Mathf.Abs(temp) <= enemyWalkDistance && !lookedGrids.Contains(grid)) {
                 //lookedGrids.Add(grid);
                 setGridUIValueMove(gridManager.getGridFromLocation(grid), temp_mult);
-                //Debug.Log("sayiyi da yazdim");
-                workOnNearNodes(grid, enemyRef, enemyWalkDistance);
+                Debug.Log("sayiyi da yazdim");
+                //workOnNearNodes(grid, enemyRef, enemyWalkDistance);
             }
         }
     }
 
     public int distanceFromEnemyGrid(Vector3 grid, Vector3 enemyRef) {
-        //Debug.Log("malum sayi " + (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z)));
+        Debug.Log("malum sayi " + (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z)));
         return (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z));
     }
 
     public void setGridUIValueMove(Grid gridReference, int value) {
-        GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
-        TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        // GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
+        // TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
         
         if(gridReference.transform.position.x==0 || gridReference.transform.position.x==7
             || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) 
         {
-            textObject.SetText(mapEdgeValue.ToString());
+            //textObject.SetText(mapEdgeValue.ToString());
+            gridReference.GridValue = mapEdgeValue;
         }
         else if(lookedGrids.Contains(gridReference.transform.position)) {
             
         }
         else {
             //Debug.Log("suanki degeri " + Int32.Parse(textObject.text) + " ben ekliyecegim " + value);
-            textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
+            //textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
+            Debug.Log("suanki degeri " + gridReference + " ben ekliyecegim " + value);
+            gridReference.GridValue += value;
         }
     }
 
@@ -282,7 +291,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         }
     }*/
     
-    /*private void calculateNearNodes(Vector3 coordinates) { // Bizim eski komşu gridleri bulma methodu
+    private void calculateNearNodes(Vector3 coordinates) { // Bizim eski komşu gridleri bulma methodu
         Vector3 location = coordinates;
         List<Vector3> nearNodes = new List<Vector3>();
         
@@ -318,26 +327,26 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
             }
         }
         else if(location.x==0){ // x=0 ise
-            /*if(location.z==7){ // x=0 y=7 ise
+            if(location.z==7){ // x=0 y=7 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //sol
                 nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //aşşağı
-            }#1#
-            //else{
+            }
+            else{
                 nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
                 nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
-            //}
+            }
         }
         else if (location.x==7){ // x=7 ise
-            /*if(location.z==0){ // hem x=7 y=0 ise
+            if(location.z==0){ // hem x=7 y=0 ise
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //sağ
                 nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //yukarı
-            }#1#
-            //else{
+            }
+            else{
                 nearNodes.Add(new Vector3(location.x-1,location.y,location.z)); //sol
                 nearNodes.Add(new Vector3(location.x,location.y,location.z+1)); //yukarı
                 nearNodes.Add(new Vector3(location.x,location.y,location.z-1)); //aşşağı
-            //}
+            }
         }
         else{
             nearNodes.Add(new Vector3(location.x+1,location.y,location.z)); //sağ
@@ -349,6 +358,6 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         //Debug.Log("3-Location : " + location);
         GridManager.Instance.getGridFromLocation(location).setNearNodes(nearNodes);
         
-    }*/
+    }
     
 }

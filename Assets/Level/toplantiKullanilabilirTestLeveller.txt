@@ -47,3 +47,13 @@ Close ranged enemy ve 2playerli konum vs. 2 playerli konum
 00000000\n
 00000000\n
 00000000\n
+
+Dursun
+00000000\n
+00000000\n
+00000000\n
+00000$00\n
+$000#00$\n
+000$00#0\n
+00000000\n
+00000000\n
