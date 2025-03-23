@@ -12,7 +12,7 @@ public class PlayerHealth : IHealth
     {        
         base.TakeDamage(damage);
 
-        if (GetComponent<MMPositionShaker>() is var shaker != null)
+        if (TryGetComponent<MMPositionShaker>(out var shaker))
         {
             FeelManager.Instance.ShakeGameObject(shaker);
         }
