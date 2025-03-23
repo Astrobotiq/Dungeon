@@ -138,8 +138,10 @@ public class SpiderEnemyBrain : EnemyBrain
         {
             Destroy(_web);
             Player player = null;
-            TargetGrid.GridObject?.TryGetComponent<Player>(out player);
-            player?.SetPlayerWebbed(false);
+            if (TargetGrid.GridObject.TryGetComponent<Player>(out player))
+            {
+                player?.SetPlayerWebbed(false);
+            }
         }
     }
 }

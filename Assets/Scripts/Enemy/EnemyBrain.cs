@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public abstract class EnemyBrain : MonoBehaviour
 {
@@ -24,7 +27,17 @@ public abstract class EnemyBrain : MonoBehaviour
     public int InitiationPoint;
     
     [SerializeField]
-    private int InitiationBonus = 0;
+    protected int InitiationBonus = 0;
+    
+    [SerializeField]
+    protected float liftHeight = 1.5f; // Havaya kalkma yüksekliği
+    
+    [SerializeField]
+    protected float rotationAngle = 90f; // Yana dönme açısı
+    
+    [SerializeField]
+    protected float duration = 1.5f; // Hareket süresi
+    
 
     public void SetFinishMove(bool hasFinished)
     {
@@ -58,7 +71,7 @@ public abstract class EnemyBrain : MonoBehaviour
         
         AttackBTN2.GetComponent<Button>().onClick.AddListener((() =>
         {
-            Attack();
+            OnDeath();
         }));
     }
 
@@ -119,5 +132,31 @@ public abstract class EnemyBrain : MonoBehaviour
             AttackBTN.SetActive(isActivate);
             AttackBTN2.SetActive(isActivate);
         }
+    }
+
+    public void OnDeath()
+    {
+        AnimateDeath((() =>
+        {
+            FeelManager.Instance.ShakeCamera();
+            ArmController.Instance.RemoveEnemyFromTable(transform.position,0.8f);
+        }));
+    }
+
+    private void AnimateDeath(Action action = null)
+    {
+        Vector3 originalPosition = transform.position;
+        Vector3 liftedPosition = originalPosition + Vector3.up * liftHeight;
+
+        Sequence sequence = DOTween.Sequence();
+
+        // 1. Yukarı çıkarken geriye doğru eğilme
+        sequence.Append(transform.DOMove(liftedPosition, duration / 2).SetEase(Ease.OutQuad));
+        sequence.Join(transform.DORotate(new Vector3(rotationAngle / 2, 0, 0), duration / 2));
+
+        // 2. Aşağı inerken tamamen sırt üstü düşme
+        sequence.Append(transform.DOMove(originalPosition, duration / 2).SetEase(Ease.InQuad));
+        sequence.Join(transform.DORotate(new Vector3(rotationAngle, 0, 0), duration / 2).OnComplete((() => action.Invoke())));
+;
     }
 }

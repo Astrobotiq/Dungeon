@@ -143,6 +143,8 @@ public class Move : MonoBehaviour
 
     public IEnumerator Turn(Vector3 yourPosition, Vector3 targetPosition, Action action)
     {
+        targetPosition = new Vector3(targetPosition.x,0,targetPosition.z);
+        yourPosition = new Vector3(yourPosition.x, 0, yourPosition.z);
         Vector3 targetDirection = (targetPosition - yourPosition).normalized;
 
         Vector3 currentDirection = transform.forward;
