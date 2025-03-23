@@ -9,6 +9,7 @@ public class Grid : MonoBehaviour
     private List<Vector3> _nearNodes = new List<Vector3>();
     public bool IsAvailable;
     public GameObject GridObject = null;
+    public int GridValue;
 
     void Start()
     {

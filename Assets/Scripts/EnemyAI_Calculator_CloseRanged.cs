@@ -43,12 +43,15 @@ public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
             {
                 case AttackedObjectType.PlayerType:
                     textObject.text = (Int32.Parse(textObject.text) + playerHitValue).ToString();
+                    temp.GridValue += playerHitValue;
                     break;
                 case AttackedObjectType.EnemyType: 
                     textObject.text = (Int32.Parse(textObject.text) + enemyHitValue).ToString();
+                    temp.GridValue += enemyHitValue;
                     break;
                 case AttackedObjectType.StatueType:
                     textObject.text = (Int32.Parse(textObject.text) + statueHitValue).ToString();
+                    temp.GridValue += statueHitValue;
                     break;
                 default:
                     Debug.Log("Calling from EnemyAICalculator_Warrior. I think you refer a type which is not put in here");
@@ -63,7 +66,7 @@ public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
         switch (type)
         {
             case AttackedObjectType.PlayerType:
-                Debug.Log("move value switch caseden geldim");
+                //Debug.Log("move value switch caseden geldim");
                 value = playerHitValue;
                 break;
             case AttackedObjectType.EnemyType:
@@ -100,14 +103,16 @@ public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
         GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
         TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
 
-        if (Int32.Parse(textObject.text) > -1 && Int32.Parse(textObject.text) < value) {
+        if (gridReference.GridValue > -1 && gridReference.GridValue < value) {
             textObject.SetText(value.ToString());
+            gridReference.GridValue = value;
             //Debug.Log("1 numara");
             //Debug.Log("grid location: " + gridGameobject.transform.position + " and value: " + textObject.text);
         }
         
         else if (gridReference.GridObject && gridReference.GridObject.GetComponent<EnemyHealth>()) {
             textObject.SetText(enemyHitValue.ToString());
+            gridReference.GridValue = enemyHitValue;
             //Debug.Log("2 numara");
         }
         
@@ -115,6 +120,7 @@ public class EnemyAI_Calculator_CloseRanged : AbstractEnemyAI_Calculator
             || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) 
         {
             textObject.SetText(mapEdgeValue.ToString());
+            gridReference.GridValue = mapEdgeValue;
             //Debug.Log("3 numara");
         }
     }
