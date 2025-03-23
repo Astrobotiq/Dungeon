@@ -2,5 +2,6 @@
 {
     Spider,
     Ranger,
-    Wizard
+    Wizard,
+    None
 }

@@ -201,7 +201,7 @@ public class Player : MonoBehaviour
     {
         if (_selectedSkillEffect != null)
         {
-            DestroyImmediate(_selectedSkillEffect.gameObject);
+            Destroy(_selectedSkillEffect.gameObject);
             _selectedSkillEffect = null;
         }
 

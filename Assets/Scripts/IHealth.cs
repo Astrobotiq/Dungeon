@@ -19,6 +19,21 @@ public class IHealth : MonoBehaviour
     public virtual void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        if (currentHealth<=0)
+        {
+            if (gameObject.tag.Equals("Enemy"))
+            {
+                var enemyBrain = GetComponent<EnemyBrain>();
+                enemyBrain.OnDeath();
+            }
+            else
+            {
+                GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+                Destroy(this.gameObject);
+            }
+            
+        }
     }
 
     public virtual void Heal(int heal)
