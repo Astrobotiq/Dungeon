@@ -8,9 +8,6 @@ public class LevelManager : Singleton<LevelManager>
     //Bu class'ı bir amaçla açtım ama sonradan bunu başka bir yerde de yapabileceğimi fark ettim. Şimdilik burada dursun sonra birşeyler eklenebilir.
     [SerializeField] LevelSO currentLevel;
 
-    [SerializeField] GameObject Player;
-    public List<GameObject> EnemyList;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,7 +50,8 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('#'))
                 {
                     Debug.Log("Player bulundu");
-                    var player = Instantiate(Player, new Vector3(i, 1.4f, j), quaternion.identity);
+                    var player =  PlayerFactory.Instance.Build(FactoryParameters.Paladin, new Vector3(i, 1.4f, j),
+                        quaternion.identity);
                     var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
                     player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
                     playerManager.playerListForEnemyAI.Add(player);
@@ -62,14 +60,13 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('$'))
                 {
                     Debug.Log("EnemyBulundu");
-                    var Enemy = EnemyList.GetRandom();
-                    var EnemyObj = Instantiate(Enemy, new Vector3(i, 1.4f, j),
+                    var EnemyObj = EnemyFactory.Instance.BuildRandom(new Vector3(i, 0f, j),
                         Quaternion.identity);
 
                     EnemyObj.name = EnemyObj.name + enemynumber;
                     enemynumber++;
                     
-                    var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 1.4f, j));
+                    var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0f, j));
                     grid.GridObject = EnemyObj;
                     
                     if(EnemyObj.GetComponent<EnemyBrain>() != null)

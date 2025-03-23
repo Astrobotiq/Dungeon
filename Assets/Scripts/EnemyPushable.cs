@@ -102,6 +102,10 @@ public class EnemyPushable : IPushable
         var pos = new Vector3(targetGrid.transform.position.x,transform.position.y, targetGrid.transform.position.z);
         transform.DOMove(pos, duration).SetEase(curve).OnComplete((() =>
         {
+            if (TryGetComponent<SpiderEnemyBrain>(out var spider))
+            {
+                spider.DestroyWeb();
+            }
             currentGrid.GridObject = null;
             targetGrid.GridObject = gameObject;
             if (newGrid != null)
