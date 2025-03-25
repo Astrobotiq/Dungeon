@@ -52,11 +52,24 @@
 
 .enemyContainer {
     margin-left: 5px;
-    width: 100px;
-    height: 100px;
+    width: auto;
+    height: auto;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    background-color: rgb(117, 159, 89);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
     display: none;
 }
 
@@ -113,4 +126,33 @@
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     background-color: rgb(168, 171, 167);
+}
+
+.xTurn {
+    font-size: 24px;
+    -unity-text-align: upper-left;
+    align-self: center;
+}
+
+.progressBarBox {
+    flex-direction: row;
+    align-self: center;
+}
+
+.progressOneBar {
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    background-color: rgb(168, 171, 167);
+    width: 50px;
+    height: 130px;
 }
