@@ -1,7 +1,7 @@
 .characterContainer {
     flex-direction: row;
     margin-top: 5px;
-    display: none;
+    display: flex;
     border-top-width: 5px;
     border-right-width: 5px;
     border-bottom-width: 5px;
@@ -70,7 +70,7 @@
     border-right-color: rgb(0, 0, 0);
     border-top-color: rgb(0, 0, 0);
     border-bottom-color: rgb(0, 0, 0);
-    display: none;
+    display: flex;
 }
 
 .enemy {
