@@ -31,6 +31,12 @@ public class ArmController : Singleton<ArmController>
             {
                 enemy.transform.SetParent(null);
                 grid.GridObject = enemy;
+                
+                if(enemy.TryGetComponent<EnemyBrain>(out var enemyBrain))
+                    enemyBrain.SetGrid(grid);
+                    
+                EnemyManager.Instance.enemyListForEnemyAI.Add(enemy);
+                
                 transform.DOMove(startPos, duration);
             }));
         }

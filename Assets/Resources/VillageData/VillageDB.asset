@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9de450cb160d5334a8771d3b8f4b6271, type: 3}
-  m_Name: Spider
+  m_Script: {fileID: 11500000, guid: 74a5d0222265453e97c8b9510e10fc83, type: 3}
+  m_Name: VillageDB
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 331496170541435644, guid: 8934f6d79511aea41958f260309a3fb8, type: 3}
-  Offset: 0.62
-  EnemyType: 0
+  dataList:
+  - {fileID: 11400000, guid: 57388c52eba32c8478e309cf292138a7, type: 2}

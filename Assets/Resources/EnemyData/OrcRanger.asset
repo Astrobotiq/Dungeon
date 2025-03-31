@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de450cb160d5334a8771d3b8f4b6271, type: 3}
   m_Name: OrcRanger
   m_EditorClassIdentifier: 
-  EnemyType: 1
-  Enemy: {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
+  Prefab: {fileID: 331496170541435644, guid: 29a34687c8f17454987a26a0bb1f7fe5, type: 3}
   Offset: 0.97
+  EnemyType: 1

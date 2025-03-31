@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -8,16 +9,25 @@ public class LevelManager : Singleton<LevelManager>
     //Bu class'ı bir amaçla açtım ama sonradan bunu başka bir yerde de yapabileceğimi fark ettim. Şimdilik burada dursun sonra birşeyler eklenebilir.
     [SerializeField] LevelSO currentLevel;
 
+    [SerializeField]
+    private PlayerFactory playerFactory;
+    
+    [SerializeField]
+    private EnemyFactory enemyFactory;
+
+    [SerializeField] 
+    private VillageFactory VillageFactory;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentLevel = LevelDB.Instance.GetRandomLevel();
-        StartCoroutine(LevelDesign());
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BuildLevel()
     {
+        StartCoroutine(LevelDesign());
     }
 
     IEnumerator LevelDesign()
@@ -50,18 +60,31 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('#'))
                 {
                     Debug.Log("Player bulundu");
-                    var player =  PlayerFactory.Instance.Build(FactoryParameters.Paladin, new Vector3(i, 1.4f, j),
+                    var player =  playerFactory.Build(PlayerType.Paladin, new Vector3(i, 1.4f, j),
                         quaternion.identity);
-                    var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                    player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
-                    playerManager.playerListForEnemyAI.Add(player);
+
+                    var yPosTarget = player.transform.position.y;
+
+                    player.transform.position = new Vector3(player.transform.position.x,
+                        player.transform.position.y + 3, player.transform.position.z);
+
+                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+                        playerManager.playerListForEnemyAI.Add(player);
+                    }));
+
+                    yield return new WaitForSeconds(1f);
                 }
 
                 if (line[j].Equals('$'))
                 {
                     Debug.Log("EnemyBulundu");
-                    var EnemyObj = EnemyFactory.Instance.BuildRandom(new Vector3(i, 0f, j),
+                    var Enemy = enemyFactory.BuildRandom(new Vector3(i, 0f, j),
                         Quaternion.identity);
+
+                    var EnemyObj = Enemy.Item1;
 
                     EnemyObj.name = EnemyObj.name + enemynumber;
                     enemynumber++;
@@ -74,7 +97,30 @@ public class LevelManager : Singleton<LevelManager>
                     
                     enemyManager.enemyListForEnemyAI.Add(EnemyObj);
                 }
+
+                if (line[j].Equals('+'))
+                {
+                    Debug.Log("Village bulundu");
+                    var Village = VillageFactory.Build(VillageType.Capital, new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var yPosTarget = Village.transform.position.y;
+
+                    Village.transform.position = new Vector3(Village.transform.position.x,
+                        Village.transform.position.y + 3, Village.transform.position.z);
+
+                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        Village.GetComponent<Village>().SetGrid(grid);
+                        playerManager.playerListForEnemyAI.Add(Village);
+                    }));
+
+                    yield return new WaitForSeconds(1f);
+                }
             }
         }
+        
+        TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
     }
 }

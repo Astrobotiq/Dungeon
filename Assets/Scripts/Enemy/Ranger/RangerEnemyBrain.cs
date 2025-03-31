@@ -68,7 +68,8 @@ public class RangerEnemyBrain : EnemyBrain
             {
                 Debug.Log("Arama tahtanın dışına çıktı." +
                           $"Next pos : {nextPos}");
-                nextPos = new Vector3(currentPos.x - direction.x,currentPos.y,currentPos.z - direction.y);
+                nextPos = new Vector3(nextPos.x - direction.x,nextPos.y,nextPos.z - direction.y);
+                Debug.Log($"Yeni pos : {nextPos}");
                 grid = GridManager.Instance.getGridFromLocation(nextPos);
                 TargetGrid = grid;
                 _targetLineController.DrawLine(transform.position,nextPos);

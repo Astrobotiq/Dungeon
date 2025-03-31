@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class EnemyFactory : BaseFactory<EnemyDB, EnemyType>
+public class VillageFactory : BaseFactory<VillageDB, VillageType>
 {
     public override (GameObject,float) BuildRandom(Vector3 position, Quaternion rotation)
     {

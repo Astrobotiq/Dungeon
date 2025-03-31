@@ -5,6 +5,8 @@ public abstract class ITurn : MonoBehaviour
     [SerializeField]
     protected TurnNames nextTurn;
 
+    public bool isLastTurn;
+
     protected ITurn GetNextTurn()
     {
         switch (nextTurn)
