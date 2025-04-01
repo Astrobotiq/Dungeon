@@ -221,18 +221,6 @@ MonoBehaviour:
   liftHeight: 1.5
   rotationAngle: 90
   duration: 0.8
-  DeathMoveCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  DeathRotationCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   web: {fileID: 5870507291269245312, guid: a9ea09b5dc062084eabb4d99066048c7, type: 3}
   attackEffect: {fileID: 2998391414408006296, guid: b7a9dcfaa6bfffe4bbfb355e5a4c2ff9, type: 3}
   attackStartTime: 0.5
