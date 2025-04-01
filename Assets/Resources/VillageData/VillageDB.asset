@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74a5d0222265453e97c8b9510e10fc83, type: 3}
+  m_Name: VillageDB
+  m_EditorClassIdentifier: 
+  dataList:
+  - {fileID: 11400000, guid: 57388c52eba32c8478e309cf292138a7, type: 2}

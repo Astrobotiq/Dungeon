@@ -1,55 +1,18 @@
 ﻿using UnityEngine;
 
-public class EnemyFactory : Singleton<EnemyFactory>
+public class EnemyFactory : BaseFactory<EnemyDB, EnemyType>
 {
-    [SerializeField]
-    private EnemyDB enemyDB;
-    
-    public GameObject Build(string name, Vector3 position, Quaternion quaternion)
+    public override (GameObject,float) BuildRandom(Vector3 position, Quaternion rotation)
     {
-        EnemyType enemy = EnemyType.None;
-        switch (name)
+        var data = database.GetRandom();
+        var prefab = data.Item1;
+        var offset = data.Item2;
+        if (prefab == null)
         {
-            case FactoryParameters.Spider:
-                enemy = EnemyType.Spider;
-                break;
-            case FactoryParameters.OrcWizard:
-                enemy = EnemyType.Wizard;
-                break;
-            case FactoryParameters.OrcRanger:
-                enemy = EnemyType.Ranger;
-                break;
+            Debug.LogWarning("No enemy found in DB");
+            return (null,0);
         }
-
-        if (enemy == EnemyType.None)
-        {
-            Debug.LogWarning("Player type düzgün verilmemiş");
-            return null;
-        }
-
-        var enemyGO = enemyDB.GetEnemyByType(enemy);
-        
-        var enemyobj = enemyGO.Item1;
-        var enemyOffset = enemyGO.Item2;
-        var pos = new Vector3(position.x,enemyOffset,position.z);
-        return Instantiate(enemyobj, pos, quaternion);
-    }
-
-    public GameObject BuildRandom(Vector3 position, Quaternion quaternion)
-    {
-        var EnemySO = enemyDB.GetRandomEnemy();
-
-        var enemy = EnemySO.Item1;
-        var enemyOffset = EnemySO.Item2;
-        
-        if (enemy == null)
-        {
-            Debug.LogWarning("There is no Enemy In DB");
-            return null;
-        }
-
-        var pos = new Vector3(position.x,enemyOffset,position.z);
-
-        return Instantiate(enemy, pos, quaternion);
+        var pos = new Vector3(position.x, offset, position.z);
+        return (Instantiate(prefab, pos, rotation),offset);
     }
 }

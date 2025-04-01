@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class IHealth : MonoBehaviour
@@ -10,6 +11,9 @@ public class IHealth : MonoBehaviour
     
     [SerializeField]
     protected float damageMultiplier;
+    
+    public event Action OnDeath;
+    public event Action OnHeal;
 
     void Start()
     {

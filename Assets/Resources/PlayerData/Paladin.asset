@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e8e44da8b14706896b025ee1f89c27, type: 3}
   m_Name: Paladin
   m_EditorClassIdentifier: 
-  PlayerType: 0
-  PlayerPrefab: {fileID: 7375778406333701460, guid: 8b8cdc37a1195db46b4435ac07e3b27f, type: 3}
+  Prefab: {fileID: 7375778406333701460, guid: 8b8cdc37a1195db46b4435ac07e3b27f, type: 3}
   Offset: 1.4
+  PlayerType: 0

@@ -1,11 +1,9 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Enemy", menuName = "Dungeon/Enemy", order = 3)]
-public class EnemySO : ScriptableObject
+public class EnemySO : BaseData
 {
     public EnemyType EnemyType;
-
-    public GameObject Enemy;
-
-    public float Offset;
+    public override Enum GetTypeEnum() => EnemyType;
 }

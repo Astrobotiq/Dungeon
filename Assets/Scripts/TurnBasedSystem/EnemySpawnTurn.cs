@@ -14,6 +14,9 @@ public class EnemySpawnTurn : ITurn
     [SerializeField] 
     private int damageAmount = 3;
     
+    [SerializeField]
+    private EnemyFactory enemyFactory;
+    
     public override void EnterTurn()
     {
         var spawners = EnemyManager.Instance.Spawners;
@@ -25,9 +28,12 @@ public class EnemySpawnTurn : ITurn
             foreach (var location in spawners)
             {
                 var armPos = ArmController.Instance.GetPosition;
-                var pos = new Vector3(location.transform.position.x,1.4f, location.transform.position.z);
-                var enemy = EnemyFactory.Instance.BuildRandom(armPos,quaternion.identity);
-                ArmController.Instance.StartInstantiate(enemy,pos,waitInterval, damageAmount);
+                var enemy = enemyFactory.BuildRandom(armPos,quaternion.identity);
+                var enemyGO = enemy.Item1;
+                enemyGO.transform.position = armPos;
+                var enemyOffset = enemy.Item2; 
+                var pos = new Vector3(location.transform.position.x,enemyOffset, location.transform.position.z);
+                ArmController.Instance.StartInstantiate(enemyGO,pos,waitInterval, damageAmount);
                 Destroy(location);
                 yield return new WaitForSeconds(2*waitInterval+1f);
             }
