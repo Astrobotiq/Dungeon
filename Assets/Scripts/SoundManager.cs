@@ -17,7 +17,8 @@ public enum SoundType
     ElectricHit,
     SpiderSound,
     SpiderAttack,
-    EscButtonSound
+    EscButtonSound,
+    RoomSelectionSound
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
