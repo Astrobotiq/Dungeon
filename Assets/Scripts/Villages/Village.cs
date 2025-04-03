@@ -29,6 +29,7 @@ public class Village : MonoBehaviour
     void OnDestroy()
     {
         VillageManager.Instance.UnSubscribe(this.gameObject);
+        PlayerManager.Instance.playerListForEnemyAI.Remove(gameObject);
     }
 
     public void SetGrid(Grid grid)

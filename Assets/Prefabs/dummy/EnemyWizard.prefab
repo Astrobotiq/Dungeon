@@ -21,8 +21,6 @@ GameObject:
   - component: {fileID: 8886837815250843573}
   - component: {fileID: 7894731854183816899}
   - component: {fileID: 7925830843289627351}
-  - component: {fileID: 2405596249902232198}
-  - component: {fileID: 3578875944415815791}
   m_Layer: 0
   m_Name: EnemyWizard
   m_TagString: Enemy
@@ -397,43 +395,6 @@ MonoBehaviour:
   enemyChooseRange: 3
   allAttackableObjectTypes: 
   AI_Type: 1
---- !u!114 &2405596249902232198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331496170541435644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players: []
-  statues: []
-  enemies: []
-  chosenEnemy: {fileID: 331496170541435644}
-  enemyChooseRange: 0
-  allAttackableObjectTypes: 
-  AI_Type: 0
---- !u!114 &3578875944415815791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331496170541435644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHitValue: 5
-  enemyHitValue: -2
-  statueHitValue: 5
-  mapEdgeValue: -99
-  enemyMovePunish: -1
-  lookedGrids: []
 --- !u!1 &1430482240511494937
 GameObject:
   m_ObjectHideFlags: 0

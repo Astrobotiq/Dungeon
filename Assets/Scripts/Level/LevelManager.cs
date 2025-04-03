@@ -101,19 +101,22 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('+'))
                 {
                     Debug.Log("Village bulundu");
-                    var Village = VillageFactory.Build(VillageType.Capital, new Vector3(i, 1.4f, j),
+                    var Village = VillageFactory.BuildRandom(new Vector3(i, 1.4f, j),
                         quaternion.identity);
 
-                    var yPosTarget = Village.transform.position.y;
+                    var offset = Village.Item2;
+                    var VillageGO = Village.Item1;
 
-                    Village.transform.position = new Vector3(Village.transform.position.x,
-                        Village.transform.position.y + 3, Village.transform.position.z);
+                    var yPosTarget = VillageGO.transform.position.y;
 
-                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    VillageGO.transform.position = new Vector3(VillageGO.transform.position.x,
+                        VillageGO.transform.position.y + 3, VillageGO.transform.position.z);
+
+                    VillageGO.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
                     {
                         var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        Village.GetComponent<Village>().SetGrid(grid);
-                        playerManager.playerListForEnemyAI.Add(Village);
+                        VillageGO.GetComponent<Village>().SetGrid(grid);
+                        playerManager.playerListForEnemyAI.Add(VillageGO);
                     }));
 
                     yield return new WaitForSeconds(1f);
