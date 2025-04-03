@@ -14,7 +14,7 @@ public class IDamagable : MonoBehaviour
     //Maybe we can take damage from here. Maybe with enum DamageType Electricity, Fire, Ice, Smoke or something
     //Burayı yazdım ama unutmuşum. Kullanılabilirliğini tartışmak gerek.
     //Belki burayı farklı amaçlar için kullanırız diye tuttum. Konuşulsun silinir.
-    public void Damage(int damage)
+    public virtual void Damage(int damage)
     {
         //Buranın içinde başka şeyler yazılabilir.
         health.TakeDamage(damage);

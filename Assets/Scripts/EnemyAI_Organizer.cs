@@ -42,50 +42,88 @@ public class EnemyAI_Organizer : MonoBehaviour
     private AbstractEnemyAI_Calculator enemyAICalculator;
 
     private GridManager gridManager;
+
+    [SerializeField] private EnemyAIType AI_Type;
     
     #endregion
     
     //SİLİNECEK
-    public bool showSelectedOptions;
+    //public bool showSelectedOptions;
+
+    public enum EnemyAIType {
+        Close,
+        Range
+    }
     
     public void Start() // SİLİNECEK
     {
-        chosenEnemy = GameObject.Find("EnemyDummy(Clone)");
-        enemies.Add(chosenEnemy); // Kendini eklememesi lazım ama check etmek için şimdilik ekledim
-        
         gridManager = GridManager.Instance;
         
         allAttackableObjectTypes.Add(AbstractEnemyAI_Calculator.AttackedObjectType.PlayerType);
         allAttackableObjectTypes.Add(AbstractEnemyAI_Calculator.AttackedObjectType.EnemyType);
         //allAttackableObjectTypes.Add(AbstractEnemyAI_Calculator.AttackedObjectType.StatueType);
+
+        // if (gameObject.GetComponent<EnemyAI_Calculator_Warrior>()) {
+        //     enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_Warrior>();
+        // }
+        // else if(gameObject.GetComponent<EnemyAI_Calculator_Archer>()) {
+        //     enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_Archer>();
+        // }
+
+        switch(AI_Type){
+            case EnemyAIType.Close:
+                enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_CloseRanged>();
+                break;
+            case  EnemyAIType.Range:
+                enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_Ranged>();
+                break;
+            default:
+                Debug.Log("The enemy AI type do not selected or unrecognized");
+                break;
+        }
     }
 
-    public void Update() { // Bool degeri uzerinden yaptigim check icin burada
+    /*public void Update() { // Bool degeri uzerinden yaptigim check icin burada
         if (enemyAICalculator == null) { 
             
             // !!!!! To check for different AI scripts, please change this
-            enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_Archer>();
+            enemyAICalculator = gameObject.GetComponent<EnemyAI_Calculator_Warrior>();
         }
         
         if (showSelectedOptions) {
             resetGrids();
-             Vector3 temp = ReturnBestOption(chosenEnemy); // This is for returning the single best location
+             Vector3 temp = ReturnBestOption(gameObject); // This is for returning the single best location
              Debug.Log("seçtiğim en iyi loc " + temp);
              showSelectedOptions = false;
         }
-    }
+    }*/
 
     public void resetGrids() {
+        // foreach (var temp_1 in gridManager.GridList){
+        //     foreach (var temp_2 in temp_1) {
+        //         GameObject gridCanvas = gridManager.getGridFromLocation(temp_2.transform.position).transform.GetChild(0).gameObject;
+        //         TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+        //         textObject.SetText("0");
+        //     }
+        // }
+        
         foreach (var temp_1 in gridManager.GridList){
             foreach (var temp_2 in temp_1) {
-                GameObject gridCanvas = gridManager.getGridFromLocation(temp_2.transform.position).transform.GetChild(0).gameObject;
-                TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-                textObject.SetText("0");
+                Grid grid =temp_2.GetComponent<Grid>();
+                grid.GridValue = 0;
             }
         }
     }
     
     public Vector3 ReturnBestOption(GameObject enemy) {
+        resetGrids();
+        
+        PlayerManager playerManager = PlayerManager.Instance;
+        EnemyManager enemyManager = EnemyManager.Instance;
+        
+        players = playerManager.playerListForEnemyAI;
+        enemies = enemyManager.enemyListForEnemyAI;
+        
         Algorithm alg = new Algorithm();
         Dictionary<Vector3, int> TotalOptions = new Dictionary<Vector3, int>();
         
@@ -117,7 +155,7 @@ public class EnemyAI_Organizer : MonoBehaviour
         //Debug.Log("boş");
         //Debug.Log("bulduğum en iyi loc " + bestLoc + " değeri " + bestValue);
         
-        showSelectedOptions = false; // SİLİNECEK
+        //showSelectedOptions = false; // SİLİNECEK
         
         return bestLoc;
     }
@@ -128,6 +166,7 @@ public class EnemyAI_Organizer : MonoBehaviour
             case AbstractEnemyAI_Calculator.AttackedObjectType.PlayerType:
                 if (players.Count != 0) {
                     foreach (GameObject player in players) {
+                        //Debug.Log("player icine giriyorum");
                         enemyAICalculator.CalculateGridMoveValues(player, type, 0);
                         enemyAICalculator.CalculateGridAttackValues(player, type);
                     }
@@ -140,9 +179,14 @@ public class EnemyAI_Organizer : MonoBehaviour
             case AbstractEnemyAI_Calculator.AttackedObjectType.EnemyType:
                 if (enemies.Count != 0) {
                     foreach (GameObject enemy in enemies) { // !!!!!!!! I think there is no need to calc move value addition by enemies
-                        if(enemy == chosenEnemy && enemyAICalculator.Equals(new EnemyAI_Calculator_Warrior())){ continue; } // Warrior AI icinde bizim enemy disindakiler icin bunu yapmali
-                        enemyAICalculator.CalculateGridMoveValues(enemy, type, enemyChooseRange);
-                        enemyAICalculator.CalculateGridAttackValues(enemy, type);
+                        if(enemy == chosenEnemy && AI_Type == EnemyAIType.Close) { // Warrior AI icinde bizim enemy disindakiler icin bunu yapmali bu o yuzden var
+                            continue; 
+                        }
+                        
+                        if (enemy == chosenEnemy && AI_Type == EnemyAIType.Range) {
+                            enemyAICalculator.CalculateGridMoveValues(enemy, type, enemyChooseRange);
+                            enemyAICalculator.CalculateGridAttackValues(enemy, type);
+                        }
                     }
                 }
                 else {
@@ -174,15 +218,19 @@ public class EnemyAI_Organizer : MonoBehaviour
         
         Debug.Log("lookabletile sayısı " + lookableTiles.Count);
         foreach (Vector3 grid in lookableTiles) {
-            Debug.Log("anasini sikiyim " + grid);
-            Grid temp = gridManager.getGridFromLocation(grid);
-            GameObject grid_canvas = temp.transform.GetChild(0).gameObject;
-            TextMeshProUGUI text_object = grid_canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
-            int gridValue = Int32.Parse(text_object.text);
-            dictionaryTiles.Add(grid, gridValue);
+            //Debug.Log("spesifik lookable grid " + grid);
+            // Grid temp = gridManager.getGridFromLocation(grid);
+            // GameObject grid_canvas = temp.transform.GetChild(0).gameObject;
+            // TextMeshProUGUI text_object = grid_canvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+            //
+            // int gridValue = Int32.Parse(text_object.text);
+            // dictionaryTiles.Add(grid, gridValue);
+            
+            Grid temp_grid = gridManager.getGridFromLocation(grid);
+            int temp_gridValue = temp_grid.GridValue;
+            dictionaryTiles.Add(grid, temp_gridValue);
         }
-        //Debug.Log("dictionarytile sayısı " + dictionaryTiles.Count);
+        Debug.Log("dictionarytile sayısı " + dictionaryTiles.Count);
         
         Dictionary<Vector3, int> bestThreeOption = new Dictionary<Vector3, int>();
 

@@ -90,7 +90,7 @@ public class GridManager : Singleton<GridManager>
     
     public float GetCenter()
     {
-        return (StartPosition + EndPosition) / 2;
+        return ((float)StartPosition + (float)EndPosition) / 2;
     }
     void DeSelectGrid()
     {
@@ -100,9 +100,9 @@ public class GridManager : Singleton<GridManager>
 
     void InstantiateGrids(int start, int end, GameObject Grid)
     {
-        for (int i = start; i < end; i++)
+        for (int i = start; i <= end; i++)
         {
-            for (int j = start; j < end; j++)
+            for (int j = start; j <= end; j++)
             {
                 var pos = new Vector3(i, 0, j);
                 var GridGO = Instantiate(Grid, pos, Quaternion.identity);
@@ -189,6 +189,7 @@ public class GridManager : Singleton<GridManager>
             else
             {
                 PlayerManager.Instance.DeselectPlayer();
+                EnemyManager.Instance.DeselectEnemy();
             }
             IsInSearchState = false;
             ResetTable();
@@ -198,6 +199,11 @@ public class GridManager : Singleton<GridManager>
             if (selectedGrid.GetComponent<Grid>().GridObject != PlayerManager.Instance.GetSelectedPlayer())
             {
                 PlayerManager.Instance.DeselectPlayer();
+            }
+
+            if (selectedGrid.GetComponent<Grid>().GridObject != EnemyManager.Instance.EnemyBrain?.gameObject)
+            {
+                EnemyManager.Instance.DeselectEnemy();
             }
         }
         

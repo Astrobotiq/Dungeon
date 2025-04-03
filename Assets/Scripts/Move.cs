@@ -34,19 +34,7 @@ public class Move : MonoBehaviour
         AStarPathfinding path = new();
         var grids = path.startAlgorithm(startGrid, endGrid);
 
-        var listlist =dashListPreparation(grids);
-
-        int i = 1;
-        foreach (var list in listlist)
-        {
-            Debug.Log("list index :" + i);
-            foreach (var vector in list)
-            {
-                Debug.Log("asdad" + vector.gameObject.transform.position);
-            }
-
-            i++;
-        }
+        
         
         //Test
         Debug.Log(grids.Count);
@@ -80,21 +68,30 @@ public class Move : MonoBehaviour
             {
                 Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
 
-                transform.DORotate(targetRotation.eulerAngles, jumpDuration, RotateMode.Fast);
+                transform.DORotate(targetRotation.eulerAngles, normalDuration, RotateMode.Fast);
 
                 yield return new WaitForSeconds(normalDuration);
             }
             
             Instantiate(dust, dustPos.position, quaternion.identity);
 
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+
             var pos = new Vector3(path[current+1].transform.position.x,transform.position.y,path[current+1].transform.position.z);
             transform.DOMove(pos,normalDuration);
 
             yield return new WaitForSeconds(normalDuration);
-                
+
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = gameObject;
             current++;
         }
+        EventManager.Instance.InvokeOnMove(gameObject.name);
         
+        if (gameObject.tag.Equals("Enemy"))
+        {
+            GetComponent<EnemyBrain>().SetFinishMove(true);
+        }
+
         InputManager.Instance.canTakeInput = true;
     }
 
@@ -122,25 +119,39 @@ public class Move : MonoBehaviour
 
             Instantiate(dust, dustPos.position, quaternion.identity);
             
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+            
             var pos = new Vector3(path[current+1].transform.position.x,transform.position.y,path[current+1].transform.position.z);
             transform.DOJump(pos, jumpPower, jumpNumber, jumpDuration);
-
+            
             yield return new WaitForSeconds(jumpDuration);
+            
+            GridManager.Instance.getGridFromLocation(transform.position).GridObject = gameObject;
             
             current++;
         }
+        EventManager.Instance.InvokeOnMove(gameObject.name);
         
+        if (gameObject.tag.Equals("Enemy"))
+        {
+            GetComponent<EnemyBrain>().SetFinishMove(true);
+        }
+
         InputManager.Instance.canTakeInput = true;
 
     }
 
     public IEnumerator Turn(Vector3 yourPosition, Vector3 targetPosition, Action action)
     {
+        targetPosition = new Vector3(targetPosition.x,0,targetPosition.z);
+        yourPosition = new Vector3(yourPosition.x, 0, yourPosition.z);
         Vector3 targetDirection = (targetPosition - yourPosition).normalized;
 
         Vector3 currentDirection = transform.forward;
 
         float angle = Vector3.SignedAngle(currentDirection, targetDirection, Vector3.up);
+        
+        Debug.Log($"angle : {angle}");
 
         if (Mathf.Abs(angle)>0.01)
         {

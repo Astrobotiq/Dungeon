@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class IHealth : MonoBehaviour
@@ -10,6 +11,9 @@ public class IHealth : MonoBehaviour
     
     [SerializeField]
     protected float damageMultiplier;
+    
+    public event Action OnDeath;
+    public event Action OnHeal;
 
     void Start()
     {
@@ -19,6 +23,21 @@ public class IHealth : MonoBehaviour
     public virtual void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        if (currentHealth<=0)
+        {
+            if (gameObject.tag.Equals("Enemy"))
+            {
+                var enemyBrain = GetComponent<EnemyBrain>();
+                enemyBrain.OnDeath();
+            }
+            else
+            {
+                GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+                Destroy(this.gameObject);
+            }
+            
+        }
     }
 
     public virtual void Heal(int heal)
@@ -29,16 +48,5 @@ public class IHealth : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
-    }
-
-    public int getHealth() {
-        return currentHealth;
-    }
-
-    public float getHealthPercentage()
-    {
-        float temp_1 = (float)(currentHealth);
-        float temp_2 = (float)(maxHealth);
-        return  temp_1/temp_2  * 100;
     }
 }

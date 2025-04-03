@@ -59,6 +59,11 @@ public class AStarPathfinding : MonoBehaviour
                 if (closedGridNodes.Contains(neighbor)) { // zaten değerlendirdiysek geç
                     continue;
                 }
+
+                if (GridManager.Instance.getGridFromLocation(neighbor.Position).GridObject != null)
+                {
+                    continue;
+                }
                 
                 currentNode.HCost=calculateHCost(currentNode, neighbor); // Current node Heuristic costunu hesapla
                 float tentativeGCost = currentNode.GCost + currentNode.HCost; // Current Node'un total costunu tutmak için bu da

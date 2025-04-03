@@ -6,10 +6,13 @@ using UnityEngine;
 public class LevelSO : ScriptableObject
 {
     [SerializeField] 
-    TextAsset levelLayout;
+    private TextAsset levelLayout;
 
     [SerializeField] 
-    List<EnemyType> enemies;
+    private List<EnemyType> enemies;
+
+    [SerializeField] 
+    private int maxTurnNumber;
 
     public TextAsset LevelLayout
     {
@@ -22,6 +25,19 @@ public class LevelSO : ScriptableObject
             }
 
             return levelLayout;
+        }
+    }
+
+    public int MaxTurnNumber
+    {
+        get
+        {
+            if (maxTurnNumber == 0)
+            {
+                maxTurnNumber = 4;
+            }
+
+            return maxTurnNumber;
         }
     }
 
