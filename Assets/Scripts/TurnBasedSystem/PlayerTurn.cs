@@ -40,6 +40,7 @@ public class PlayerTurn : ITurn
 
     public override void EnterTurn()
     {
+        endTurnBTN.enabled = true;
         var playerList = PlayerManager.Instance.GetPlayers();
         _playerDictionary = new();
         foreach (var playerGO in playerList)

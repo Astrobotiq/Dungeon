@@ -166,7 +166,12 @@ public class EnemyAI_Organizer : MonoBehaviour
             case AbstractEnemyAI_Calculator.AttackedObjectType.PlayerType:
                 if (players.Count != 0) {
                     foreach (GameObject player in players) {
-                        //Debug.Log("player icine giriyorum");
+                        Debug.Log("player kısmı icine giriyorum " + "Player adı " + player.name);
+                        Debug.Log("Gameobje ismi " + gameObject.name);
+                        if(enemyAICalculator==null)
+                            Debug.Log("1");
+                        else if(player== null)
+                            Debug.Log("2");
                         enemyAICalculator.CalculateGridMoveValues(player, type, 0);
                         enemyAICalculator.CalculateGridAttackValues(player, type);
                     }

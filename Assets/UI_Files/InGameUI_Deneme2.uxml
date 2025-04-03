@@ -1,0 +1,79 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/IngameUIStyle.uss?fileID=7433441132597879392&amp;guid=64c52f25a4d01d74ca3185ddb8dc4633&amp;type=3#IngameUIStyle" />
+    <engine:VisualElement name="CharacterBlock" style="left: 10px; top: 400px; bottom: auto; position: absolute; flex-direction: column;">
+        <engine:VisualElement name="Character_1" enabled="true" class="characterContainer" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;">
+            <engine:Label name="Character_1_Sprite" class="character" />
+            <engine:VisualElement name="HealthBoxContainer" class="characterHpBarBox">
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="Character_2" class="characterContainer">
+            <engine:Label name="Character_2_Sprite" class="character" />
+            <engine:VisualElement name="HealthBoxContainer" class="characterHpBarBox">
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="Character_3" class="characterContainer">
+            <engine:Label name="Character_3_Sprite" class="character" />
+            <engine:VisualElement name="HealthBoxContainer" class="characterHpBarBox">
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+                <engine:Label name="HealthBox" class="characterHpBar" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement name="StatueBlock" style="position: absolute; left: 10px; top: 10px; flex-direction: row; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); background-color: rgb(44, 80, 113);">
+        <engine:Label name="StatueSprite" style="width: 150px; height: 150px; background-image: url(&quot;project://database/Assets/Hovl%20Studio/Magic%20effects%20pack/Textures/Heart.png?fileID=2800000&amp;guid=47a48c9cf6895484983862ae79cb7102&amp;type=3#Heart&quot;);" />
+        <engine:ProgressBar value="22" name="StatueBar" style="width: 300px; height: 150px; justify-content: center; align-items: stretch; display: none;" />
+        <engine:VisualElement name="ProgressBoxContainer" class="progressBarBox">
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+            <engine:Label name="ProgressBox" class="progressOneBar" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement name="Buttons" style="right: 10px; bottom: 10px; position: absolute;">
+        <engine:Button text="Reset Turn" name="ResetTurn" class="button" style="color: rgb(207, 42, 42); margin-top: 0;" />
+        <engine:Button text="Undo" name="Undo" class="button" style="color: rgb(129, 130, 34);" />
+        <engine:Button text="End Turn" name="EndTurn" class="button" style="color: rgb(44, 130, 24);" />
+    </engine:VisualElement>
+    <engine:VisualElement name="EnemyBlock" style="right: 10px; top: 10px; position: absolute; flex-direction: row; display: flex;">
+        <engine:VisualElement name="Enemy_1" class="enemyContainer" style="flex-grow: 1; margin-left: 0;">
+            <engine:Label name="Enemy_1_Sprite" class="enemy" />
+            <engine:Label text="naber1" name="Enemy_1_Info" class="enemyText" />
+        </engine:VisualElement>
+        <engine:VisualElement name="Enemy_2" class="enemyContainer" style="flex-grow: 1;">
+            <engine:Label name="Enemy_2_Sprite" class="enemy" />
+            <engine:Label text="naber2" name="Enemy_2_Info" class="enemyText" />
+        </engine:VisualElement>
+        <engine:VisualElement name="Enemy_3" class="enemyContainer" style="flex-grow: 1; margin-right: 10px;">
+            <engine:Label name="Enemy_3_Sprite" class="enemy" />
+            <engine:Label text="naber3" name="Enemy_3_Info" class="enemyText" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement name="TurnCounter" style="top: 10px; right: auto; position: relative; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); width: auto; align-self: center; align-items: stretch; height: auto; flex-direction: row; background-color: rgb(184, 198, 201);">
+        <engine:Label text="7/10&#10;" name="Turn" class="xTurn" />
+    </engine:VisualElement>
+    <engine:VisualElement name="PlayerEarlyFinishBlock" style="right: 790px; left: 790px; position: absolute; top: 470px; bottom: 470px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); background-color: rgb(168, 171, 167); display: none;">
+        <engine:Label text="Do you really wanna pass?" name="ConfirmationText" style="border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; background-color: rgba(221, 173, 43, 0.72); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); font-size: 20px; -unity-text-align: upper-center;" />
+        <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; align-self: center;">
+            <engine:Button text="Pass" name="Pass" class="button" style="font-size: 20px; align-self: center;" />
+            <engine:Button text="Get back to turn" name="GetBack" class="button" style="font-size: 20px; align-self: center;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

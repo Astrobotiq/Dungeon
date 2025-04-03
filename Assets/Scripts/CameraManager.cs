@@ -37,14 +37,12 @@ public class CameraManager : Singleton<CameraManager>
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
 
         transform.position = cameraMainMenuPos.position;
-        
-        changeCameraPos.onClick.AddListener((() =>
-        {
-            changeCameraPos.interactable = false;
+    }
+
+    public void StartGame() {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(transform.DOMove(cameraInGamePos.position, 2f));
             sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2).OnComplete((() => StartCoroutine(SmoothTransition()))));
-        }));
     }
 
     void Update()

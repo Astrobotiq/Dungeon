@@ -7,6 +7,11 @@ using Random = UnityEngine.Random;
 
 public abstract class EnemyBrain : MonoBehaviour
 {
+    public Sprite enemyPortrait;
+    
+    public MaterialController MaterialController;
+    public Renderer Renderer;
+    
     [SerializeField]
     protected Move move;
     
@@ -73,6 +78,18 @@ public abstract class EnemyBrain : MonoBehaviour
         {
             OnDeath();
         }));
+        
+        MaterialController = new MaterialController(Renderer, 0.5f);
+    }
+
+    public void UIRefHoverEnter()
+    {
+        MaterialController.SetOutlineScale();
+    }
+
+    public void UIRefHoverExit()
+    {
+        MaterialController.ResetOutlineScale();
     }
 
     void OnDestroy()
@@ -159,4 +176,5 @@ public abstract class EnemyBrain : MonoBehaviour
         sequence.Join(transform.DORotate(new Vector3(rotationAngle, 0, 0), duration / 2).OnComplete((() => action.Invoke())));
 ;
     }
+    
 }

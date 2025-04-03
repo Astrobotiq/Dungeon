@@ -15,13 +15,18 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     {
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
+        InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         NextTurn(GetComponent<EnemyCombatPositionTurn>());
     }
 
     public void NextTurn(ITurn nextTurn)
     {
         if (_currentTurn && _currentTurn.isLastTurn)
+        {
             turnNumber++;
+            InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+        }
+            
 
         if (turnNumber > _maxTurnNumber)
         {
@@ -40,4 +45,14 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     }
 
     public ITurn GetCurrentTurn() => _currentTurn;
+
+    public int getTurnNumber()
+    {
+        return turnNumber;
+    }
+
+    public int getMaxTurnNumber()
+    {
+        return _maxTurnNumber;
+    }
 }

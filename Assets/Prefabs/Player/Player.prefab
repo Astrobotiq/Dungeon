@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameView: {fileID: 0}
-  playerSprite: {fileID: 21300000, guid: 1dc3ccf5c9898724e97b347c850dfc4f, type: 3}
+  playerSprite: {fileID: 21300000, guid: 291937b51b5054196acf83950130f687, type: 3}
   range: 5
   footPivot: {fileID: 6148694931671149544}
   handPivot: {fileID: 7790760818711473775}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60b552479aa431892cc1b401b6dc091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
+  currentHealth: 7
   maxHealth: 12
   damageMultiplier: 1
 --- !u!114 &-1865325853239297727
