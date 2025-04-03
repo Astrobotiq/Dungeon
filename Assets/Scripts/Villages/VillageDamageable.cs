@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class VillageDamageable : IDamagable
 {
-    public void TakeDamage()
-    {
-        
+    public override void Damage(int damage) {
+        base.Damage(damage);
+        InGameUITextMesh.Instance.updatePublicBar();
     }
 }

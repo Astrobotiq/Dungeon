@@ -1126,7 +1126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5724641564837924973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1465,12 +1465,10 @@ MonoBehaviour:
   soundList:
   - name: MainThemes
     sounds:
-    - {fileID: 8300000, guid: 7e492ad07b6d548eea10ccbd1962e88f, type: 3}
-    - {fileID: 8300000, guid: ccdc1026f90774226b4c0759093380b3, type: 3}
+    - {fileID: 8300000, guid: 9e11fa574d9d4fb4282dd5d0f7378485, type: 3}
   - name: InTurnMusic
     sounds:
-    - {fileID: 8300000, guid: adb24518d159048ca9cb62d63113784f, type: 3}
-    - {fileID: 8300000, guid: 0dfe9f9829141478689194368436b534, type: 3}
+    - {fileID: 8300000, guid: 18f0b3d4c95514947a5c38a1a642ecbd, type: 3}
   - name: ButtonSound
     sounds:
     - {fileID: 8300000, guid: 861a86883521b0b44910657dd0da25d4, type: 3}
@@ -3520,6 +3518,7 @@ GameObject:
   - component: {fileID: 7702828000387155312}
   - component: {fileID: 3395821458328730454}
   - component: {fileID: 2738102693398403566}
+  - component: {fileID: 5863978256117234428}
   m_Layer: 5
   m_Name: Enemy_1
   m_TagString: Untagged
@@ -3601,6 +3600,51 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.14901961}
   m_EffectDistance: {x: 8, y: -8}
   m_UseGraphicAlpha: 1
+--- !u!114 &5863978256117234428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789917260679802240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverExit
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2036523211970890278
 GameObject:
   m_ObjectHideFlags: 0
@@ -5846,7 +5890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4232265868252328822
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5886,7 +5930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2082961843003081179
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6247,6 +6291,7 @@ GameObject:
   - component: {fileID: 274534317405259524}
   - component: {fileID: 2101297852803323152}
   - component: {fileID: 7685440846184444300}
+  - component: {fileID: 8958643956252038874}
   m_Layer: 5
   m_Name: Enemy_3
   m_TagString: Untagged
@@ -6328,6 +6373,51 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.14901961}
   m_EffectDistance: {x: 8, y: -8}
   m_UseGraphicAlpha: 1
+--- !u!114 &8958643956252038874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747892912721809259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverExit
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4203517045354085215
 GameObject:
   m_ObjectHideFlags: 0
@@ -6557,6 +6647,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 13
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -7901,19 +8003,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3708653346279648858}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7624256745986186734}
-        m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
-        m_MethodName: UpdateESC_Window
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4815523886823266548
 GameObject:
   m_ObjectHideFlags: 0
@@ -10540,7 +10630,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6820390608530213011
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12095,6 +12185,7 @@ GameObject:
   - component: {fileID: 8952347396094419065}
   - component: {fileID: 7563578587382559124}
   - component: {fileID: 5087944378328754422}
+  - component: {fileID: 1643133114444313220}
   m_Layer: 5
   m_Name: Enemy_2
   m_TagString: Untagged
@@ -12176,6 +12267,51 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.14901961}
   m_EffectDistance: {x: 8, y: -8}
   m_UseGraphicAlpha: 1
+--- !u!114 &1643133114444313220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7362951704788213005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7624256745986186734}
+          m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
+          m_MethodName: EnemyHoverExit
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7408127289376426195
 GameObject:
   m_ObjectHideFlags: 0
@@ -12899,7 +13035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4177814272013511864
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13543,7 +13679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4309386953655164729
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14515,7 +14651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4079851969755747314
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14617,19 +14753,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6978732990245308612}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7624256745986186734}
-        m_TargetAssemblyTypeName: InGameUITextMesh, Assembly-CSharp
-        m_MethodName: UndoButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6413986018724390017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15636,6 +15760,9 @@ MonoBehaviour:
   enemies: []
   soundManager: {fileID: 8896585332292244527}
   test: 0
+  TurnCounterGameobject: {fileID: 516143031306415120}
+  UndoBTN: {fileID: 8635549957659839661}
+  SortedEnemyBrains: []
 --- !u!1 &9050019303521956243
 GameObject:
   m_ObjectHideFlags: 0

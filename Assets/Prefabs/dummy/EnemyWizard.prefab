@@ -19,10 +19,8 @@ GameObject:
   - component: {fileID: 6044380848506226700}
   - component: {fileID: 137043124315573577}
   - component: {fileID: 8886837815250843573}
-  - component: {fileID: 7894731854183816899}
+  - component: {fileID: 3951257620071141535}
   - component: {fileID: 7925830843289627351}
-  - component: {fileID: 2405596249902232198}
-  - component: {fileID: 3578875944415815791}
   m_Layer: 0
   m_Name: EnemyWizard
   m_TagString: Enemy
@@ -307,6 +305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6218e1e7d5b2cf84197cef1971543f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPortrait: {fileID: 21300000, guid: e9bf075bb75e841878655d1ada1628d4, type: 3}
+  Renderer: {fileID: 7998296640524071301}
   move: {fileID: 3153513597771184709}
   currentGrid: {fileID: 0}
   TargetGrid: {fileID: 0}
@@ -317,18 +317,6 @@ MonoBehaviour:
   liftHeight: 1.5
   rotationAngle: 90
   duration: 0.8
-  DeathMoveCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  DeathRotationCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   attackEffect: {fileID: 3377181292992421420, guid: de4c6f68ef0a6af4ca2c6c2f68245b67, type: 3}
   attackAnimHeight: 0.5
   attackFlyCurve:
@@ -372,7 +360,7 @@ MonoBehaviour:
   TargetTexture: {fileID: 4400990860681539562}
   peakHeight: 1.5
   segmentCount: 5
---- !u!114 &7894731854183816899
+--- !u!114 &3951257620071141535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,7 +369,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 331496170541435644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ff63169aa691ff429fc5c9c8da1de70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHitValue: 5
@@ -409,43 +397,6 @@ MonoBehaviour:
   enemyChooseRange: 3
   allAttackableObjectTypes: 
   AI_Type: 1
---- !u!114 &2405596249902232198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331496170541435644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0c62ca3803df224e93afc084e93d95a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players: []
-  statues: []
-  enemies: []
-  chosenEnemy: {fileID: 331496170541435644}
-  enemyChooseRange: 0
-  allAttackableObjectTypes: 
-  AI_Type: 0
---- !u!114 &3578875944415815791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331496170541435644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHitValue: 5
-  enemyHitValue: -2
-  statueHitValue: 5
-  mapEdgeValue: -99
-  enemyMovePunish: -1
-  lookedGrids: []
 --- !u!1 &1430482240511494937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,6 +1242,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 94434327a088b8c40bf6c84a826af64d, type: 2}
     - target: {fileID: 919132149155446097, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
       propertyPath: m_Name
       value: Mischievous_Gnome_0321003136_texture
@@ -1303,6 +1262,11 @@ PrefabInstance:
       addedObject: {fileID: 251532797695228454}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
+--- !u!23 &7998296640524071301 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
+  m_PrefabInstance: {fileID: 8736488269769977089}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9130068263395183338 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cc9d59372339a1e4496ffa878e3d4442, type: 3}
