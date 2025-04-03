@@ -113,6 +113,7 @@ MonoBehaviour:
   handPivot: {fileID: 7790760818711473775}
   move: {fileID: 165450888797340350}
   _selectedSkillEffect: {fileID: 0}
+  IsInWater: 0
 --- !u!114 &1029285654706939780
 MonoBehaviour:
   m_ObjectHideFlags: 0

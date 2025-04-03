@@ -1686,13 +1686,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4153201885183952528}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.062688425, y: -0.56132746, z: -0.042699035, w: 0.82411075}
+  m_LocalPosition: {x: 20.42, y: -0.06, z: -15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5410192583600120034}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -8.7, y: -68.52, z: 0}
 --- !u!20 &1046826480818991013
 Camera:
   m_ObjectHideFlags: 0
@@ -1921,6 +1921,7 @@ GameObject:
   - component: {fileID: 8323063901155126538}
   - component: {fileID: 1963602201483636169}
   - component: {fileID: 852878394806789676}
+  - component: {fileID: 2229279268441915657}
   m_Layer: 0
   m_Name: FactoryManager
   m_TagString: Untagged
@@ -1982,6 +1983,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: f4e902f55233ad643b3e9d34dd49cd23, type: 2}
+--- !u!114 &2229279268441915657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953199324274930277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b43223a50c1ab48b1c032e9edf350f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  database: {fileID: 11400000, guid: 4e75ea09556728e4bbbd0ce4eb3063b4, type: 2}
 --- !u!1 &4963589868465025627
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,7 +2189,7 @@ Transform:
   m_GameObject: {fileID: 6327144611778160351}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.9699998, y: -3, z: -18.03}
+  m_LocalPosition: {x: 20.42, y: -0.06, z: -15.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2755,9 +2769,9 @@ MonoBehaviour:
   nextTurn: 1
   isLastTurn: 0
   waitInterval: 1
-  armController: {fileID: 0}
+  armController: {fileID: 2509659985620994166}
   damageAmount: 3
-  enemyFactory: {fileID: 0}
+  enemyFactory: {fileID: 8323063901155126538}
 --- !u!1 &8026728720605274468
 GameObject:
   m_ObjectHideFlags: 0
@@ -2806,6 +2820,7 @@ MonoBehaviour:
   playerFactory: {fileID: 1963602201483636169}
   enemyFactory: {fileID: 8323063901155126538}
   VillageFactory: {fileID: 852878394806789676}
+  EnviromentFactory: {fileID: 2229279268441915657}
 --- !u!1 &8503832116232198829
 GameObject:
   m_ObjectHideFlags: 0

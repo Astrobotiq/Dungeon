@@ -47,5 +47,5 @@ public enum VillageType
     Capital,
     Fishing,
     Farm,
-    Agriculture
+    Agriculture,
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: FishingVillage
   m_EditorClassIdentifier: 
   Prefab: {fileID: 394248686733858092, guid: 51630ebfd25d66c4994e55ccf0dc41e3, type: 3}
-  Offset: 0.2
+  Offset: 0
   VillageType: 1

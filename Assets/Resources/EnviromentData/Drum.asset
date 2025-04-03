@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685b4a3fd10a6ec40aaf5ddd1f53bdf4, type: 3}
-  m_Name: CapitalVillage
+  m_Script: {fileID: 11500000, guid: 7a0bbcb991c4463384a447267c22d27a, type: 3}
+  m_Name: Drum
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 394248686733858092, guid: fcbd437f4937eaa4086a7ace7e318db8, type: 3}
+  Prefab: {fileID: 6299665849423673882, guid: c8e83127d49130e4bab0c9a48c3c1bcc, type: 3}
   Offset: 0
-  VillageType: 0
+  EnviromentType: 0
