@@ -24,10 +24,10 @@ public class IHealth : MonoBehaviour
     {
         currentHealth -= damage;
         Debug.Log("ben geldim naber");
-        InGameUITextMesh.Instance.UpdatePlayerBars();
 
         if (currentHealth<=0)
         {
+            
             if (gameObject.tag.Equals("Enemy"))
             {
                 var enemyBrain = GetComponent<EnemyBrain>();

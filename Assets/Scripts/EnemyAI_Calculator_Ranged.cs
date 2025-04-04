@@ -127,7 +127,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
             }
         }
         
-        Debug.Log(gridListVec3.Count);
+        //Debug.Log(gridListVec3.Count);
 
         foreach (Vector3 loc in gridListVec3) {
             setGridUIValueAttack(gridManagerInstance.getGridFromLocation(loc), playerHitValue);

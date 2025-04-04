@@ -24,6 +24,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
+            Debug.Log("turn arttırması lazım");
             InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         }
             

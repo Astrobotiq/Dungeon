@@ -50,8 +50,14 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     }
 
     public void updatePublicBar() {
+        if (! (publicHealth.transform.GetChild(0).gameObject.activeInHierarchy)) {
+            publicHealth.transform.GetChild(0).gameObject.SetActive(true);
+            publicHealth.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        
         Slider publicBarSlider = publicHealth.transform.GetChild(0).GetComponent<Slider>();
-        publicBarSlider.value += VillageManager.Instance.getTotalHp()*10;
+        //Debug.Log("Public health döndü değer " + VillageManager.Instance.getHealthPercentage());
+        publicBarSlider.value = VillageManager.Instance.getHealthPercentage();
         
         if (publicBarSlider.value < 0) {
             publicBarSlider.value = 0;

@@ -13,5 +13,7 @@ public class PlayerHealth : IHealth
         {
             FeelManager.Instance.ShakeGameObject(shaker);
         }
+        
+        InGameUITextMesh.Instance.UpdatePlayerBars();
     }
 }
