@@ -164,7 +164,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         }
         
         lookedGrids.Add(new Vector3(inputGrid.x, 0, inputGrid.z));
-        Debug.Log("ekledim " + new Vector3(inputGrid.x, 0, inputGrid.z));
+        //Debug.Log("ekledim " + new Vector3(inputGrid.x, 0, inputGrid.z));
         
         foreach (Vector3 grid in inputGridConverted.getNearNodes()) {
             //Debug.Log("atam olan grid " + inputGrid + " ben de " + grid);
@@ -174,14 +174,14 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
             if (Mathf.Abs(temp) <= enemyWalkDistance && !lookedGrids.Contains(grid)) {
                 //lookedGrids.Add(grid);
                 setGridUIValueMove(gridManager.getGridFromLocation(grid), temp_mult);
-                Debug.Log("sayiyi da yazdim");
+                //Debug.Log("sayiyi da yazdim");
                 //workOnNearNodes(grid, enemyRef, enemyWalkDistance);
             }
         }
     }
 
     public int distanceFromEnemyGrid(Vector3 grid, Vector3 enemyRef) {
-        Debug.Log("malum sayi " + (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z)));
+        //Debug.Log("malum sayi " + (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z)));
         return (int) (Mathf.Abs(enemyRef.x - grid.x) + Mathf.Abs(enemyRef.z - grid.z));
     }
 
@@ -201,7 +201,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         else {
             //Debug.Log("suanki degeri " + Int32.Parse(textObject.text) + " ben ekliyecegim " + value);
             //textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
-            Debug.Log("suanki degeri " + gridReference + " ben ekliyecegim " + value);
+            //Debug.Log("suanki degeri " + gridReference + " ben ekliyecegim " + value);
             gridReference.GridValue += value;
         }
     }

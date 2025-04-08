@@ -23,7 +23,7 @@ public class IHealth : MonoBehaviour
     public virtual void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        Debug.Log("ben geldim naber");
+        //Debug.Log("ben geldim naber");
 
         if (currentHealth<=0)
         {
