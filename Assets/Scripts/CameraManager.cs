@@ -24,6 +24,14 @@ public class CameraManager : Singleton<CameraManager>
     
     [SerializeField, Range(1,10)] float RotationSpeed = 5f;
 
+    [SerializeField] float walkDuration = 5;
+    
+    [SerializeField] float walkJumpPower = 0.8f;
+    
+    [SerializeField] int walkJumpNumber = 8;
+
+    [SerializeField] GameObject statue;
+
     public bool canRotate = false;
     
     public bool isFirst = true;
@@ -41,8 +49,22 @@ public class CameraManager : Singleton<CameraManager>
 
     public void StartGame()
     {
+        
+        
+        // Aradaki yön vektörünü hesapla
+        Vector3 direction = (cameraInGamePos.position - cameraMainMenuPos.position).normalized;
+
+        // Eğer sadece yatay düzlemde döndürmek istiyorsan:
+        direction.y = 0;
+
+        // Hedef rotasyonu hesapla
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // DOTween ile döndür
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(transform.DOMove(cameraInGamePos.position, 2f));
+        sequence.Append(transform.DORotateQuaternion(targetRotation, 2)
+            .SetEase(Ease.OutQuad).OnComplete((() => FeelManager.Instance.CameraLookAt(transform,statue.transform,walkDuration))));
+        sequence.Append(transform.DOJump(cameraInGamePos.position, walkJumpPower,walkJumpNumber,walkDuration).SetEase(Ease.Linear));
         sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2).OnComplete((() => StartCoroutine(SmoothTransition()))));
     }
 
