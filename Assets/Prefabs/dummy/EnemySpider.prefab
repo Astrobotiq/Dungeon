@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c134ee8795255774ba61ecdecd5971eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPortrait: {fileID: 21300000, guid: 0152b0b0fb1ad4639bcc84f874313308, type: 3}
+  Renderer: {fileID: 6080326628135234251}
   move: {fileID: 3153513597771184709}
   currentGrid: {fileID: 0}
   TargetGrid: {fileID: 0}
@@ -1064,6 +1066,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 548755c3ef5957f41993ef41e5c1d07b, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 548755c3ef5957f41993ef41e5c1d07b, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 94434327a088b8c40bf6c84a826af64d, type: 2}
     - target: {fileID: 919132149155446097, guid: 548755c3ef5957f41993ef41e5c1d07b, type: 3}
       propertyPath: m_Name
       value: Black_Widow_Wooden_To_0313200858_texture
@@ -1079,5 +1089,10 @@ PrefabInstance:
 --- !u!4 &4911883508534120868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 548755c3ef5957f41993ef41e5c1d07b, type: 3}
+  m_PrefabInstance: {fileID: 4872962398106678863}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6080326628135234251 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 548755c3ef5957f41993ef41e5c1d07b, type: 3}
   m_PrefabInstance: {fileID: 4872962398106678863}
   m_PrefabAsset: {fileID: 0}

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 6044380848506226700}
   - component: {fileID: 3386686734450406452}
   - component: {fileID: 756989350185510881}
-  - component: {fileID: 6802005883831303978}
+  - component: {fileID: 4215332524711085556}
   - component: {fileID: 3504726711523271000}
   m_Layer: 0
   m_Name: EnemyRanger
@@ -305,6 +305,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6028b310ee83325419cc9417bc01a131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPortrait: {fileID: 21300000, guid: 413518e1b2e3f44adb34d2b680d43c8b, type: 3}
+  Renderer: {fileID: 5006159272914803761}
   move: {fileID: 3153513597771184709}
   currentGrid: {fileID: 0}
   TargetGrid: {fileID: 0}
@@ -331,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTexture: {fileID: 7893488561345001267}
---- !u!114 &6802005883831303978
+--- !u!114 &4215332524711085556
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,7 +342,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 331496170541435644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaefb741fd28b2419fdb272bb5f90cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ff63169aa691ff429fc5c9c8da1de70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHitValue: 5
@@ -1229,6 +1231,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 94434327a088b8c40bf6c84a826af64d, type: 2}
     - target: {fileID: 919132149155446097, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
       propertyPath: m_Name
       value: Orc_Woodcarving_Bust_0321195715_texture
@@ -1241,6 +1251,11 @@ PrefabInstance:
       addedObject: {fileID: 251532797695228454}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
+--- !u!23 &5006159272914803761 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
+  m_PrefabInstance: {fileID: 5960768044312543413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6139074284393506654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1da9317a5fc6c1f4da752f825792dc40, type: 3}
