@@ -6,12 +6,20 @@ public class ArmController : Singleton<ArmController>
 {
     [SerializeField]
     private float yOffset;
+    
+    [SerializeField]
+    private GameObject Arm;
 
     public Vector3 GetPosition => transform.position;
     
 
     public void StartInstantiate(GameObject enemy, Vector3 pos, float duration, int damage)
     {
+        if (!Arm.gameObject.activeInHierarchy)
+        {
+            SetArmVisible(true);
+        }
+        
         var startPos = transform.position;
         enemy.transform.SetParent(transform);
         var grid = GridManager.Instance.getGridFromLocation(pos);
@@ -37,7 +45,7 @@ public class ArmController : Singleton<ArmController>
                     
                 EnemyManager.Instance.enemyListForEnemyAI.Add(enemy);
                 
-                transform.DOMove(startPos, duration);
+                transform.DOMove(startPos, duration).OnComplete((() => SetArmVisible(false)));
             }));
         }
         
@@ -54,6 +62,7 @@ public class ArmController : Singleton<ArmController>
                 {
                     enemy.transform.SetParent(null);
                     Destroy(enemy);
+                    SetArmVisible(false);
                 }));
             }));
         }
@@ -62,6 +71,11 @@ public class ArmController : Singleton<ArmController>
 
     public void RemoveEnemyFromTable(Vector3 pos, float duration)
     {
+        if (!Arm.gameObject.activeInHierarchy)
+        {
+            SetArmVisible(true);
+        }
+        
         var startPos = transform.position;
         transform.DOMove(pos, duration).OnComplete((() =>
         {
@@ -77,7 +91,13 @@ public class ArmController : Singleton<ArmController>
             transform.DOMove(startPos, duration).OnComplete((() =>
             {
                 Destroy(enemy.gameObject);
+                SetArmVisible(false);
             }));
         }));
+    }
+
+    public void SetArmVisible(bool visible)
+    {
+        Arm.gameObject.SetActive(visible);
     }
 }

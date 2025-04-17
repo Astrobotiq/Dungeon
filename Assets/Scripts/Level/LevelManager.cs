@@ -17,6 +17,9 @@ public class LevelManager : Singleton<LevelManager>
 
     [SerializeField] 
     private VillageFactory VillageFactory;
+    
+    [SerializeField] 
+    private EnviromentFactory EnviromentFactory;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -101,7 +104,31 @@ public class LevelManager : Singleton<LevelManager>
                 if (line[j].Equals('+'))
                 {
                     Debug.Log("Village bulundu");
-                    var Village = VillageFactory.Build(VillageType.Capital, new Vector3(i, 1.4f, j),
+                    var Village = VillageFactory.BuildRandom(new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var offset = Village.Item2;
+                    var VillageGO = Village.Item1;
+
+                    var yPosTarget = VillageGO.transform.position.y;
+
+                    VillageGO.transform.position = new Vector3(VillageGO.transform.position.x,
+                        VillageGO.transform.position.y + 3, VillageGO.transform.position.z);
+
+                    VillageGO.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        VillageGO.GetComponent<Village>().SetGrid(grid);
+                        playerManager.playerListForEnemyAI.Add(VillageGO);
+                    }));
+
+                    yield return new WaitForSeconds(1f);
+                }
+
+                if (line[j].Equals('%'))
+                {
+                    Debug.Log("Village bulundu");
+                    var Village = EnviromentFactory.Build(EnviromentType.Drum,new Vector3(i, 1.4f, j),
                         quaternion.identity);
 
                     var yPosTarget = Village.transform.position.y;
@@ -112,12 +139,51 @@ public class LevelManager : Singleton<LevelManager>
                     Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
                     {
                         var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        Village.GetComponent<Village>().SetGrid(grid);
+                        grid.GridObject = Village;
                         playerManager.playerListForEnemyAI.Add(Village);
                     }));
 
                     yield return new WaitForSeconds(1f);
                 }
+
+                if (line[j].Equals('W'))
+                {
+                    Debug.Log("Village bulundu");
+                    var Village = EnviromentFactory.Build(EnviromentType.Water,new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var yPosTarget = Village.transform.position.y;
+
+                    Village.transform.position = new Vector3(Village.transform.position.x,
+                        Village.transform.position.y + 3, Village.transform.position.z);
+
+                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        grid.GridObject = Village;
+                        playerManager.playerListForEnemyAI.Add(Village);
+                    }));
+                }
+
+                if (line[j].Equals('M'))
+                {
+                    Debug.Log("Village bulundu");
+                    var Village = EnviromentFactory.Build(EnviromentType.Mountain,new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var yPosTarget = Village.transform.position.y;
+
+                    Village.transform.position = new Vector3(Village.transform.position.x,
+                        Village.transform.position.y + 3, Village.transform.position.z);
+
+                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        grid.GridObject = Village;
+                        playerManager.playerListForEnemyAI.Add(Village);
+                    }));
+                }
+                
             }
         }
         

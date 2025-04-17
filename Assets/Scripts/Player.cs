@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     public bool HasUsedSkill { get; private set; } = false;
     public bool HasTraveled { get; private set; } = false;
 
+    public bool IsInWater = false;
+
     public Sprite PlayerSprite
     {
         get { return playerSprite; }
@@ -109,6 +111,11 @@ public class Player : MonoBehaviour
         }
         else
         {
+            if (IsInWater)
+            {
+                return;
+            }
+            
             InputManager.Instance.canTakeInput = false;
 
             StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position, (InstantiateSkill)));

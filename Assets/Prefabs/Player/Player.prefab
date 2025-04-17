@@ -113,6 +113,7 @@ MonoBehaviour:
   handPivot: {fileID: 7790760818711473775}
   move: {fileID: 165450888797340350}
   _selectedSkillEffect: {fileID: 0}
+  IsInWater: 0
 --- !u!114 &1029285654706939780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +318,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 08c91dbf8ab876546b305fcb9962dea0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c5f9c1254993cfe4bb1939e09ddc2117, type: 2}
     - target: {fileID: 919132149155446097, guid: 08c91dbf8ab876546b305fcb9962dea0, type: 3}
       propertyPath: m_Name
       value: Elder_of_the_Forest_0313193403_texture

@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_DottedLine
+  m_Name: Mat_DottedLine
   m_Shader: {fileID: -6465566751694194690, guid: 56b4fca3859d37c4fa6f5de264de3ddc, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
