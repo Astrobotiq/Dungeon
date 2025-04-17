@@ -32,6 +32,11 @@ public class CameraManager : Singleton<CameraManager>
 
     [SerializeField] GameObject statue;
 
+
+    [SerializeField] GameObject mask;
+
+    [SerializeField] List<GameObject> lights;
+
     public bool canRotate = false;
     
     public bool isFirst = true;
@@ -49,23 +54,40 @@ public class CameraManager : Singleton<CameraManager>
 
     public void StartGame()
     {
-        
-        
-        // Aradaki yön vektörünü hesapla
-        Vector3 direction = (cameraInGamePos.position - cameraMainMenuPos.position).normalized;
-
-        // Eğer sadece yatay düzlemde döndürmek istiyorsan:
-        direction.y = 0;
-
         // Hedef rotasyonu hesapla
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        Quaternion targetRotation = GetRotation(statue.transform, cameraMainMenuPos.transform);
 
         // DOTween ile döndür
         Sequence sequence = DOTween.Sequence();
         sequence.Append(transform.DORotateQuaternion(targetRotation, 2)
             .SetEase(Ease.OutQuad).OnComplete((() => FeelManager.Instance.CameraLookAt(transform,statue.transform,walkDuration))));
-        sequence.Append(transform.DOJump(cameraInGamePos.position, walkJumpPower,walkJumpNumber,walkDuration).SetEase(Ease.Linear));
+        sequence.Append(transform.DOJump(cameraInGamePos.position, walkJumpPower,walkJumpNumber,walkDuration).SetEase(Ease.Linear)
+            .OnUpdate((() => transform.LookAt(statue.transform)))
+            .OnComplete((() =>
+            {
+                foreach (var light in lights)
+                {
+                    light.gameObject.SetActive(true);
+                }
+            })));
+        targetRotation = GetRotation(mask.transform, transform);
+        sequence.Append(transform.DORotateQuaternion(targetRotation, 3f));
+        var pos = new Vector3(mask.transform.position.x,transform.position.y,mask.transform.position.z);
+        sequence.Append(mask.transform.DOMove(pos, 3f).OnUpdate((() => transform.LookAt(mask.transform))));
+        sequence.Append(mask.transform.DOMove(transform.position, 2f));
         sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2).OnComplete((() => StartCoroutine(SmoothTransition()))));
+    }
+
+    private Quaternion GetRotation(Transform target, Transform current)
+    {
+        // Aradaki yön vektörünü hesapla
+        Vector3 direction = (target.position - current.position).normalized;
+
+        // Eğer sadece yatay düzlemde döndürmek istiyorsan:
+        
+
+        // Hedef rotasyonu hesapla
+        return Quaternion.LookRotation(direction);
     }
 
     void Update()
