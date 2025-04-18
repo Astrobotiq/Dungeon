@@ -8,8 +8,6 @@ public class EnemyHealth : IHealth
     
     public override void TakeDamage(int damage)
     {
-        base.TakeDamage(damage);
-
         if (TryGetComponent<SpiderEnemyBrain>(out var spider))
         {
             spider.DestroyWeb();
@@ -20,10 +18,13 @@ public class EnemyHealth : IHealth
             FeelManager.Instance.ShakeGameObject(shaker);
         }
 
-        if (currentHealth <= 0)
+        if (currentHealth - damage <= 0)
         {
-            OnDeath?.Invoke();
+            
+            EventManager.Instance.InvokeOnEnemyKilled();
         }
+        
+        base.TakeDamage(damage);
     }
 
     public override void Heal(int heal)

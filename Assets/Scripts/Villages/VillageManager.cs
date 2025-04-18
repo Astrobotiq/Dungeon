@@ -36,4 +36,19 @@ public class VillageManager : Singleton<VillageManager>
     public int getTotalHp() {
         return TotalHp;
     }
+
+    public void ChangeVillageHP(int amount)
+    {
+        TotalHp += amount;
+
+        if (TotalHp <= 0)
+        {
+            //TODO öldük demektir
+        }
+
+        if (TotalHp > MaxTotalHp)
+        {
+            TotalHp = MaxTotalHp;
+        }
+    }
 }

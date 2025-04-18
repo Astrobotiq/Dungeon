@@ -109,6 +109,10 @@ public class SpiderEnemyBrain : EnemyBrain
 
     public override void Attack()
     {
+        if (TargetGrid.gameObject == null)
+        {
+            return;
+        }
         var effectStartPos = transform.position;
 
         var diffrence = TargetGrid.transform.position - transform.position;

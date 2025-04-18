@@ -24,7 +24,7 @@ public class IHealth : MonoBehaviour
     {
         currentHealth -= damage;
         Debug.Log("ben geldim naber");
-        InGameUITextMesh.Instance.UpdatePlayerBars();
+        //InGameUITextMesh.Instance.UpdatePlayerBars();
 
         if (currentHealth<=0)
         {

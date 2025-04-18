@@ -7,11 +7,13 @@ public class PlayerHealth : IHealth
     
     public override void TakeDamage(int damage)
     {
-        base.TakeDamage(damage);
-
+        EventManager.Instance.InvokeOnPlayerTakeDamage();
+        
         if (TryGetComponent<MMPositionShaker>(out var shaker))
         {
             FeelManager.Instance.ShakeGameObject(shaker);
         }
+        
+        base.TakeDamage(damage);
     }
 }
