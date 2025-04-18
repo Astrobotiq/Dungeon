@@ -33,7 +33,7 @@ public class EnemyCombatPositionTurn : ITurn
     public override void ExitTurn()
     {
         Debug.Log("Turn bitti");
-        InGameUITextMesh.Instance.UpdateEnemyArrangement(sortedEnemies);
+        //InGameUITextMesh.Instance.UpdateEnemyArrangement(sortedEnemies);
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
     }
 }

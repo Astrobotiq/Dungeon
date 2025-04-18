@@ -187,7 +187,12 @@ public class LevelManager : Singleton<LevelManager>
             }
         }
         
-        InGameUITextMesh.Instance.UpdatePlayerBars();
+        //InGameUITextMesh.Instance.UpdatePlayerBars();
+        foreach (var mission in currentLevel.getMissions())
+        {
+            MissionManager.Instance.StartMission(mission);
+        }
+        
         TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
         
     }

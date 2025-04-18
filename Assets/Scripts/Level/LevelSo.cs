@@ -12,6 +12,9 @@ public class LevelSO : ScriptableObject
     private List<EnemyType> enemies;
 
     [SerializeField] 
+    private List<MissionParameter> missionParameter;
+
+    [SerializeField] 
     private int maxTurnNumber;
 
     public TextAsset LevelLayout
@@ -40,6 +43,8 @@ public class LevelSO : ScriptableObject
             return maxTurnNumber;
         }
     }
+
+    public List<MissionParameter> getMissions() => missionParameter;
 
 
     public List<EnemyType> GetAllEnemies() => enemies;

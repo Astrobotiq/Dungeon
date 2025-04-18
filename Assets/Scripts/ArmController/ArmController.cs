@@ -58,6 +58,9 @@ public class ArmController : Singleton<ArmController>
                 var gridObject = grid.GridObject;
                 gridObject.GetComponent<IHealth>().TakeDamage(damage);
                 FeelManager.Instance.ShakeCamera();
+                
+                EventManager.Instance.InvokeOnSpawnerPrevented();
+                
                 transform.DOMove(startPos, duration).OnComplete((() =>
                 {
                     enemy.transform.SetParent(null);
