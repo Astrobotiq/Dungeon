@@ -40,7 +40,7 @@ public class EnemyPushable : IPushable
 
         if (targetGrid)
         {
-            if (targetGrid.GridObject)
+            if (targetGrid.GridObject )
             {
                 Crash(targetGrid,currentGrid);
             }

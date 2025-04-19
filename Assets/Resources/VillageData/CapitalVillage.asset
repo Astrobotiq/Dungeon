@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CapitalVillage
   m_EditorClassIdentifier: 
   Prefab: {fileID: 394248686733858092, guid: fcbd437f4937eaa4086a7ace7e318db8, type: 3}
-  Offset: 0.5
+  Offset: 0
   VillageType: 0

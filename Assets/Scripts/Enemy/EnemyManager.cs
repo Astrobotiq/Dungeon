@@ -26,6 +26,11 @@ public class EnemyManager : Singleton<EnemyManager>
         this.spawners = spawners;
     }
 
+    public void AddSpawner(GameObject spawner)
+    {
+        spawners.Add(spawner);
+    }
+
     public void ResetSpawnerList()
     {
         spawners.Clear();

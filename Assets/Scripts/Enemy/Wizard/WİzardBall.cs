@@ -19,6 +19,8 @@ public class WİzardBall : ISkillEffect
             _targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(damageAmount);
         }
         
-        Destroy(gameObject);
+        
+        
+        Timed.Run((() => Destroy(gameObject)), 3f);
     }
 }

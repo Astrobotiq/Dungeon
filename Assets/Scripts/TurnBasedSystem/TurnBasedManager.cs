@@ -15,7 +15,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     {
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
-        InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+        //InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         NextTurn(GetComponent<EnemyCombatPositionTurn>());
     }
 
@@ -24,14 +24,14 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
-            Debug.Log("turn arttırması lazım");
-            InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+            //InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         }
             
 
         if (turnNumber > _maxTurnNumber)
         {
             Debug.Log("Game is finished");
+            //TODO : Burada bir yerde Level bitti UI'ı açılmalı
             return;
         }
             

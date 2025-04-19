@@ -31,37 +31,24 @@ public class VillageManager : Singleton<VillageManager>
         }
 
         villages.Remove(village);
-        decreaseTotalHP();
     }
 
     public int getTotalHp() {
         return TotalHp;
     }
-    public float getHealthPercentage()
+
+    public void ChangeVillageHP(int amount)
     {
-        float temp_1 = (float)TotalHp;
-        float temp_2 = (float)MaxTotalHp;
-
-        float temp_3 = Mathf.FloorToInt((temp_1 / temp_2) * 100);
-        
-        //Debug.Log("health percentage " + temp_3);
-        return temp_3; 
-
-    }
-
-    public void decreaseTotalHP()
-    {
-        TotalHp--;
+        TotalHp += amount;
 
         if (TotalHp <= 0)
         {
-            TotalHp = 0;
+            //TODO öldük demektir
         }
-        else if(TotalHp >= MaxTotalHp)
+
+        if (TotalHp > MaxTotalHp)
         {
             TotalHp = MaxTotalHp;
         }
-        
-        InGameUITextMesh.Instance.updatePublicBar();
     }
 }
