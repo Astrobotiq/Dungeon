@@ -45,15 +45,27 @@ public class CameraManager : Singleton<CameraManager>
     public float transitionDuration = 1.5f; // Geçiş süresi
 
     public bool isOrthographic = false;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+    
+    public float GameStartWalkSoundVolume = 1f;
+    
     void Start()
     {
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
 
         transform.position = cameraMainMenuPos.position;
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
+        soundManager.StartMainTheme();
     }
 
     public void StartGame()
     {
+        soundManager.PlaySound(SoundType.GameStartWalkSound, GameStartWalkSoundVolume);
+        
         // Hedef rotasyonu hesapla
         Quaternion targetRotation = GetRotation(statue.transform, cameraMainMenuPos.transform);
 
@@ -76,6 +88,8 @@ public class CameraManager : Singleton<CameraManager>
         sequence.Append(mask.transform.DOMove(pos, 3f).OnUpdate((() => transform.LookAt(mask.transform))));
         sequence.Append(mask.transform.DOMove(transform.position, 2f));
         sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2).OnComplete((() => StartCoroutine(SmoothTransition()))));
+        
+        soundManager.StopMainThemeTimed();
     }
 
     private Quaternion GetRotation(Transform target, Transform current)

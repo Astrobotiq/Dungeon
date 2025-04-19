@@ -1,29 +1,59 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 
 public enum SoundType
 {
-    MainThemes,
-    InTurnMusic,
-    ButtonSound,
     SwordSwing,
+    SmiteSwordSwing,
     SwordHit,
-    ShotArrow,
-    ArrowHit,
-    ShotFireball,
+    HealHitSound,
+    FireballSent,
     FireballHit,
-    ShotElectric,
-    ElectricHit,
+    LightningHit,
+    RotateHit,
+    VillageTakeDamageSound,
+    EmptyPlayerEffectSound,
+    HealPlayerEffectSound,
+    NormalSwordSwingPlayerEffectSound,
+    SmiteSwordSwingPlayerEffectSound,
+    FireballPlayerEffectSound,
+    LightningPlayerEffectSound,
+    EnemyWizardSkillHitSound,
     SpiderSound,
     SpiderAttack,
-    EscButtonSound,
-    RoomSelectionSound
+    SpiderWebAttack,
+    ArrowSent,
+    ArrowHit,
+    JumpWalkSound,
+    NormalWalkSound,
+    MainThemes,
+    InTurnMusic,
+    ButtonFireSound,
+    PopupNPopupContinueSound,
+    PopupBackSound,
+    RoomSelectionSound,
+    PlayerSelectSound,
+    TurnSwitchSound,
+    VillageInstantiateSound,
+    CharacterNEnemyInstantiateSound,
+    WaterInstantiateSound,
+    MountainInstantiateSound,
+    GameOverSound,
+    YouWinSound,
+    MissionInLevelCompleteSound,
+    SwitchingToLevelSelectionSound,
+    BumpSound,
+    GameStartWalkSound,
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
 public class SoundManager : Singleton<SoundManager>
 {
+    public float MainThemeSoundVolume = 1f;
+    public bool ContinueMainTheme = true;
+    
     [SerializeField] private SoundList[] soundList;
     private static SoundManager instance;
     private AudioSource audioSource;
@@ -49,6 +79,48 @@ public class SoundManager : Singleton<SoundManager>
     {
         PlaySound((SoundType)type);
     }
+
+    public void StartMainTheme() {
+        StartCoroutine(PlayMainTheme());
+    }
+
+    IEnumerator PlayMainTheme()
+    {
+        PlaySound(SoundType.MainThemes, MainThemeSoundVolume);
+
+        yield return new WaitForSeconds(222f);
+
+        if (ContinueMainTheme) {
+            PlayMainTheme();
+        }
+    }
+    
+    public void StopMainThemeTimed()
+    {
+        // Schedule the stop calls
+        Timed.Run(() => StopCoroutine(PlayMainTheme()), 19.5f);
+        Timed.Run(() => audioSource.Stop(), 19.5f);
+
+        // Start fading volume down over 5.5 seconds
+        StartCoroutine(FadeVolumeOverTime(19.5f));
+        ContinueMainTheme = false;
+    }
+
+    private IEnumerator FadeVolumeOverTime(float duration)
+    {
+        float startVolume = audioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            yield return null;
+        }
+
+        audioSource.volume = startVolume;
+    }
+
     
 #if UNITY_EDITOR
     private void OnEnable()

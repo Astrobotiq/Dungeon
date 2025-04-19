@@ -19587,6 +19587,9 @@ MonoBehaviour:
   DamageFallOf: 0.5
   _target: {fileID: 0}
   _player: {fileID: 0}
+  soundManager: {fileID: 0}
+  SmiteSwordSwingSoundVolume: 0.3
+  SwordHitSoundVolume: 0.3
 --- !u!1 &4398607088252824086
 GameObject:
   m_ObjectHideFlags: 0

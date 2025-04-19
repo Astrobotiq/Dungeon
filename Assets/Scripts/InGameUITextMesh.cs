@@ -22,6 +22,8 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     public List<EnemyBrain> SortedEnemyBrains;
 
+    public int MaxEnemyUICount;
+
     public void Awake() {
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         publicHealth = GameObject.Find("PublicHealth");
@@ -81,7 +83,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     }
     
     private void UpdatePlayerImage(GameObject PlayerBar, GameObject player) {
-        Image tempImage = PlayerBar.transform.GetChild(1).GetChild(0).GetComponent<Image>();
+        Image tempImage = PlayerBar.transform.GetChild(1).GetComponent<Image>();
         Player playerComponent = player.GetComponent<Player>();
         
         if (playerComponent.PlayerSprite) {
@@ -114,19 +116,12 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         SortedEnemyBrains = new List<EnemyBrain>();
         SortedEnemyBrains = input;
         
-        for (int i = 0; i < input.Count; i++) {
+        for (int i = 0; i < MaxEnemyUICount; i++) {
             GameObject temp = GameObject.Find("Enemy_" + (i+1) );
             temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder
             temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i].enemyPortrait;
             //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
         }
-    }
-    
-    // BU TAMAMLANACAK
-    public void ResetTurn() {
-        // Burada Eren'in eventleri cagirmasi lazim
-        
-        soundManager.PlaySound(SoundType.ButtonSound, 0.5f);
     }
 
     public void UpdateTurnDisplay(int currentTurn, int maxTurn) { // TURNMANAGER GELINCE GUNCELLENECEK SU AN PSEUDO TURNMANAGER KULLANIYOR

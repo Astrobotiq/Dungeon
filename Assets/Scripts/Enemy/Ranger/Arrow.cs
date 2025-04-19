@@ -14,10 +14,20 @@ public class Arrow : ISkillEffect
     
     private Grid _targetGrid;
     
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float ArrowSentSoundVolume = 1f;
+    public float ArrowHitSoundVolume = 1f;
+    
     public override void StartMoving(Grid targetGrid)
     {
         _targetGrid = targetGrid;
         float duration = Vector3.Distance(transform.position, _targetGrid.transform.position) / speed;
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
+        soundManager.PlaySound(SoundType.ArrowSent,ArrowSentSoundVolume);
         
         if (_targetGrid.GridObject != null)
         {
@@ -74,6 +84,9 @@ public class Arrow : ISkillEffect
         if (_targetGrid.GridObject != null)
         {
             _targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(damageAmount);
+            
+            soundManager.PlaySound(SoundType.ArrowHit,ArrowHitSoundVolume);
+            
             FeelManager.Instance.ShakeCamera();
         }
         

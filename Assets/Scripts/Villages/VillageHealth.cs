@@ -8,5 +8,7 @@ public class VillageHealth : IHealth
         VillageManager.Instance.ChangeVillageHP(-1);
         EventManager.Instance.InvokeOnVillageTakeDamage();
         base.TakeDamage(damage);
+
+        PlayerManager.Instance.playerListForEnemyAI.Remove(gameObject);
     }
 }
