@@ -46,6 +46,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
             return;
         }
             
+        soundManager.PlaySound(SoundType.TurnSwitchSound,TurnSwitchSoundVolume);
         
         _currentTurn = nextTurn;
         Timed.Run((() => StartTurn()), 2f);
@@ -54,8 +55,6 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     public void StartTurn()
     {
         _currentTurn.EnterTurn();
-        
-        soundManager.PlaySound(SoundType.TurnSwitchSound,TurnSwitchSoundVolume);
     }
 
     public ITurn GetCurrentTurn() => _currentTurn;

@@ -233,6 +233,10 @@ MonoBehaviour:
   attackStartTime: 0.5
   attackDashTime: 0.15
   attackRecoveryTime: 0.4
+  soundManager: {fileID: 0}
+  SpiderSoundVolume: 0.2
+  SpiderWebSoundVolume: 0.2
+  SpiderAttackVolume: 0.2
 --- !u!114 &2449869014637842404
 MonoBehaviour:
   m_ObjectHideFlags: 0

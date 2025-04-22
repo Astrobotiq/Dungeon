@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameView: {fileID: 0}
-  playerSprite: {fileID: 21300000, guid: 637dd9d15a277e54eb58a30e45e9936f, type: 3}
+  playerSprite: {fileID: 21300000, guid: 5ecd9bb8a57208c4b9f9afd12ab3cb78, type: 3}
   range: 5
   footPivot: {fileID: 6148694931671149544}
   handPivot: {fileID: 7790760818711473775}

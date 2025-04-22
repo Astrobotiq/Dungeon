@@ -1,5 +1,7 @@
 ﻿using System;
 using MoreMountains.Feedbacks;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyHealth : IHealth
 {
@@ -25,6 +27,10 @@ public class EnemyHealth : IHealth
         }
         
         base.TakeDamage(damage);
+        
+        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(4).gameObject;
+        Slider slider = EnemyPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
+        slider.value = GetComponent<EnemyHealth>().getHealthPercentage();
     }
 
     public override void Heal(int heal)

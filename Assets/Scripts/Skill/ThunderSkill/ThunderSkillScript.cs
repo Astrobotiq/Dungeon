@@ -28,6 +28,7 @@ public class ThunderSkillScript : ISkillEffect
     }
 
     public override void ApplyEffect(Grid targetGrid) {
+        
         if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
         {
             targetGrid.GridObject.GetComponent<IDamagable>().Damage(damageAmount);

@@ -7,28 +7,65 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 
 public class InGameUITextMesh : Singleton<InGameUITextMesh> {
+    #region Lists
     
     [SerializeField] 
     private List<GameObject> players;
+    
+    public List<EnemyBrain> SortedEnemyBrains;
+    
+    #endregion
 
+
+    #region General
+    
+    [SerializeField]
     private GameObject publicHealth;
+    
+    [SerializeField]
+    private GameObject turnCounterGameobject;
 
     [SerializeField] 
-    private SoundManager soundManager;
+    private Button UndoBTN;
+
+    [SerializeField] 
+    private GameObject youWinGameObject;
     
-    public GameObject TurnCounterGameobject;
+    [SerializeField] 
+    private GameObject youLoseGameObject;
 
-    [SerializeField] private Button UndoBTN;
+    [SerializeField] 
+    private GameObject missionGameObject;
+    
+    [SerializeField]
+    private SoundManager soundManager; //Şu an duruyor ama duruma göre SİLİNECEK duruma gelebilir
 
-    public List<EnemyBrain> SortedEnemyBrains;
-
+    public float WinSoundVolume = 1f;
+    public float GameOverSoundVolume = 1f;
+    
+    #endregion
+    
+    //Bu duruma göre gidecek o yüzden SİLİNECEK yazıyorum
     public int MaxEnemyUICount;
-
-    public void Awake() {
-        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
-        publicHealth = GameObject.Find("PublicHealth");
-    }
     
+    
+    //SİLİNECEK
+    private bool naber = true;
+    
+    private void Update()
+    {
+        if (naber)
+        {
+            List<String> temp = new List<String>();
+            temp.Add("Do not take damage");
+            temp.Add("Kill at least 2 wizard");
+            UpdateMissionInformation(temp);
+            naber = false;
+        }
+        
+        
+    }
+
     void OnEnable()
     {
         CommandManager.Instance.onCommandActivated += () => UndoBTN.gameObject.SetActive(true);
@@ -109,6 +146,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         else if (tempSlider.value > 100) {
             tempSlider.value = 100;
         }
+        
     }
     
     public void UpdateEnemyArrangement(List<EnemyBrain> input)
@@ -118,14 +156,71 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         
         for (int i = 0; i < MaxEnemyUICount; i++) {
             GameObject temp = GameObject.Find("Enemy_" + (i+1) );
-            temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder
+            temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder 
             temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i].enemyPortrait;
             //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
         }
     }
 
     public void UpdateTurnDisplay(int currentTurn, int maxTurn) { // TURNMANAGER GELINCE GUNCELLENECEK SU AN PSEUDO TURNMANAGER KULLANIYOR
-        TurnCounterGameobject.gameObject.SetActive(true);
-        TurnCounterGameobject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (currentTurn + " / " + maxTurn);
+        turnCounterGameobject.gameObject.SetActive(true);
+        turnCounterGameobject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (currentTurn + " / " + maxTurn);
     }
+
+    public void OpenMissionInformation() { // SİLİNECEK geçici olarak çözmek için böyle yaptım
+        missionGameObject.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void ChangeMissionInformation(int missionPlace, String missionText)
+    {
+        GameObject allMissionsHolder = missionGameObject.transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).gameObject;
+        GameObject textHolderGameobject = allMissionsHolder.transform.GetChild(missionPlace-1).transform.GetChild(1).transform.GetChild(0).gameObject;
+        textHolderGameobject.GetComponent<TextMeshProUGUI>().text = missionText;
+        
+    }
+    public void UpdateMissionInformation(List<String> missionTexts)
+    {
+        // OpenMissionInformation(); // Method içindeki kodu buraya taşırız geçici olarak çözmek için böyle yaptım
+        
+        // GameObject allMissionsHolder = missionGameObject.transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).gameObject;
+
+        if (missionTexts.Count > 2)
+        {
+            Debug.LogWarning("Ben 2 mission yazabiliyorum ama üçden fazla mission stringi var");
+            return;
+        }
+        
+        for (int i = 0; i < 2; i++)
+        {
+            // GameObject textHolderGameobject = allMissionsHolder.transform.GetChild(i).transform.GetChild(1).transform.GetChild(0).gameObject;
+            // textHolderGameobject.GetComponent<TextMeshProUGUI>().text = missionTexts[i];
+            
+            ChangeMissionInformation(i+1, missionTexts[i]);
+        }
+    }
+
+    public void OpenGameOverScreen() {
+        youLoseGameObject.SetActive(true);
+        
+        soundManager.PlaySound(SoundType.GameOverSound, GameOverSoundVolume);
+    }
+    
+    public void OpenWinScreen(int completedMissionCount) {
+        youWinGameObject.SetActive(true);
+        
+        UpdateWinScreenStars(completedMissionCount);
+        
+        soundManager.PlaySound(SoundType.YouWinSound, WinSoundVolume);
+    }
+    
+    public void UpdateWinScreenStars(int completedMissionCount) {
+        GameObject youWinScreenStarHolderGameObject =
+            youWinGameObject.transform.GetChild(2).transform.GetChild(3).gameObject;
+        
+        for (int i = 1; i < completedMissionCount + 1 ; i++) {
+            youWinScreenStarHolderGameObject.transform.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+    
+    
 }

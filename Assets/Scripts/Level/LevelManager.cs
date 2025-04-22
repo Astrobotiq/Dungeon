@@ -212,6 +212,8 @@ public class LevelManager : Singleton<LevelManager>
         
         InGameUITextMesh.Instance.UpdatePlayerBars();
         InGameUITextMesh.Instance.updatePublicBar();
+        //InGameUITextMesh.Instance.UpdateMissionInformation();
+        InGameUITextMesh.Instance.OpenMissionInformation(); // SİLİNECEK yularıdaki method zaten açacak ama şu an açma işini halletsin diye ekledim
         
         foreach (var mission in currentLevel.getMissions())
         {
