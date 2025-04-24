@@ -2750,6 +2750,8 @@ MonoBehaviour:
   minSpawnNumber: 1
   waitInterval: 1
   spawner: {fileID: 1102903959755594569, guid: b32c45120a783c34488d8595de504acf, type: 3}
+  soundManager: {fileID: 0}
+  InTurnEnemyInstantiateSoundVolume: 0.3
 --- !u!114 &6836413923502902975
 MonoBehaviour:
   m_ObjectHideFlags: 0

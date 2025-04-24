@@ -46,7 +46,8 @@ public enum SoundType
     SwitchingToLevelSelectionSound,
     BumpSound,
     GameStartWalkSound,
-    DrumTakeDamageSound
+    DrumTakeDamageSound,
+    InTurnEnemyInstantiateSound
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
