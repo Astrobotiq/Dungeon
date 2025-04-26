@@ -2762,8 +2762,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 602b65cec653b2c47a792432beab4d67, type: 3}
   - name: LightningHit
     sounds:
-    - {fileID: 8300000, guid: 38adcc60120fe0047b3f5490bf96321a, type: 3}
-    - {fileID: 8300000, guid: 5d6fac3bc877e4247a994b8f23af6f4f, type: 3}
+    - {fileID: 8300000, guid: da8826322c378794e8ae89385b7098c0, type: 3}
+    - {fileID: 8300000, guid: b5124e951ed93cb46aff767cb2ceba6c, type: 3}
   - name: RotateHit
     sounds:
     - {fileID: 8300000, guid: 06c5e3ad5ca379841b7987b8c5b3d244, type: 3}
@@ -2787,7 +2787,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 6f1f08be0666d2f48afd5ec69f122caf, type: 3}
   - name: LightningPlayerEffectSound
     sounds:
-    - {fileID: 8300000, guid: feba3bda7d47ce14fb8e8d59eee4866c, type: 3}
+    - {fileID: 8300000, guid: effda8121498bcd428b67ec5e2b8c631, type: 3}
   - name: EnemyWizardSkillHitSound
     sounds:
     - {fileID: 8300000, guid: 5899f60ec4569c241846cffc56b800ac, type: 3}

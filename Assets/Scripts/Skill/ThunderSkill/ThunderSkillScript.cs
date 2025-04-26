@@ -28,13 +28,18 @@ public class ThunderSkillScript : ISkillEffect
     }
 
     public override void ApplyEffect(Grid targetGrid) {
-        
-        if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
+
+        if (targetGrid.GridObject != null)
         {
-            targetGrid.GridObject.GetComponent<IDamagable>().Damage(damageAmount);
+            if (targetGrid.GridObject.GetComponent<IDamagable>() != null)
+            {
+                targetGrid.GridObject.GetComponent<IDamagable>().Damage(damageAmount);
+            }
             
             soundManager.PlaySound(SoundType.LightningHit,LightningHitSoundVolume);
+            
+            Destroy(this.gameObject);
         }
-        Destroy(this.gameObject);
+        
     }
 }
