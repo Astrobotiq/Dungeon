@@ -13,7 +13,7 @@ public class AlgorithmSkillFourDirection
     }
 
     public void AlgorithmV1(Grid input_grid, HashSet<Vector3>input_set, int input_distance, bool isLikeMortar) {
-        Debug.Log(input_grid.gameObject.transform.position);
+        //Debug.Log(input_grid.gameObject.transform.position);
         GridManager gridManagerInstance = GridManager.Instance;
         Vector3 location = input_grid.gameObject.transform.position;
         
@@ -104,6 +104,6 @@ public class AlgorithmSkillFourDirection
             }
         }
         
-        Debug.Log(input_set.Count);
+        //Debug.Log(input_set.Count);
     }
 }

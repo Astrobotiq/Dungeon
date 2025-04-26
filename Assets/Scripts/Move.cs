@@ -28,13 +28,19 @@ public class Move : MonoBehaviour
     [SerializeField]
     TravelType travelType = TravelType.NORMAL;
     
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float NormalWalkSoundVolume = 1f;
+    public float JumpWalkSoundVolume = 1f;
+    
     //Maybe this function call a coroutine. This will be decided based on can's code
     public void StartMove(Grid startGrid, Grid endGrid)
     {
         AStarPathfinding path = new();
         var grids = path.startAlgorithm(startGrid, endGrid);
 
-        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
         
         //Test
         Debug.Log(grids.Count);
@@ -74,6 +80,8 @@ public class Move : MonoBehaviour
             }
             
             Instantiate(dust, dustPos.position, quaternion.identity);
+            
+            soundManager.PlaySound(SoundType.NormalWalkSound,NormalWalkSoundVolume);
 
             GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
 
@@ -118,6 +126,8 @@ public class Move : MonoBehaviour
             }
 
             Instantiate(dust, dustPos.position, quaternion.identity);
+            
+            soundManager.PlaySound(SoundType.JumpWalkSound,JumpWalkSoundVolume);
             
             GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
             

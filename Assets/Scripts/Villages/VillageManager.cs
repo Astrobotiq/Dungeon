@@ -6,7 +6,7 @@ public class VillageManager : Singleton<VillageManager>
 {
     private List<GameObject> villages = new();
     [SerializeField] private int TotalHp;
-    [SerializeField] private int MaxTotalHp;
+    [SerializeField] private int MaxTotalHp = 10;
 
     public void Start()
     {
@@ -50,5 +50,19 @@ public class VillageManager : Singleton<VillageManager>
         {
             TotalHp = MaxTotalHp;
         }
+        
+        InGameUITextMesh.Instance.updatePublicBar();
+    }
+
+    public float getHealthPercentage()
+    {
+        float temp_1 = (float)TotalHp;
+        float temp_2 = (float)MaxTotalHp;
+
+        float temp_3 = Mathf.FloorToInt((temp_1 / temp_2) * 100);
+        
+        Debug.Log("health percentage " + temp_3);
+        return temp_3; 
+
     }
 }

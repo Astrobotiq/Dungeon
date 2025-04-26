@@ -16,6 +16,11 @@ public class PlayerManager : Singleton<PlayerManager>
     
     [SerializeField,Range(0,5)]
     float offset;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float PlayerSelectSoundVolume = 1f;
 
     void OnEnable()
     {
@@ -46,11 +51,17 @@ public class PlayerManager : Singleton<PlayerManager>
         GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position,
             !PlayerScript.HasTraveled && !PlayerScript.IsPlayerWebbed && PlayerScript.IsPlayerTurn , PlayerScript.range);
         EnemyManager.Instance.DeselectEnemy();
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySound(SoundType.PlayerSelectSound,PlayerSelectSoundVolume);
     }
 
     public void SetSelectedPlayerFromOutside(GameObject Player)
     {
         SelectedPlayer = Player;
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySound(SoundType.PlayerSelectSound,PlayerSelectSoundVolume);
     }
 
     public void SetNewGridForSelectedPlayer(GameObject grid)

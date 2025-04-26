@@ -9810,6 +9810,8 @@ MonoBehaviour:
   jumpPower: 1
   jumpNumber: 1
   jumpDuration: 2
+  soundManager: {fileID: 0}
+  RotateHitSoundVolume: 0.3
 --- !u!1 &7980101879114029423
 GameObject:
   m_ObjectHideFlags: 0

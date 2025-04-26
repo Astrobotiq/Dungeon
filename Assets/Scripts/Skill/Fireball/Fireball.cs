@@ -25,22 +25,32 @@ public class Fireball : ISkillEffect
     AnimationCurve curve;
     
     public int DamageAmount;
-    
 
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float FireballSentSoundVolume = 1f;
+    public float FireballHitSoundVolume = 1f;
+    
     public override void StartMoving(Grid targetGrid)
     {
         _target = targetGrid;
         transform.DOJump(targetGrid.gameObject.transform.position, jumpPower, jumpNumber, jumpDuration).SetEase(curve);
         
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
         Timed.Run((() =>
         {
             FeelManager.Instance.ShakeCamera();
+            soundManager.PlaySound(SoundType.FireballSent,FireballSentSoundVolume);
             ApplyEffect();
         }),jumpDuration);
     }
 
     public override void ApplyEffect(Grid targetGrid = null)
     {
+        soundManager.PlaySound(SoundType.FireballHit,FireballHitSoundVolume);
+        
         if (_target.GridObject && _target.GridObject.GetComponent<IDamagable>() != null)
         {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);

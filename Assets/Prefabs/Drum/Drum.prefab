@@ -89,6 +89,8 @@ MonoBehaviour:
   damageMultiplier: 0
   spawner: {fileID: 1102903959755594569, guid: b32c45120a783c34488d8595de504acf, type: 3}
   waitInterval: 0.2
+  soundManager: {fileID: 0}
+  DrumTakeDamageSoundVolume: 0.2
 --- !u!1001 &499461134292720495
 PrefabInstance:
   m_ObjectHideFlags: 0

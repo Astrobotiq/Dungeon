@@ -815,7 +815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5096776682237179564
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1834,13 +1834,15 @@ MonoBehaviour:
   walkJumpPower: 0.4
   walkJumpNumber: 5
   statue: {fileID: 0}
-  statueLight: {fileID: 0}
   mask: {fileID: 0}
+  lights: []
   canRotate: 0
   isFirst: 1
   cam: {fileID: 1046826480818991013}
   transitionDuration: 1.5
   isOrthographic: 0
+  soundManager: {fileID: 0}
+  GameStartWalkSoundVolume: 1
 --- !u!1 &4553614102866011961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2660,6 +2662,8 @@ MonoBehaviour:
   players: []
   playerListForEnemyAI: []
   offset: 1.4
+  soundManager: {fileID: 0}
+  PlayerSelectSoundVolume: 1
 --- !u!1 &7557921445799693189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2711,6 +2715,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnNumber: 0
+  _maxTurnNumber: 0
+  soundManager: {fileID: 0}
+  TurnSwitchSoundVolume: 0.2
 --- !u!114 &4331018550728971575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2743,6 +2750,8 @@ MonoBehaviour:
   minSpawnNumber: 1
   waitInterval: 1
   spawner: {fileID: 1102903959755594569, guid: b32c45120a783c34488d8595de504acf, type: 3}
+  soundManager: {fileID: 0}
+  InTurnEnemyInstantiateSoundVolume: 0.3
 --- !u!114 &6836413923502902975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2789,7 +2798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextTurn: 1
-  isLastTurn: 0
+  isLastTurn: 1
   waitInterval: 1
   armController: {fileID: 2509659985620994166}
   damageAmount: 3
@@ -3240,6 +3249,11 @@ MonoBehaviour:
   enemyFactory: {fileID: 8323063901155126538}
   VillageFactory: {fileID: 852878394806789676}
   EnviromentFactory: {fileID: 2229279268441915657}
+  soundManager: {fileID: 0}
+  VillageInstantiateSoundVolume: 0.2
+  PlayerNEnemyInstantiateSoundVolume: 0.2
+  WaterInstantiateSoundVolume: 0.1
+  MountainInstantiateSoundVolume: 0.2
 --- !u!1 &8503832116232198829
 GameObject:
   m_ObjectHideFlags: 0

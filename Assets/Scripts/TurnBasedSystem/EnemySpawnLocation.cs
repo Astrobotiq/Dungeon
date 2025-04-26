@@ -15,6 +15,11 @@ public class EnemySpawnLocation : ITurn
     
     [SerializeField]
     private GameObject spawner;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float InTurnEnemyInstantiateSoundVolume = 1f;
     public override void EnterTurn()
     {
         var gridList = GridManager.Instance.GridList;
@@ -38,7 +43,8 @@ public class EnemySpawnLocation : ITurn
                     new Vector3(grid.transform.position.x, 0.5f, grid.transform.position.z), Quaternion.identity);
                 spawners.Add(Spawner);
                 
-                
+                soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+                soundManager.PlaySound(SoundType.InTurnEnemyInstantiateSound, InTurnEnemyInstantiateSoundVolume);
 
                 spawnedEnemyNum++;
 
