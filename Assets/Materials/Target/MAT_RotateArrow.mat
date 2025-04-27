@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1037305510287038834
+--- !u!114 &-963076297105819555
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_EnemySpawn
+  m_Name: MAT_RotateArrow
   m_Shader: {fileID: -6465566751694194690, guid: b8c4231fcd8143c4fbec1f4ceaa6190d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -37,7 +37,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: e7fe70c507e6ce143b5f2ceba4c11910, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5dfbd007d557e02439430d888a66600f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -54,8 +54,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _LerpNumber: 0
+    - _LerpNumber: 0.5
     m_Colors:
-    - _MainColor: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 0.65514016, g: 0.6698113, b: 0.2748754, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

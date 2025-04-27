@@ -29,6 +29,11 @@ public class WizardEnemyBrain : EnemyBrain
         _targetLineController = GetComponent<LineController>();
     }
 
+    public override void RecalculateTarget(string name)
+    {
+        _targetLineController.DrawLine(transform.position,TargetGrid.transform.position);
+    }
+
     protected override void DecideAttackTile()
     {
         AlgorithmSkillFourDirection algorithm = new AlgorithmSkillFourDirection();
@@ -43,6 +48,11 @@ public class WizardEnemyBrain : EnemyBrain
             var grid = GridManager.Instance.getGridFromLocation(pos);
             
             if (grid.GridObject == null)
+            {
+                continue;
+            }
+
+            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy))
             {
                 continue;
             }

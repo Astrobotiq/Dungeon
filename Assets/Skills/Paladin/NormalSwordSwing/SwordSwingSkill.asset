@@ -22,3 +22,4 @@ MonoBehaviour:
   GUISprite: {fileID: 21300000, guid: 6fd0b649401ca5b419a5ebf5df170c0f, type: 3}
   SkillGO: {fileID: 3153472991145048103, guid: fd9e42e7eb9f6e4448a60d2ad2efb42e, type: 3}
   PlayerEffect: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
+  AttackPreviewType: 1

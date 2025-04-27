@@ -16,6 +16,7 @@ public class GridManager : Singleton<GridManager>
     public List<List<GameObject>> GridList;
 
     public bool IsInSearchState = false;
+    public bool hasPreviewed = false;
     public bool hasInstantiated = false;
 
     void Start()
@@ -159,6 +160,7 @@ public class GridManager : Singleton<GridManager>
             Debug.Log(set.Count);
             OpenGrids(set, false);
             IsInSearchState = true;
+            
         }
     }
 
@@ -191,8 +193,14 @@ public class GridManager : Singleton<GridManager>
                 PlayerManager.Instance.DeselectPlayer();
                 EnemyManager.Instance.DeselectEnemy();
             }
-            IsInSearchState = false;
-            ResetTable();
+
+            if (hasPreviewed)
+            {
+                IsInSearchState = false;
+                ResetTable();
+            }
+
+            hasPreviewed = true;
         }
         else
         {
@@ -224,7 +232,7 @@ public class GridManager : Singleton<GridManager>
         ResetTable();
 
         IsInSearchState = true;
-        
+        hasPreviewed = false;
         AlgorithmSkillFourDirection searchAlgorithm = new AlgorithmSkillFourDirection();
         HashSet<Vector3> selectedGrids = null;
         

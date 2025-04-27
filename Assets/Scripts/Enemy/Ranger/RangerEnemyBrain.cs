@@ -112,6 +112,11 @@ public class RangerEnemyBrain : EnemyBrain
                 continue;
             }
             
+            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy))
+            {
+                continue;
+            }
+            
             possibleAttackPosition.Add(pos);
         }
 

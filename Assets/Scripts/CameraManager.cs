@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -42,25 +43,36 @@ public class CameraManager : Singleton<CameraManager>
     public bool isFirst = true;
     
     public Camera cam;
-    public float transitionDuration = 1.5f; // Geçiş süresi
+    public float transitionDuration = 5f; // Geçiş süresi
 
     public bool isOrthographic = false;
+    
+    private SkyController _skyController;
+
+    [SerializeField] private Renderer SkyRenderer;
     void Start()
     {
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
 
         transform.position = cameraMainMenuPos.position;
+
+        if (SkyRenderer)
+            _skyController = new SkyController(SkyRenderer);
     }
 
     public void StartGame()
     {
-        // Hedef rotasyonu hesapla
-        Quaternion targetRotation = GetRotation(statue.transform, cameraMainMenuPos.transform);
+        
 
         // DOTween ile döndür
         Sequence sequence = DOTween.Sequence();
+        
+        // Hedef rotasyonu hesapla
+        Quaternion targetRotation = GetRotation(statue.transform, cameraMainMenuPos.transform);
+        
         sequence.Append(transform.DORotateQuaternion(targetRotation, 2)
-            .SetEase(Ease.OutQuad).OnComplete((() => FeelManager.Instance.CameraLookAt(transform,statue.transform,walkDuration))));
+            .SetEase(Ease.OutQuad));
+        
         sequence.Append(transform.DOJump(cameraInGamePos.position, walkJumpPower,walkJumpNumber,walkDuration).SetEase(Ease.Linear)
             .OnUpdate((() => transform.LookAt(statue.transform)))
             .OnComplete((() =>
@@ -70,22 +82,77 @@ public class CameraManager : Singleton<CameraManager>
                     light.gameObject.SetActive(true);
                 }
             })));
-        targetRotation = GetRotation(mask.transform, transform);
-        sequence.Append(transform.DORotateQuaternion(targetRotation, 3f));
-        var pos = new Vector3(mask.transform.position.x,transform.position.y,mask.transform.position.z);
-        sequence.Append(mask.transform.DOMove(pos, 3f).OnUpdate((() => transform.LookAt(mask.transform))));
-        sequence.Append(mask.transform.DOMove(transform.position, 2f));
-        sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2).OnComplete((() => StartCoroutine(SmoothTransition()))));
+        
+        targetRotation = GetRotation(mask.gameObject.transform, cameraInGamePos);
+        
+        sequence.Append(transform.DORotateQuaternion(targetRotation, 3f))
+            .OnUpdate((() => Debug.DrawLine(transform.position,mask.transform.position, Color.red)));
+        
+        var pos = new Vector3(mask.gameObject.transform.position.x,transform.position.y,mask.gameObject.transform.position.z);
+        
+        sequence.Append(mask.gameObject.transform.DOMove(pos, 3f)
+            .OnUpdate((() => transform.LookAt(mask.gameObject.transform))));
+        
+        sequence.Append(mask.gameObject.transform.DOLocalRotate(new Vector3(0f,mask.transform.eulerAngles.y,mask.transform.eulerAngles.z),2f)
+            .OnUpdate((() => transform.LookAt(mask.gameObject.transform))));
+        
+        sequence.Append(mask.gameObject.transform.DOLocalRotate(new Vector3(0f,80f,mask.transform.eulerAngles.z),2f)
+            .OnUpdate((() => transform.LookAt(mask.gameObject.transform))));
+        
+        sequence.Append(mask.gameObject.transform.DOMove(new Vector3(-0.25999999f,5.88999987f,-0.449999988f), 2f)
+            .OnUpdate((() => Debug.DrawLine(transform.position,mask.transform.position, Color.red)))
+            .OnComplete(() => mask.gameObject.transform.parent = this.transform));
+        
+        sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2)
+            .OnComplete((() => StartCoroutine(TransitionToOrthographic((() => mask.gameObject.SetActive(false))))
+                )));
+
+        
+    }
+
+    public void OnLevelCompleted()
+    {
+        StartCoroutine(TransitionToPerspective(ChangeCameraForLevelSelection,null));
+
+
+        void ChangeCameraForLevelSelection()
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            sequence.Append(transform.DOLocalRotate(new Vector3(6,45,0),2));
+            sequence.Append(transform.DOLocalRotate(new Vector3(6,-45,0),4).SetEase(Ease.InOutCubic));
+            sequence.Append(transform.DOJump(new Vector3(-5, transform.position.y, 5),  walkJumpPower, 2, 4f)
+                .OnComplete((() => StartCoroutine(_skyController.ChangeSky(0.69f,-27f,4f)))));
+            sequence.Append(transform.DOLocalRotate(new Vector3(-19,-35,0),2).SetEase(Ease.InOutQuad));
+            sequence.Append(transform.DOLocalRotate(new Vector3(-54, -35, 0), 2).SetEase(Ease.InOutQuad))
+                .OnComplete((() => Timed.Run(ChangeCameraForLevel,4f)));
+
+        }
+
+        void ChangeCameraForLevel()
+        {
+            StartCoroutine(_skyController.ChangeSky(-27f,0.69f, 4f));
+            transform.DOLocalRotate(new Vector3(6,-35,0),6).OnComplete((() =>
+            {
+                var rotation = GetRotation(statue.transform, transform);
+                transform.DORotateQuaternion(rotation, 4f).OnComplete((() =>
+                {
+                    transform.DOJump(cameraInGamePos.position, walkJumpPower, 2, 4f)
+                        .OnUpdate((() => transform.LookAt(statue.transform)))
+                        .OnComplete((() =>
+                        {
+                            transform.DOLocalRotate(new Vector3(45, 45, 0), 4);
+                        }));
+                }));
+            }));
+        }
     }
 
     private Quaternion GetRotation(Transform target, Transform current)
     {
         // Aradaki yön vektörünü hesapla
         Vector3 direction = (target.position - current.position).normalized;
-
-        // Eğer sadece yatay düzlemde döndürmek istiyorsan:
         
-
         // Hedef rotasyonu hesapla
         return Quaternion.LookRotation(direction);
     }
@@ -122,21 +189,22 @@ public class CameraManager : Singleton<CameraManager>
         return new Vector3(pos,cameraPivot.position.y,pos);
     }
     
-    IEnumerator SmoothTransition()
+    IEnumerator SmoothTransitionToOrtographic(Action action)
     {
+        bool startOrtho = cam.orthographic;
         float elapsedTime = 0f;
         float startFOV = cam.fieldOfView;
-        float targetFOV = isOrthographic ? 70f : 5f; // Perspective FOV → 60, Ortho Size → 5
+        float targetFOV = startOrtho ? 5f : 70f; // Perspective FOV → 60, Ortho Size → 5
         float startOrthoSize = cam.orthographicSize;
-        float targetOrthoSize = isOrthographic ? 5f : 70f; // Ters geçiş için
-        bool startOrtho = cam.orthographic;
+        float targetOrthoSize = startOrtho ? 70f : 5f; // Ters geçiş için
+        
 
         while (elapsedTime < transitionDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / transitionDuration;
 
-            if (!isOrthographic)
+            if (!startOrtho)
             {
                 cam.fieldOfView = Mathf.Lerp(startFOV, targetFOV, t);
             }
@@ -148,9 +216,94 @@ public class CameraManager : Singleton<CameraManager>
             yield return null;
         }
 
-        cam.orthographic = !isOrthographic;
-        isOrthographic = !isOrthographic;
+        cam.orthographic = !cam.orthographic;
+        startOrtho = cam.orthographic;
+        
+        action.Invoke();
         
         Timed.Run(() => LevelManager.Instance.BuildLevel(),2f);
     }
+    
+    IEnumerator TransitionToPerspective(Action onComplete, Action onMidComplete)
+    {
+        float elapsedTime = 0f;
+        float startOrthoSize = cam.orthographicSize;
+        float targetFOV = 70f;
+        float startFOV = 10;
+
+        // İlk olarak OrthoSize küçülüyor
+        while (elapsedTime < transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = EaseInOutQuad(elapsedTime / transitionDuration);
+
+            cam.orthographicSize = Mathf.Lerp(startOrthoSize, 5f, t);
+            yield return null;
+        }
+        
+        cam.orthographic = false;
+        onMidComplete?.Invoke();
+        
+        // Ardından Perspective FOV genişliyor
+        elapsedTime = 0f;
+        while (elapsedTime < transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = EaseInOutQuad(elapsedTime / transitionDuration);
+
+            cam.fieldOfView = Mathf.Lerp(startFOV, targetFOV, t);
+            yield return null;
+        }
+
+        isOrthographic = false;
+        
+        onComplete?.Invoke();
+    }
+
+    IEnumerator TransitionToOrthographic(Action onComplete)
+    {
+        float elapsedTime = 0f;
+        float startFOV = cam.fieldOfView;
+        float targetOrthoSize = 5f;
+        float startOrthoSize = 0.65f;
+
+        // Önce Perspective FOV daralıyor
+        while (elapsedTime < transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = EaseInOutQuad(elapsedTime / transitionDuration);
+
+            cam.fieldOfView = Mathf.Lerp(startFOV, 10f, t);
+            yield return null;
+        }
+
+        cam.orthographicSize = 0.65f;
+        cam.orthographic = true;
+        
+        onComplete?.Invoke();
+
+        // Sonra Ortho boyutu büyüyor
+        elapsedTime = 0f;
+        while (elapsedTime < transitionDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = EaseInOutQuad(elapsedTime / transitionDuration);
+
+            cam.orthographicSize = Mathf.Lerp(startOrthoSize, targetOrthoSize, t);
+            yield return null;
+        }
+
+        isOrthographic = true;
+
+        //Timed.Run(() => LevelManager.Instance.BuildLevel(), 2f);
+        
+        OnLevelCompleted();
+    }
+
+    
+    float EaseInOutQuad(float t)
+    {
+        return t < 0.5f ? 2f * t * t : -1f + (4f - 2f * t) * t;
+    }
+
 }
