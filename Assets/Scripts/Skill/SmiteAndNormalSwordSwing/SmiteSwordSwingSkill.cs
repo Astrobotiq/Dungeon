@@ -10,11 +10,20 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
     [SerializeField] Grid _target;
     [SerializeField] GameObject _player;
     
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float SmiteSwordSwingSoundVolume = 1f;
+    public float SwordHitSoundVolume = 1f;
+    
     public override void StartMoving(Grid targetGrid) {
         _player = PlayerManager.Instance.GetSelectedPlayer();
         _target = targetGrid;
         gameObject.transform.rotation = _player.transform.rotation;
-
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySound(SoundType.SmiteSwordSwing,SmiteSwordSwingSoundVolume);
+        
         Timed.Run((() => ApplyEffect()), swingDuration);
     }
 
@@ -23,6 +32,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
         if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IDamagable>())
         {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
+            soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
         }
         if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IPushable>())
         {
@@ -38,6 +48,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
             
             if (nextGrid.gameObject && nextGrid.GridObject && nextGrid.GridObject.GetComponent<IDamagable>()) {
                 nextGrid.GridObject.GetComponent<IDamagable>().Damage((int) (DamageAmount * DamageFallOf));
+                soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
             }
         }
         else if (_player.gameObject.transform.rotation == Quaternion.Euler(0, 90, 0)) { // player looking +x (sağa)
@@ -46,6 +57,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
             
             if (nextGrid.gameObject && nextGrid.GridObject && nextGrid.GridObject.GetComponent<IDamagable>()) {
                 nextGrid.GridObject.GetComponent<IDamagable>().Damage((int) (DamageAmount * DamageFallOf));
+                soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
             }
         }
         else if (_player.gameObject.transform.rotation == Quaternion.Euler(0, 180, 0)) { // player looking -z (arkaya)
@@ -54,6 +66,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
             
             if (nextGrid.gameObject && nextGrid.GridObject && nextGrid.GridObject.GetComponent<IDamagable>()) {
                 nextGrid.GridObject.GetComponent<IDamagable>().Damage((int) (DamageAmount * DamageFallOf));
+                soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
             }
         }
         else if (_player.gameObject.transform.rotation == Quaternion.Euler(0, 270, 0)) { // player looking -x (sola)
@@ -62,6 +75,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
             
             if (nextGrid.gameObject && nextGrid.GridObject && nextGrid.GridObject.GetComponent<IDamagable>()) {
                 nextGrid.GridObject.GetComponent<IDamagable>().Damage((int) (DamageAmount * DamageFallOf));
+                soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
             }
         }
         

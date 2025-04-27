@@ -51,7 +51,12 @@ public class Player : MonoBehaviour
     }
 
     #endregion
+    
+    [SerializeField] 
+    private SoundManager soundManager;
 
+    public float PlayerEffectSoundVolume = 1f;
+    
     void Start()
     {
         PlayerManager.Instance.Subscribe(this);
@@ -60,8 +65,8 @@ public class Player : MonoBehaviour
         WornSkills = new WornSkills();
         WornSkill skill = new WornSkill(1);
         WornSkills.SetWornSkill(skill);
-        //skill = new WornSkill(2);
-        //WornSkills.SetWornSkill(skill);
+        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     void OnDestroy()
@@ -160,7 +165,6 @@ public class Player : MonoBehaviour
                 gameView.ResetGameView();
                 CommandManager.Instance.ClearCommands();
                 HasUsedSkill = true;
-                hasPreviewedTheSkill = false;
                 var playerTurn = TurnBasedManager.Instance.GetCurrentTurn() as PlayerTurn;
                 playerTurn?.SetPlayerAsPlayed(this);
                 InputManager.Instance.canTakeInput = true;

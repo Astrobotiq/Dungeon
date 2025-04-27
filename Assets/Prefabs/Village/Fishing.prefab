@@ -83,6 +83,8 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 3
   damageMultiplier: 1
+  soundManager: {fileID: 0}
+  VillageTakeDamageSoundVolume: 0.1
 --- !u!1001 &2027583882737978268
 PrefabInstance:
   m_ObjectHideFlags: 0

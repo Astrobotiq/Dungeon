@@ -23,7 +23,13 @@ public class SpiderEnemyBrain : EnemyBrain
     
     private GameObject _web;
     
+    [SerializeField] 
+    private SoundManager soundManager;
 
+    public float SpiderSoundVolume = 1f;
+    public float SpiderWebSoundVolume = 1f;
+    public float SpiderAttackVolume = 1f;
+    
     public override Vector3 Dedice()
     {
         /*List<List<GameObject>> GridList = GridManager.Instance.GridList;
@@ -41,6 +47,8 @@ public class SpiderEnemyBrain : EnemyBrain
 
         return currentGrid.transform.position;*/
         
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySound(SoundType.SpiderSound, SpiderSoundVolume);
         
         Vector3 bestOption = gameObject.GetComponent<EnemyAI_Organizer>().ReturnBestOption(gameObject);
         Debug.Log("seçtiğim en iyi loc " + bestOption);
@@ -103,6 +111,9 @@ public class SpiderEnemyBrain : EnemyBrain
                     new Vector3(TargetGrid.transform.position.x, TargetGrid.transform.position.y + 0.5f,
                         TargetGrid.transform.position.z), Quaternion.identity);
                 player.SetPlayerWebbed(true);
+                
+                soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+                soundManager.PlaySound(SoundType.SpiderWebAttack, SpiderWebSoundVolume);
             }
         }
     }
@@ -127,6 +138,9 @@ public class SpiderEnemyBrain : EnemyBrain
             transform.DOMove(transform.position + (diffrence / 2), attackDashTime).OnComplete((() =>
             {
                 DestroyWeb();
+                
+                soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+                soundManager.PlaySound(SoundType.SpiderAttack, SpiderAttackVolume);
                 
                 FeelManager.Instance.ShakeCamera();
                 TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);

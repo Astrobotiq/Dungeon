@@ -19786,7 +19786,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 1
-  damageAmount: 0
+  damageAmount: 1
+  soundManager: {fileID: 0}
+  LightningHitSoundVolume: 0.3
 --- !u!1 &2668279109126415711
 GameObject:
   m_ObjectHideFlags: 0

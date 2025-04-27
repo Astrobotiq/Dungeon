@@ -152,7 +152,10 @@ public class CameraManager : Singleton<CameraManager>
     {
         // Aradaki yön vektörünü hesapla
         Vector3 direction = (target.position - current.position).normalized;
+
+        // Eğer sadece yatay düzlemde döndürmek istiyorsan:
         
+
         // Hedef rotasyonu hesapla
         return Quaternion.LookRotation(direction);
     }

@@ -15,5 +15,7 @@ public class PlayerHealth : IHealth
         }
         
         base.TakeDamage(damage);
+        
+        InGameUITextMesh.Instance.UpdatePlayerBars();
     }
 }

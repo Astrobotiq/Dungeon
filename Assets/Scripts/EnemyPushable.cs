@@ -20,10 +20,16 @@ public class EnemyPushable : IPushable
     private float crashRecoveryTime;
     
     private EnemyBrain _enemyBrain;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float BumpSoundVolume = 1f;
 
     void Start()
     {
         _enemyBrain = GetComponent<EnemyBrain>();
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     public override void Push(Vector3 position)
@@ -43,6 +49,7 @@ public class EnemyPushable : IPushable
             if (targetGrid.GridObject )
             {
                 Crash(targetGrid,currentGrid);
+                
             }
             else
             {
@@ -70,6 +77,8 @@ public class EnemyPushable : IPushable
                 FeelManager.Instance.ShakeCamera();
                 currentGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
                 targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
+                
+                soundManager.PlaySound(SoundType.BumpSound,BumpSoundVolume);
             }));
         }));
         /*

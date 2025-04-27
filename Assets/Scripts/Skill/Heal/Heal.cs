@@ -13,6 +13,11 @@ public class Heal : ISkillEffect
     
     [SerializeField]
     private MMF_Player effect;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+    
+    public float HealHitSoundVolume = 1f;
 
     void OnValidate()
     {
@@ -21,6 +26,8 @@ public class Heal : ISkillEffect
 
     public override void StartMoving(Grid targetGrid)
     {
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
         ApplyEffect(targetGrid);
     }
 
@@ -33,6 +40,10 @@ public class Heal : ISkillEffect
             if (targetGrid.GridObject.GetComponent<IHealth>())
             {
                 targetGrid.GridObject.GetComponent<IHealth>().Heal(heal);
+                
+                soundManager.PlaySound(SoundType.HealHitSound,HealHitSoundVolume);
+                InGameUITextMesh.Instance.UpdatePlayerBars();
+                
                 effect.PlayFeedbacks();
             }
         }

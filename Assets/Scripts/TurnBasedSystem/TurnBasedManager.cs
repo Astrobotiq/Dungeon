@@ -9,13 +9,24 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     [SerializeField]
     private int turnNumber;
     
+    [SerializeField]
     private int _maxTurnNumber;
+    
+    [SerializeField] 
+    private SoundManager soundManager;
+
+    public float TurnSwitchSoundVolume = 1f;
+
+    public void Start()
+    {
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+    }
 
     public void StartCombat(int maxTurnNumber)
     {
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
-        //InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+        InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         NextTurn(GetComponent<EnemyCombatPositionTurn>());
     }
 
@@ -24,7 +35,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
-            //InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+            InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         }
             
 
@@ -35,6 +46,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
             return;
         }
             
+        soundManager.PlaySound(SoundType.TurnSwitchSound,TurnSwitchSoundVolume);
         
         _currentTurn = nextTurn;
         Timed.Run((() => StartTurn()), 2f);

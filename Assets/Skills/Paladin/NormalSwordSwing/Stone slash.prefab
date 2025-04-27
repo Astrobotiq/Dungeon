@@ -9808,10 +9808,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729f39c98062f2e459b808402df00358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swingDuration: 1.5
+  swingDuration: 0.5
   DamageAmount: 0
   _target: {fileID: 0}
   _player: {fileID: 0}
+  soundManager: {fileID: 0}
+  SwordSwingSoundVolume: 0.3
+  SwordHitSoundVolume: 0.3
 --- !u!1 &3307283671839139976
 GameObject:
   m_ObjectHideFlags: 0

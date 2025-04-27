@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameView: {fileID: 0}
-  playerSprite: {fileID: 21300000, guid: 291937b51b5054196acf83950130f687, type: 3}
+  playerSprite: {fileID: 21300000, guid: 5ecd9bb8a57208c4b9f9afd12ab3cb78, type: 3}
   range: 5
   footPivot: {fileID: 6148694931671149544}
   handPivot: {fileID: 7790760818711473775}
@@ -119,6 +119,8 @@ MonoBehaviour:
   hasPreviewedTheSkill: 0
   _selectedSkillEffect: {fileID: 0}
   IsInWater: 0
+  soundManager: {fileID: 0}
+  PlayerEffectSoundVolume: 0.3
 --- !u!114 &1029285654706939780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,6 +153,9 @@ MonoBehaviour:
   dust: {fileID: 1248365930086534, guid: 8a7eff82d5211844591f2c46f6a7a82e, type: 3}
   dustPos: {fileID: 6148694931671149544}
   travelType: 1
+  soundManager: {fileID: 0}
+  NormalWalkSoundVolume: 0.3
+  JumpWalkSoundVolume: 0.3
 --- !u!114 &4216562348037928378
 MonoBehaviour:
   m_ObjectHideFlags: 0
