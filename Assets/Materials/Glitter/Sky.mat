@@ -42,8 +42,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Base_Color_Gradient_Power: 0.69
-    - _Glitter_Offset: 0.7
+    - _Base_Color_Gradient_Power: 0.5
+    - _Glitter_Offset: 0.65
     - _Noise_Rotation_Speed: 2
     - _QueueControl: 0
     - _QueueOffset: 0

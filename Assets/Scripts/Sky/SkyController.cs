@@ -17,7 +17,7 @@ public class SkyController
 
     
 
-    public IEnumerator ChangeSky(float from, float to, float duration)
+    public IEnumerator ChangeSky(float fromColor, float toColor,float fromStar, float toStar, float duration)
     {
         if (objRenderer != null && propertyBlock != null)
         {
@@ -28,10 +28,11 @@ public class SkyController
             while (elapsed < duration)
             {
                 float t = elapsed / duration;
-                float skyValue = Mathf.Lerp(from, to, t);
-                Debug.Log($"SkyValue : {skyValue}");
-
+                float skyValue = Mathf.Lerp(fromColor, toColor, t);
+                float starValue = Mathf.Lerp(fromStar, toStar, t);
+                
                 propertyBlock.SetFloat("_Base_Color_Gradient_Power", skyValue);
+                propertyBlock.SetFloat("_Glitter_Offset",starValue);
                 objRenderer.SetPropertyBlock(propertyBlock);
 
                 elapsed += Time.deltaTime;
@@ -39,7 +40,8 @@ public class SkyController
             }
 
             // Final value to ensure accuracy
-            propertyBlock.SetFloat("_Base_Color_Gradient_Power", to);
+            propertyBlock.SetFloat("_Base_Color_Gradient_Power", toColor);
+            propertyBlock.SetFloat("_Glitter_Offset", toStar);
             objRenderer.SetPropertyBlock(propertyBlock);
         }
     }

@@ -50,6 +50,8 @@ public class CameraManager : Singleton<CameraManager>
     private SkyController _skyController;
 
     [SerializeField] private Renderer SkyRenderer;
+
+    private SoundManager _soundManager;
     void Start()
     {
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
@@ -58,6 +60,10 @@ public class CameraManager : Singleton<CameraManager>
 
         if (SkyRenderer)
             _skyController = new SkyController(SkyRenderer);
+
+        _soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
+        _soundManager.StartMainTheme();
     }
 
     public void StartGame()
@@ -85,8 +91,11 @@ public class CameraManager : Singleton<CameraManager>
         
         targetRotation = GetRotation(mask.gameObject.transform, cameraInGamePos);
         
-        sequence.Append(transform.DORotateQuaternion(targetRotation, 3f))
-            .OnUpdate((() => Debug.DrawLine(transform.position,mask.transform.position, Color.red)));
+        sequence.Append(transform.DORotateQuaternion(targetRotation, 3f)
+                .OnComplete((() =>
+                {
+                    Timed.Run((() => LightManager.Instance.StatueLightShine(1.5f, walkDuration)),1.5f);
+                })));
         
         var pos = new Vector3(mask.gameObject.transform.position.x,transform.position.y,mask.gameObject.transform.position.z);
         
@@ -106,6 +115,8 @@ public class CameraManager : Singleton<CameraManager>
         sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2)
             .OnComplete((() => StartCoroutine(TransitionToOrthographic((() => mask.gameObject.SetActive(false))))
                 )));
+        
+        _soundManager.StopMainThemeTimed();
 
         
     }
@@ -122,7 +133,7 @@ public class CameraManager : Singleton<CameraManager>
             sequence.Append(transform.DOLocalRotate(new Vector3(6,45,0),2));
             sequence.Append(transform.DOLocalRotate(new Vector3(6,-45,0),4).SetEase(Ease.InOutCubic));
             sequence.Append(transform.DOJump(new Vector3(-5, transform.position.y, 5),  walkJumpPower, 2, 4f)
-                .OnComplete((() => StartCoroutine(_skyController.ChangeSky(0.69f,-27f,4f)))));
+                .OnComplete((() => StartCoroutine(_skyController.ChangeSky(0.5f,1f,0.65f,1f,4f)))));
             sequence.Append(transform.DOLocalRotate(new Vector3(-19,-35,0),2).SetEase(Ease.InOutQuad));
             sequence.Append(transform.DOLocalRotate(new Vector3(-54, -35, 0), 2).SetEase(Ease.InOutQuad))
                 .OnComplete((() => Timed.Run(ChangeCameraForLevel,4f)));
@@ -131,7 +142,7 @@ public class CameraManager : Singleton<CameraManager>
 
         void ChangeCameraForLevel()
         {
-            StartCoroutine(_skyController.ChangeSky(-27f,0.69f, 4f));
+            StartCoroutine(_skyController.ChangeSky(1f,0.5f,1f,0.65f, 4f));
             transform.DOLocalRotate(new Vector3(6,-35,0),6).OnComplete((() =>
             {
                 var rotation = GetRotation(statue.transform, transform);

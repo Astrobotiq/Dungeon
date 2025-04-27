@@ -26,4 +26,6 @@ public class SkillSO : ScriptableObject
     public GameObject PlayerEffect;
 
     public AttackPreviewType AttackPreviewType;
+
+    public SoundType SoundType = SoundType.EmptyPlayerEffectSound;
 }

@@ -1576,6 +1576,7 @@ Transform:
   - {fileID: 1717831859543196457}
   - {fileID: 795344264812660775}
   - {fileID: 4230294887821164323}
+  - {fileID: 8289339826081059265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3732419863789485823
@@ -1883,6 +1884,7 @@ MonoBehaviour:
   cam: {fileID: 1046826480818991013}
   transitionDuration: 1.5
   isOrthographic: 0
+  SkyRenderer: {fileID: 0}
 --- !u!95 &6027529723212470534
 Animator:
   serializedVersion: 7
@@ -2770,6 +2772,57 @@ MonoBehaviour:
   players: []
   playerListForEnemyAI: []
   offset: 1.4
+  soundManager: {fileID: 0}
+  PlayerSelectSoundVolume: 1
+--- !u!1 &7414721686800075204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8289339826081059265}
+  - component: {fileID: 8767506288834151132}
+  m_Layer: 0
+  m_Name: LightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8289339826081059265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7414721686800075204}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5626144826569477647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8767506288834151132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7414721686800075204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc72f396a3f469b459ab09d905153b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statueLights: []
+  fireLights: []
+  minFireIntensity: 0
+  maxFireIntensity: 1
+  fireIntensityChangeSpeed: 1
 --- !u!1 &7557921445799693189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2821,6 +2874,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnNumber: 0
+  _maxTurnNumber: 0
+  soundManager: {fileID: 0}
+  TurnSwitchSoundVolume: 1
 --- !u!114 &4331018550728971575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2853,6 +2909,8 @@ MonoBehaviour:
   minSpawnNumber: 1
   waitInterval: 1
   spawner: {fileID: 1102903959755594569, guid: b32c45120a783c34488d8595de504acf, type: 3}
+  soundManager: {fileID: 0}
+  InTurnEnemyInstantiateSoundVolume: 1
 --- !u!114 &6836413923502902975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3092,6 +3150,11 @@ MonoBehaviour:
   enemyFactory: {fileID: 8323063901155126538}
   VillageFactory: {fileID: 852878394806789676}
   EnviromentFactory: {fileID: 2229279268441915657}
+  soundManager: {fileID: 0}
+  VillageInstantiateSoundVolume: 1
+  PlayerNEnemyInstantiateSoundVolume: 1
+  WaterInstantiateSoundVolume: 1
+  MountainInstantiateSoundVolume: 1
 --- !u!1 &8503832116232198829
 GameObject:
   m_ObjectHideFlags: 0
