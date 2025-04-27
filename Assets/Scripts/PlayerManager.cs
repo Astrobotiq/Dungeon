@@ -41,11 +41,13 @@ public class PlayerManager : Singleton<PlayerManager>
     
     void DeSelectPlayer()
     {
+        GridManager.Instance.ResetTable();
         SelectedPlayer = null;
     }
 
     public void SetSelectedPlayer(GameObject Player)
     {
+        GridManager.Instance.ResetTable();
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
         GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position,
@@ -80,8 +82,10 @@ public class PlayerManager : Singleton<PlayerManager>
     public void DeselectPlayer()
     {
         Debug.Log("Player Manager On Deselect");
+        
         if (SelectedPlayer)
         {
+            GridManager.Instance.ResetTable();
             SelectedPlayer.GetComponent<Player>().onDeselected();
             SelectedPlayer = null;
         }

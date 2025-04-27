@@ -75,6 +75,7 @@ public class EnemyPushable : IPushable
             transform.DOMove(StartPos, crashRecoveryTime).OnComplete((() =>
             {
                 FeelManager.Instance.ShakeCamera();
+                currentGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
                 targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
                 
                 soundManager.PlaySound(SoundType.BumpSound,BumpSoundVolume);

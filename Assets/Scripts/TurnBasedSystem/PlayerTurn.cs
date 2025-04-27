@@ -54,6 +54,8 @@ public class PlayerTurn : ITurn
 
     private void TryExitTurn()
     {
+        GridManager.Instance.ResetTable();
+        PlayerManager.Instance.DeselectPlayer();
         foreach (var pair in _playerDictionary)
         {
             if (!pair.Value)

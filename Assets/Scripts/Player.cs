@@ -20,10 +20,15 @@ public class Player : MonoBehaviour
     [SerializeField] Transform handPivot;
 
     [SerializeField] Move move;
+
+    [SerializeField] 
+    private AttackPreview attackPreview;
     
     private bool _isPlayerTurn = false;
     
     private bool _hasWebbed = false;
+
+    [SerializeField] bool hasPreviewedTheSkill = false;
 
     [Header("Selecteds")] public GameObject Grid { get; private set; }
     [SerializeField] GameObject _selectedSkillEffect;
@@ -74,6 +79,8 @@ public class Player : MonoBehaviour
         _isPlayerTurn = isIt;
         HasTraveled = false;
         HasUsedSkill = false;
+        SelectedSkill = null;
+        hasPreviewedTheSkill = false;
     }
 
     public bool IsPlayerTurn => _isPlayerTurn;
@@ -113,6 +120,7 @@ public class Player : MonoBehaviour
             CommandManager.Instance.AddCommand(command);
 
             move.StartMove(this.Grid.GetComponent<Grid>(), Grid.GetComponent<Grid>());
+            GridManager.Instance.ResetTable();
             onPositionChange(Grid);
             HasTraveled = true;
         }
@@ -122,10 +130,31 @@ public class Player : MonoBehaviour
             {
                 return;
             }
-            
-            InputManager.Instance.canTakeInput = false;
 
-            StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position, (InstantiateSkill)));
+            if (hasPreviewedTheSkill)
+            {
+                InputManager.Instance.canTakeInput = false;
+                attackPreview.ClosePreviews();
+                StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position, (InstantiateSkill)));
+                return;
+            }
+
+            switch (SelectedSkill.Skill.AttackPreviewType)
+            {
+                case AttackPreviewType.None:
+                    break;
+                case AttackPreviewType.Rotate:
+                    attackPreview.PreviewRotateable(Grid.gameObject.transform.position);
+                    break;
+                case AttackPreviewType.PushFourSide:
+                    attackPreview.PreviewFourSidedPushable(Grid.gameObject.transform.position);
+                    break;
+                case AttackPreviewType.PushOneSide:
+                    attackPreview.PreviewOneSidedPushable(transform.position,Grid.gameObject.transform.position);
+                    break;
+            }
+
+            hasPreviewedTheSkill = true;
 
             void InstantiateSkill()
             {
@@ -177,7 +206,7 @@ public class Player : MonoBehaviour
             return;
         }
         HandleUI(true, this);
-        PlayerManager.Instance.SetSelectedPlayerFromOutside(this.gameObject);
+        PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
     }
 
     void HandleUI(bool isActive, Player player = null)
@@ -199,11 +228,6 @@ public class Player : MonoBehaviour
             _selectedSkillEffect = SelectedSkill.Skill.PlayerEffect;
             _selectedSkillEffect = Instantiate(_selectedSkillEffect, footPivot.position, Quaternion.identity);
 
-            if (SelectedSkill.Skill.PlayerEffectSoundType != SoundType.EmptyPlayerEffectSound)
-            {
-                soundManager.PlaySound(SelectedSkill.Skill.PlayerEffectSoundType,PlayerEffectSoundVolume);
-            }
-
             GridManager.Instance.StartSearchForSkill(SelectedSkill.Skill.SearchType);
         }
     }
@@ -214,17 +238,20 @@ public class Player : MonoBehaviour
         onPositionChange(grid);
         GridManager.Instance.SetSelectedGridFromOutside(Grid.transform.position, false);
         HasTraveled = false;
+        hasPreviewedTheSkill = false;
     }
 
     public void onDeselected()
     {
         if (_selectedSkillEffect != null)
         {
-            Destroy(_selectedSkillEffect.gameObject);
+            Destroy(_selectedSkillEffect);
             _selectedSkillEffect = null;
         }
 
         SelectedSkill = null;
+        hasPreviewedTheSkill = false;
+        attackPreview.ClosePreviews();
         
         HandleUI(false);
     }

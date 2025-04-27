@@ -72,12 +72,12 @@ public class SpiderEnemyBrain : EnemyBrain
             var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x + i, currentGridPos.y, currentGridPos.z));
             var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x, currentGridPos.y, currentGridPos.z + i));
 
-            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.tag.Equals("Player"))
+            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<EnemyBrain>() == null)
             {
                 targetGrids.Add(xGrid);
             }
             
-            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.tag.Equals("Player"))
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<EnemyBrain>() == null)
             {
                 targetGrids.Add(zGrid);
             }

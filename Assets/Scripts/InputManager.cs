@@ -1,15 +1,16 @@
 using System;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : Singleton<InputManager>
 {
-    //event manager yazmadığım için şimdilik böyle koyucam
     public event Action onRightClicked;
     public bool canTakeInput = true;
-    //Todo bütün bu managerler için bir tane Singleton parent class yazılacak yazılacak
+    public LayerMask raycastLayer;
+    
 
     public void OnLeftButton(InputAction.CallbackContext value)
     {
@@ -19,9 +20,13 @@ public class InputManager : Singleton<InputManager>
             RaycastHit hit = getRaycastHit(mousePosition);
 
             if (hit.collider == null)
-            {
                 return;
-            }
+
+            //This prevent raycast's pass through over UI
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+            
+            
             
             IClickable clickable = hit.collider.gameObject.GetComponent<IClickable>();
 
@@ -67,7 +72,7 @@ public class InputManager : Singleton<InputManager>
     {
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(position.x, position.y, Camera.main.nearClipPlane));
 
-        Physics.Raycast(ray, out RaycastHit hit);
+        Physics.Raycast(ray, out RaycastHit hit,50f ,raycastLayer);
 
         return hit;
     }
