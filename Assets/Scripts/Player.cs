@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
@@ -33,6 +34,9 @@ public class Player : MonoBehaviour
     [Header("Selecteds")] public GameObject Grid { get; private set; }
     [SerializeField] GameObject _selectedSkillEffect;
 
+    [SerializeField] 
+    private List<uint> startSkillList;
+
     #endregion
 
     #region Publics
@@ -62,10 +66,21 @@ public class Player : MonoBehaviour
         PlayerManager.Instance.Subscribe(this);
         gameView = GameObject.FindWithTag("UI").GetComponent<GameView>();
         //Burası şimdilik duruyor. Elle girmemiz gereken bir noktadayız
-        WornSkills = new WornSkills();
-        WornSkill skill = new WornSkill(1);
-        WornSkills.SetWornSkill(skill);
         
+        WornSkills = new WornSkills();
+
+        if (startSkillList.Count>0)
+        {
+            foreach (var skillId in startSkillList)
+            {
+                WornSkill skill = new WornSkill(skillId);
+                WornSkills.SetWornSkill(skill);
+            }
+        }
+        else
+        {
+            Debug.Log("There is no skill to use, Boss");
+        }
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
     }
 

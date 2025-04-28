@@ -86,7 +86,30 @@ public class LevelManager : Singleton<LevelManager>
                         player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
                         playerManager.playerListForEnemyAI.Add(player);
                         
-                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                        //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                    }));
+
+                    yield return new WaitForSeconds(1f);
+                }
+                
+                if (line[j].Equals('?'))
+                {
+                    Debug.Log("Player bulundu");
+                    var player =  playerFactory.Build(PlayerType.Wizard, new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var yPosTarget = player.transform.position.y;
+
+                    player.transform.position = new Vector3(player.transform.position.x,
+                        player.transform.position.y + 3, player.transform.position.z);
+
+                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+                        playerManager.playerListForEnemyAI.Add(player);
+                        
+                        //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
                     }));
 
                     yield return new WaitForSeconds(1f);
@@ -111,7 +134,7 @@ public class LevelManager : Singleton<LevelManager>
                     
                     enemyManager.enemyListForEnemyAI.Add(EnemyObj);
                     
-                    soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                    //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
                 }
 
                 if (line[j].Equals('+'))
@@ -134,7 +157,7 @@ public class LevelManager : Singleton<LevelManager>
                         VillageGO.GetComponent<Village>().SetGrid(grid);
                         playerManager.playerListForEnemyAI.Add(VillageGO);
                         
-                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
+                        //soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
                     }));
                     
                     yield return new WaitForSeconds(1f);
@@ -157,7 +180,7 @@ public class LevelManager : Singleton<LevelManager>
                         grid.GridObject = Village;
                         playerManager.playerListForEnemyAI.Add(Village);
                         
-                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
+                        //soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
                     }));
                     
                     yield return new WaitForSeconds(1f);
@@ -174,7 +197,7 @@ public class LevelManager : Singleton<LevelManager>
                     Village.transform.position = new Vector3(Village.transform.position.x,
                         Village.transform.position.y + 3, Village.transform.position.z);
                     
-                    soundManager.PlaySound(SoundType.WaterInstantiateSound,WaterInstantiateSoundVolume);
+                    //soundManager.PlaySound(SoundType.WaterInstantiateSound,WaterInstantiateSoundVolume);
                     
                     Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
                     {
@@ -203,7 +226,7 @@ public class LevelManager : Singleton<LevelManager>
                         grid.GridObject = Village;
                         playerManager.playerListForEnemyAI.Add(Village);
                         
-                        soundManager.PlaySound(SoundType.MountainInstantiateSound,MountainInstantiateSoundVolume);
+                        //soundManager.PlaySound(SoundType.MountainInstantiateSound,MountainInstantiateSoundVolume);
                     }));
                 }
                 

@@ -246,7 +246,7 @@ public class GridManager : Singleton<GridManager>
                 selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),1,false) ;
                 break;
             case SearchType.FourSideFirstExluded:
-                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,true) ;
+                selectedGrids = searchAlgorithm.startAlgorithm(selectedGrid.GetComponent<Grid>(),10,true,1) ;
                 break;
         }
 

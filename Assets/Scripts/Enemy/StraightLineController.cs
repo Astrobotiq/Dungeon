@@ -5,6 +5,7 @@ public class StraightLineController : LineController
 {
     public override void DrawLine(Vector3 startPoint, Vector3 endPoint)
     {
+        endPoint = new Vector3(endPoint.x, 0.5f, endPoint.z);
         Vector3[] points = new Vector3[2]{startPoint,endPoint};
         
         TargetTexture.SetActive(true);

@@ -6,13 +6,13 @@ public class AlgorithmSkillFourDirection
 {
     private HashSet<Vector3> grids = new HashSet<Vector3>();
     
-    public HashSet<Vector3> startAlgorithm(Grid input_grid, int distance,bool isLikeMortar)
+    public HashSet<Vector3> startAlgorithm(Grid input_grid, int distance,bool isLikeMortar , int excludeNumber = 0)
     {
-        AlgorithmV1(input_grid,grids,distance,isLikeMortar);
+        AlgorithmV1(input_grid,grids,distance,isLikeMortar, excludeNumber);
         return grids;
     }
 
-    public void AlgorithmV1(Grid input_grid, HashSet<Vector3>input_set, int input_distance, bool isLikeMortar) {
+    public void AlgorithmV1(Grid input_grid, HashSet<Vector3>input_set, int input_distance, bool isLikeMortar, int excludeNumber) {
         //Debug.Log(input_grid.gameObject.transform.position);
         GridManager gridManagerInstance = GridManager.Instance;
         Vector3 location = input_grid.gameObject.transform.position;
@@ -93,10 +93,10 @@ public class AlgorithmSkillFourDirection
             }
         }
 
-        if (isLikeMortar) {
-            for (int i = -1; i <= 1; i++) { // This parts removes the grids which are 1 distance away grids because mortar cannot fire to 1 distance away tiles
+        if (isLikeMortar && excludeNumber != 0) {
+            for (int i = -excludeNumber; i <= excludeNumber; i++) { // This parts removes the grids which are 1 distance away grids because mortar cannot fire to 1 distance away tiles
                 if (i == 0) {
-                    continue;
+                    //continue;
                 }
 
                 input_set.Remove(new Vector3(location.x + i, location.y, location.z));

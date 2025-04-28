@@ -309,9 +309,9 @@ public class CameraManager : Singleton<CameraManager>
 
         isOrthographic = true;
 
-        //Timed.Run(() => LevelManager.Instance.BuildLevel(), 2f);
+        Timed.Run(() => LevelManager.Instance.BuildLevel(), 2f);
         
-        OnLevelCompleted();
+        //OnLevelCompleted();
     }
 
     

@@ -40,7 +40,7 @@ public class WizardEnemyBrain : EnemyBrain
         
         currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
 
-        var hashSet = algorithm.startAlgorithm(currentGrid, 7, false);
+        var hashSet = algorithm.startAlgorithm(currentGrid, 7, true);
         List<Vector3> possibleAttackPosition = new List<Vector3>();
 
         foreach (var pos in hashSet)
