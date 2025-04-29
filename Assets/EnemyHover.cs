@@ -7,7 +7,7 @@ public class EnemyHover : MonoBehaviour
     private GameObject EnemyPopupHealthCanvas;
     private void OnMouseEnter()
     {
-        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(4).gameObject;
+        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(3).gameObject;
         EnemyPopupHealthCanvas.SetActive(true);
         
         EnemyPopupHealthCanvas.transform.LookAt(Camera.main.transform.position, Vector3.up);
@@ -19,7 +19,7 @@ public class EnemyHover : MonoBehaviour
 
     private void OnMouseExit()
     {
-        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(4).gameObject;
+        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(3).gameObject;
         EnemyPopupHealthCanvas.SetActive(false);
     }
 }

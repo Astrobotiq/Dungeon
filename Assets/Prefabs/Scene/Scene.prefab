@@ -725,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4797425071025532646
 Transform:
   m_ObjectHideFlags: 0
@@ -752,7 +752,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.6226415, g: 0.37556595, b: 0.11454255, a: 1}
-  m_Intensity: 4.02
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1850,7 +1850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4480942838064475425
 Transform:
   m_ObjectHideFlags: 0
@@ -1877,7 +1877,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.7075472, g: 0.46583563, b: 0.32373622, a: 1}
-  m_Intensity: 6.66
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2003,7 +2003,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1010690860455931728
 Transform:
   m_ObjectHideFlags: 0
@@ -2030,7 +2030,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 4.02
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2245,7 +2245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7051201443006908473
 Transform:
   m_ObjectHideFlags: 0
@@ -2272,7 +2272,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.5707547, b: 0.58253795, a: 1}
-  m_Intensity: 4.02
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2715,7 +2715,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4203097711427873080
 Transform:
   m_ObjectHideFlags: 0
@@ -2742,7 +2742,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 0.5943396, g: 0.27168614, b: 0.23829654, a: 1}
-  m_Intensity: 6.66
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

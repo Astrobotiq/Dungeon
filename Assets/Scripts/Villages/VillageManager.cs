@@ -23,6 +23,8 @@ public class VillageManager : Singleton<VillageManager>
         villages.Add(village);
     }
 
+    public void ClearVillageList() => villages.Clear();
+
     public void UnSubscribe(GameObject village)
     {
         if (!villages.Contains(village))
@@ -43,7 +45,8 @@ public class VillageManager : Singleton<VillageManager>
 
         if (TotalHp <= 0)
         {
-            //TODO öldük demektir
+            TurnBasedManager.Instance.hasLevelFailed = true;
+            InGameUITextMesh.Instance.OpenGameOverScreen();
         }
 
         if (TotalHp > MaxTotalHp)

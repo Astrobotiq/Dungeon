@@ -7,15 +7,21 @@ public class VillageHealth : IHealth
     private SoundManager soundManager;
     
     public float VillageTakeDamageSoundVolume = 1f;
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool willPush)
     {
         VillageManager.Instance.ChangeVillageHP(-1);
         EventManager.Instance.InvokeOnVillageTakeDamage();
-        base.TakeDamage(damage);
-
-        PlayerManager.Instance.playerListForEnemyAI.Remove(gameObject);
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
         soundManager.PlaySound(SoundType.VillageTakeDamageSound, VillageTakeDamageSoundVolume);
+        
+        if (currentHealth - damage <= 0)
+        {
+            VillageManager.Instance.UnSubscribe(this.gameObject);
+            PlayerManager.Instance.playerListForEnemyAI.Remove(gameObject);
+        }
+        
+        base.TakeDamage(damage);
+        
     }
 }

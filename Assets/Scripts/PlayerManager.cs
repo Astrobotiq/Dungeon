@@ -27,6 +27,12 @@ public class PlayerManager : Singleton<PlayerManager>
         InputManager.Instance.onRightClicked += DeSelectPlayer;
     }
 
+    public void ClearPlayers()
+    {
+        players.Clear();
+        playerListForEnemyAI.Clear();
+    }
+
     IEnumerator findPlayerPosition()
     {
         while (GridManager.Instance.GridList.Count <= 0)
@@ -71,6 +77,9 @@ public class PlayerManager : Singleton<PlayerManager>
         if (SelectedPlayer == null)
             return;
         
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        soundManager.PlaySound(SoundType.PlayerSelectSound,PlayerSelectSoundVolume);
+        
         SelectedPlayer.GetComponent<Player>().SetGrid(grid,offset);
     }
     
@@ -110,5 +119,11 @@ public class PlayerManager : Singleton<PlayerManager>
         }
 
         players.Remove(player.gameObject);
+
+        if (players.Count == 0)
+        {
+            TurnBasedManager.Instance.hasLevelFailed = true;
+            InGameUITextMesh.Instance.OpenGameOverScreen();
+        }
     }
 }

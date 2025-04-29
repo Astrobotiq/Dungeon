@@ -5,12 +5,12 @@
     {
         preventedSpawnerCount = 0;
         isCompleted = false;
-        EventManager.onEnemyKilled += UpdateOnMission;
+        EventManager.onSpawnerPrevented += UpdateOnMission;
     }
 
     void OnDisable()
     {
-        EventManager.onEnemyKilled -= UpdateOnMission;
+        EventManager.onSpawnerPrevented -= UpdateOnMission;
     }
     public override void UpdateOnMission()
     {

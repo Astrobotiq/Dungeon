@@ -7,6 +7,27 @@ public class MissionManager : Singleton<MissionManager>
     [SerializeField]
     private IMission[] missions;
 
+    [SerializeField] 
+    private List<IMission> ActiveMissions;
+
+    public int GetCompletedMissionNumber()
+    {
+        int number = 0;
+        foreach (var mission in ActiveMissions)
+        {
+            Debug.Log($"{mission.MissionInfo} completed ? " +
+                      $"{mission.IsCompleted}");
+            if (mission.IsCompleted)
+            {
+                number++;
+            }
+        }
+        
+        ActiveMissions.Clear();
+        
+        return number;
+    }
+
     void Start()
     {
         missions = GetComponents<IMission>();
@@ -16,24 +37,66 @@ public class MissionManager : Singleton<MissionManager>
 
     public void StartMission(MissionParameter mission)
     {
+        ActiveMissions = new();
         switch (mission)
         {
             case MissionParameter.NoDamage:
                 GetComponent<NoDamageMission>().enabled = true;
+                ActiveMissions.Add(GetComponent<NoDamageMission>());
                 break;
             case MissionParameter.KillFourEnemy:
-                GetComponent<NoDamageMission>().enabled = true;
+                GetComponent<KillFourEnemyMission>().enabled = true;
+                ActiveMissions.Add(GetComponent<KillFourEnemyMission>());
                 break;
             case MissionParameter.NoDamageToVillages:
-                GetComponent<NoDamageMission>().enabled = true;
+                GetComponent<NoDamageToVillageMission>().enabled = true;
+                ActiveMissions.Add(GetComponent<NoDamageToVillageMission>());
                 break;
             case MissionParameter.DestroyAMountain:
-                GetComponent<NoDamageMission>().enabled = true;
+                GetComponent<DestroyAMountainMission>().enabled = true;
+                ActiveMissions.Add(GetComponent<DestroyAMountainMission>());
                 break;
             case MissionParameter.PreventTwoEnemySpanws:
-                GetComponent<NoDamageMission>().enabled = true;
+                GetComponent<PreventTwoSpawnerMission>().enabled = true;
+                ActiveMissions.Add(GetComponent<PreventTwoSpawnerMission>());
+                break;
+            case MissionParameter.NoDamageToDrum:
+                GetComponent<NoDamageDrum>().enabled = true;
+                ActiveMissions.Add(GetComponent<NoDamageDrum>());
                 break;
         }
+    }
+
+    public List<string> GetMissionInfo(List<MissionParameter> missionParameters)
+    {
+        List<string> missionInfos = new();
+
+        foreach (var parameter in missionParameters)
+        {
+            switch (parameter)
+            {
+                case MissionParameter.NoDamage:
+                    missionInfos.Add(GetComponent<NoDamageMission>().MissionInfo);
+                    break;
+                case MissionParameter.KillFourEnemy:
+                    missionInfos.Add(GetComponent<KillFourEnemyMission>().MissionInfo);
+                    break;
+                case MissionParameter.NoDamageToVillages:
+                    missionInfos.Add(GetComponent<NoDamageToVillageMission>().MissionInfo);
+                    break;
+                case MissionParameter.DestroyAMountain:
+                    missionInfos.Add(GetComponent<DestroyAMountainMission>().MissionInfo);
+                    break;
+                case MissionParameter.PreventTwoEnemySpanws:
+                    missionInfos.Add(GetComponent<PreventTwoSpawnerMission>().MissionInfo);
+                    break;
+                case MissionParameter.NoDamageToDrum:
+                    missionInfos.Add(GetComponent<NoDamageDrum>().MissionInfo);
+                    break;
+            }
+        }
+
+        return missionInfos;
     }
 
     public void DisableOpenMissions()
@@ -55,4 +118,5 @@ public enum MissionParameter
      NoDamageToVillages,
      DestroyAMountain,
      PreventTwoEnemySpanws,
+     NoDamageToDrum
 }

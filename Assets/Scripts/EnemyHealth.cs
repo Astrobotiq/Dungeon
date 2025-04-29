@@ -8,7 +8,7 @@ public class EnemyHealth : IHealth
     public event Action OnDeath;
     public event Action OnHeal;
     
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool willPush)
     {
         if (TryGetComponent<SpiderEnemyBrain>(out var spider))
         {
@@ -28,7 +28,7 @@ public class EnemyHealth : IHealth
         
         base.TakeDamage(damage);
         
-        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(4).gameObject;
+        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(3).gameObject;
         Slider slider = EnemyPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
         slider.value = GetComponent<EnemyHealth>().getHealthPercentage();
     }

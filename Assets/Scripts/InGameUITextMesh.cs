@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.UI;
@@ -13,11 +14,18 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     private List<GameObject> players;
     
     public List<EnemyBrain> SortedEnemyBrains;
+
+    public List<GameObject> EnemyUIGameobjects;
+
+    public List<GameObject> EnemyUIRelatedGameobjectHolder;
     
     #endregion
 
 
     #region General
+    
+    [SerializeField]
+    private GameObject InGameUICanvas;
     
     [SerializeField]
     private GameObject publicHealth;
@@ -36,6 +44,9 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     [SerializeField] 
     private GameObject missionGameObject;
+
+    [SerializeField] 
+    private GameObject LevelCanvas;
     
     [SerializeField]
     private SoundManager soundManager; //Şu an duruyor ama duruma göre SİLİNECEK duruma gelebilir
@@ -47,23 +58,10 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     
     //Bu duruma göre gidecek o yüzden SİLİNECEK yazıyorum
     public int MaxEnemyUICount;
-    
-    
-    //SİLİNECEK
-    private bool naber = true;
-    
-    private void Update()
+
+    public void Start()
     {
-        if (naber)
-        {
-            List<String> temp = new List<String>();
-            temp.Add("Do not take damage");
-            temp.Add("Kill at least 2 wizard");
-            UpdateMissionInformation(temp);
-            naber = false;
-        }
-        
-        
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     void OnEnable()
@@ -78,14 +76,18 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         CommandManager.Instance.onCommandDeactivated += () => UndoBTN.gameObject.SetActive(false);
     }
 
+    public void OpenInGameUICanvas()
+    {
+        InGameUICanvas.gameObject.SetActive(true);
+    }
     public void EnemyHoverEnter(int input) {
         //Debug.Log("ben hover giriyorum " + SortedEnemyBrains[input - 1].gameObject.name);
-        SortedEnemyBrains[input - 1].UIRefHoverEnter();
+        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverEnter();
     }
     
     public void EnemyHoverExit(int input) {
         //Debug.Log("ben hover çıkıyorum " + SortedEnemyBrains[input - 1].gameObject.name);
-        SortedEnemyBrains[input - 1].UIRefHoverExit();
+        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverExit();
     }
 
     public void updatePublicBar() {
@@ -154,12 +156,49 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         SortedEnemyBrains = new List<EnemyBrain>();
         SortedEnemyBrains = input;
         
+        if (SortedEnemyBrains.Count >= MaxEnemyUICount)
+        {
+            EnemyUIRelatedGameobjectHolder = new List<GameObject>();
+            for (int i = 0; i < MaxEnemyUICount; i++) {
+                GameObject temp = EnemyUIGameobjects[i];
+                EnemyUIRelatedGameobjectHolder.Add(SortedEnemyBrains[i].gameObject);
+                temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder 
+                temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i].enemyPortrait;
+                //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
+            }
+        }
+        else
+        {
+            EnemyUIRelatedGameobjectHolder = new List<GameObject>();
+
+            for (int i = 0; i < Math.Abs(SortedEnemyBrains.Count - MaxEnemyUICount); i++)
+            {
+                EnemyUIRelatedGameobjectHolder.Add(null);
+            }
+
+            foreach (var enemyBrain in SortedEnemyBrains)
+            {
+                EnemyUIRelatedGameobjectHolder.Add(enemyBrain.gameObject);
+            }
+            
+            for (int i = Math.Abs(SortedEnemyBrains.Count - MaxEnemyUICount); i < MaxEnemyUICount; i++) {
+                GameObject temp = EnemyUIGameobjects[i];
+                temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder 
+                temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i-1].enemyPortrait;
+                //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
+            }
+        }
+    }
+
+    public void ResetEnemyArrangement()
+    {
         for (int i = 0; i < MaxEnemyUICount; i++) {
             GameObject temp = GameObject.Find("Enemy_" + (i+1) );
-            temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder 
-            temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i].enemyPortrait;
+            temp.transform.GetChild(0).gameObject.SetActive(false); // EnemyProfıle active eder
             //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
         }
+        
+        EnemyUIRelatedGameobjectHolder.Clear();
     }
 
     public void UpdateTurnDisplay(int currentTurn, int maxTurn) { // TURNMANAGER GELINCE GUNCELLENECEK SU AN PSEUDO TURNMANAGER KULLANIYOR
@@ -170,6 +209,29 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     public void OpenMissionInformation() { // SİLİNECEK geçici olarak çözmek için böyle yaptım
         missionGameObject.transform.GetChild(1).gameObject.SetActive(true);
     }
+    
+    public void UpdateMissionInformation(List<MissionParameter> missionTexts)
+    {
+        OpenMissionInformation(); // Method içindeki kodu buraya taşırız geçici olarak çözmek için böyle yaptım
+
+        var missionInfo = MissionManager.Instance.GetMissionInfo(missionTexts);
+        
+        // GameObject allMissionsHolder = missionGameObject.transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).gameObject;
+
+        if (missionInfo.Count > 2)
+        {
+            Debug.LogWarning("Ben 2 mission yazabiliyorum ama üçden fazla mission stringi var");
+            return;
+        }
+        
+        for (int i = 0; i < missionInfo.Count; i++)
+        {
+            // GameObject textHolderGameobject = allMissionsHolder.transform.GetChild(i).transform.GetChild(1).transform.GetChild(0).gameObject;
+            // textHolderGameobject.GetComponent<TextMeshProUGUI>().text = missionTexts[i];
+            
+            ChangeMissionInformation(i+1, missionInfo[i]);
+        }
+    }
 
     public void ChangeMissionInformation(int missionPlace, String missionText)
     {
@@ -178,27 +240,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         textHolderGameobject.GetComponent<TextMeshProUGUI>().text = missionText;
         
     }
-    public void UpdateMissionInformation(List<String> missionTexts)
-    {
-        // OpenMissionInformation(); // Method içindeki kodu buraya taşırız geçici olarak çözmek için böyle yaptım
-        
-        // GameObject allMissionsHolder = missionGameObject.transform.GetChild(1).transform.GetChild(2).transform.GetChild(0).gameObject;
-
-        if (missionTexts.Count > 2)
-        {
-            Debug.LogWarning("Ben 2 mission yazabiliyorum ama üçden fazla mission stringi var");
-            return;
-        }
-        
-        for (int i = 0; i < 2; i++)
-        {
-            // GameObject textHolderGameobject = allMissionsHolder.transform.GetChild(i).transform.GetChild(1).transform.GetChild(0).gameObject;
-            // textHolderGameobject.GetComponent<TextMeshProUGUI>().text = missionTexts[i];
-            
-            ChangeMissionInformation(i+1, missionTexts[i]);
-        }
-    }
-
+    
     public void OpenGameOverScreen() {
         youLoseGameObject.SetActive(true);
         
@@ -221,6 +263,30 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
             youWinScreenStarHolderGameObject.transform.GetChild(i).gameObject.SetActive(true);
         }
     }
+
+    public void LevelChange(Button button)
+    {
+        button.enabled = false;
+        
+        LevelCanvas.SetActive(false);
+        
+        CameraManager.Instance.ChangeCameraForLevel();
+    }
+    public void OpenLevelSelection()
+    {
+        LevelCanvas.SetActive(true);
+    }
     
+    // Call this method to quit the game
+    public void QuitGame()
+    {
+        // If we are running in a standalone build
+        Application.Quit();
+
+        // If we are in the Unity editor
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
     
 }

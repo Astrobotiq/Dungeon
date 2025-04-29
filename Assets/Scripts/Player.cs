@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
 
     void OnDestroy()
     {
-        PlayerManager.Instance?.Unsubscribe(this);
+        
     }
 
     public void SetPlayerTurn(bool isIt)
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
             return;
         
         
-        if (SelectedSkill == null && !HasTraveled)
+        if (SelectedSkill == null && !HasTraveled && !HasUsedSkill)
         {
             if (_hasWebbed)
             {
@@ -242,6 +242,8 @@ public class Player : MonoBehaviour
         {
             _selectedSkillEffect = SelectedSkill.Skill.PlayerEffect;
             _selectedSkillEffect = Instantiate(_selectedSkillEffect, footPivot.position, Quaternion.identity);
+            
+            soundManager.PlaySound(SelectedSkill.Skill.SoundType);
 
             GridManager.Instance.StartSearchForSkill(SelectedSkill.Skill.SearchType);
         }

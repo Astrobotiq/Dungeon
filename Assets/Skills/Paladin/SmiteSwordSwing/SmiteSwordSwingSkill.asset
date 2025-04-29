@@ -19,7 +19,8 @@ MonoBehaviour:
   SearchType: 2
   ClassSpeciality: 1
   UseLimit: -1
-  GUISprite: {fileID: 21300000, guid: e305d4ff6fcb66148a89b78f93cc03fa, type: 3}
+  GUISprite: {fileID: 21300000, guid: 095380bf31f7eb04eb05d9450e28fd46, type: 3}
   SkillGO: {fileID: 3367314013316085171, guid: 8b20002c2b69a9d44ab5bae8e1d923cd, type: 3}
   PlayerEffect: {fileID: 7053385775836331393, guid: 7711c31962f9c7c4a9b7d9feef04ef53, type: 3}
   AttackPreviewType: 1
+  SoundType: 12

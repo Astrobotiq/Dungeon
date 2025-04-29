@@ -19636,7 +19636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb82cade1489319428e016374ffa91fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 3
+  damageAmount: 2
   soundManager: {fileID: 0}
   EnemyWizardHitSoundVolume: 0.3
 --- !u!1 &8598798586939600705

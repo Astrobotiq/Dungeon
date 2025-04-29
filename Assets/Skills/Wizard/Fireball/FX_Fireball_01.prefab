@@ -18708,7 +18708,7 @@ MonoBehaviour:
   jumpPower: 1.5
   jumpNumber: 1
   jumpDuration: 0.6
-  damage: 2
+  damage: 1
   _target: {fileID: 0}
   curve:
     serializedVersion: 2

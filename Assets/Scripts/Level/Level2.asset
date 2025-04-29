@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelLayout: {fileID: 4900000, guid: 51d5e97eaf7d61c4f924900e17e839d6, type: 3}
   enemies: 000000000100000002000000
+  missionParameter: 0000000001000000
+  maxTurnNumber: 3

@@ -78,4 +78,6 @@ public class EnemyManager : Singleton<EnemyManager>
         selectedEnemy.OnEnemySelection(false);
         selectedEnemy = null;
     }
+
+    public static void ClearEnemyList() => enemies.Clear();
 }

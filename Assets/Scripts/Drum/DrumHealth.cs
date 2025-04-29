@@ -13,17 +13,19 @@ public class DrumHealth : IHealth
     private SoundManager soundManager;
     
     public float DrumTakeDamageSoundVolume = 1f;
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool willPush)
     {
-        base.TakeDamage(damage);
         StartCoroutine(PositionFinder());
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
         soundManager.PlaySound(SoundType.DrumTakeDamageSound, DrumTakeDamageSoundVolume);
 
-        if (currentHealth <= 0) {
+        if (currentHealth - damage <= 0) {
             PlayerManager.Instance.playerListForEnemyAI.Remove(gameObject);
+            EventManager.Instance.InvokeOnDrumTakeDamage();
         }
+        
+        base.TakeDamage(damage);
         
         IEnumerator PositionFinder()
         {

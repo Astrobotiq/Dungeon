@@ -24,7 +24,7 @@ public class WİzardBall : ISkillEffect
     {
         if (_targetGrid.GridObject != null)
         {
-            _targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(damageAmount);
+            _targetGrid.GridObject.GetComponent<IHealth>()?.TakeDamage(damageAmount);
             soundManager.PlaySound(SoundType.EnemyWizardSkillHitSound,EnemyWizardHitSoundVolume);
         }
         

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EnemyPushable : IPushable
 {
-    [SerializeField]
-    private float duration;
     
     [SerializeField]
     private AnimationCurve curve;
@@ -25,6 +23,8 @@ public class EnemyPushable : IPushable
     private SoundManager soundManager;
 
     public float BumpSoundVolume = 1f;
+    
+    private Vector3 newPos;
 
     void Start()
     {
@@ -36,6 +36,7 @@ public class EnemyPushable : IPushable
     {
         var diffrence = transform.position - position;
         var newPosition = transform.position + diffrence;
+        newPos = newPosition;
         
         Debug.Log("diffrence : "+diffrence + "\n" +
                   "newPos  : " + newPosition + "\n" +
@@ -66,7 +67,17 @@ public class EnemyPushable : IPushable
     {
         var StartPos = transform.position;
 
-        var diffrence = targetGrid.transform.position - transform.position;
+        var diffrence = Vector3.zero;
+
+        if (targetGrid)
+        {
+            diffrence = targetGrid.transform.position - transform.position;
+        }
+        else
+        {
+            diffrence = newPos - transform.position;
+        }
+        
         diffrence = new Vector3(diffrence.x, 0, diffrence.z);
         
 
@@ -75,8 +86,8 @@ public class EnemyPushable : IPushable
             transform.DOMove(StartPos, crashRecoveryTime).OnComplete((() =>
             {
                 FeelManager.Instance.ShakeCamera();
-                currentGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
-                targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
+                currentGrid.GridObject.GetComponent<IHealth>().TakeDamage(1);
+                targetGrid.GridObject.GetComponent<IHealth>().TakeDamage(1);
                 
                 soundManager.PlaySound(SoundType.BumpSound,BumpSoundVolume);
             }));
@@ -106,6 +117,10 @@ public class EnemyPushable : IPushable
             var gridPos = grid.transform.position;
             var newGridPos = gridPos + diffrence;
             newGrid = GridManager.Instance.getGridFromLocation(newGridPos);
+            if (!newGrid)
+            {
+                newGrid = grid;
+            }
             Debug.Log($"new Grid : {newGrid.transform.position}");
         }
         
@@ -118,6 +133,7 @@ public class EnemyPushable : IPushable
             }
             currentGrid.GridObject = null;
             targetGrid.GridObject = gameObject;
+            _enemyBrain.SetGrid(targetGrid);
             if (newGrid != null)
                 _enemyBrain.SetTargetGrid(newGrid);
             

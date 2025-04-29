@@ -23,8 +23,19 @@ public class RangerEnemyBrain : EnemyBrain
     void Awake()
     {
         _targetLineController = GetComponent<LineController>();
+        
+    }
+
+    void OnEnable()
+    {
         EventManager.onMove += RecalculateTarget;
         EventManager.onPush += RecalculateTarget;
+    }
+
+    void OnDisable()
+    {
+        EventManager.onMove -= RecalculateTarget;
+        EventManager.onPush -= RecalculateTarget;
     }
 
     public void RecalculateTarget()
@@ -112,7 +123,7 @@ public class RangerEnemyBrain : EnemyBrain
                 continue;
             }
             
-            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy))
+            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy) || grid.GridObject.gameObject.CompareTag("Water"))
             {
                 continue;
             }
@@ -123,6 +134,8 @@ public class RangerEnemyBrain : EnemyBrain
         if (possibleAttackPosition.Count == 0)
         {
             Debug.Log("Saldırılacak player bulunamadı");
+            TargetGrid = null;
+            return;
         }
         Debug.Log($"possible count : {possibleAttackPosition.Count}");
         
@@ -156,12 +169,21 @@ public class RangerEnemyBrain : EnemyBrain
 
     public override void PreAttack()
     {
+        if (!TargetGrid)
+        {
+            return;
+        }
+        
         StartCoroutine(move.Turn(transform.position, TargetGrid.GridObject.transform.position, (
             () => _targetLineController.DrawLine(transform.position, TargetGrid.GridObject.transform.position))));
     }
 
     public override void Attack()
     {
+        if (!TargetGrid)
+        {
+            return;
+        }
         
         var effectStartPos = transform.position;
 

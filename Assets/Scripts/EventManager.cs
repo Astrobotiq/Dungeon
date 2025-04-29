@@ -10,6 +10,7 @@ public class EventManager : Singleton<EventManager>
     public static event Action onVillageTakeDamage;
     public static event Action onMountainDestroyed;
     public static event Action onSpawnerPrevented;
+    public static event Action onDrumTakeDamage;
 
     public void InvokeOnMove(string name)
     {
@@ -38,11 +39,16 @@ public class EventManager : Singleton<EventManager>
 
     public void InvokeOnMountainDestroyed()
     {
-        onMountainDestroyed.Invoke();
+        onMountainDestroyed?.Invoke();
     }
 
     public void InvokeOnSpawnerPrevented()
     {
-        onSpawnerPrevented.Invoke();
+        onSpawnerPrevented?.Invoke();
+    }
+
+    public void InvokeOnDrumTakeDamage()
+    {
+        onDrumTakeDamage?.Invoke();
     }
 }

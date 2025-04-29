@@ -17,6 +17,8 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 
     public float TurnSwitchSoundVolume = 1f;
 
+    public bool hasLevelFailed = false;
+
     public void Start()
     {
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
@@ -32,18 +34,21 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 
     public void NextTurn(ITurn nextTurn)
     {
+        if (hasLevelFailed)
+            return;
+        
+        if (_currentTurn &&_currentTurn.isLastTurn && turnNumber+1 > _maxTurnNumber)
+        {
+            Debug.Log("Game is finished");
+            InGameUITextMesh.Instance.OpenWinScreen(MissionManager.Instance.GetCompletedMissionNumber());
+            _currentTurn = null;
+            return;
+        }
+        
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
             InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
-        }
-            
-
-        if (turnNumber > _maxTurnNumber)
-        {
-            Debug.Log("Game is finished");
-            //TODO : Burada bir yerde Level bitti UI'ı açılmalı
-            return;
         }
             
         soundManager.PlaySound(SoundType.TurnSwitchSound,TurnSwitchSoundVolume);

@@ -52,7 +52,7 @@ public class WizardEnemyBrain : EnemyBrain
                 continue;
             }
 
-            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy))
+            if (grid.GridObject.TryGetComponent<EnemyBrain>(out var enemy) || grid.GridObject.gameObject.CompareTag("Water"))
             {
                 continue;
             }

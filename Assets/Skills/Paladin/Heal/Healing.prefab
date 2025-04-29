@@ -14542,7 +14542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbffb5149cd49a64aaf6e938baf24b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heal: 3
+  heal: 1
   healTime: 4
   effect: {fileID: 2363440448167058284}
   soundManager: {fileID: 0}

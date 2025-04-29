@@ -23,6 +23,8 @@ public class ArmController : Singleton<ArmController>
         var startPos = transform.position;
         enemy.transform.SetParent(transform);
         var grid = GridManager.Instance.getGridFromLocation(pos);
+        
+        Debug.Log($"Transform of grid : {grid.transform.position}");
 
         if (grid.GridObject != null)
         {
@@ -30,14 +32,15 @@ public class ArmController : Singleton<ArmController>
         }
         else
         {
-            InstantiateSuccess();
+            InstantiateSuccess(pos);
         }
         
-        void InstantiateSuccess()
+        void InstantiateSuccess(Vector3 pos)
         {
             transform.DOMove(pos, duration).OnComplete((() =>
             {
                 enemy.transform.SetParent(null);
+                Debug.Log($"New transform of grid : {grid.gameObject.transform.position}");
                 grid.GridObject = enemy;
                 
                 if(enemy.TryGetComponent<EnemyBrain>(out var enemyBrain))

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2911319495050234485}
   m_Layer: 0
   m_Name: Capital
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
-  maxHealth: 1
+  maxHealth: 2
   damageMultiplier: 1
   soundManager: {fileID: 0}
   VillageTakeDamageSoundVolume: 0.1

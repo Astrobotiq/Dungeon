@@ -19583,7 +19583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingDuration: 0.5
-  DamageAmount: 1
+  DamageAmount: 2
   DamageFallOf: 0.5
   _target: {fileID: 0}
   _player: {fileID: 0}

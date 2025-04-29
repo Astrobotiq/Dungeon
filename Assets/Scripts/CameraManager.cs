@@ -52,6 +52,8 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private Renderer SkyRenderer;
 
     private SoundManager _soundManager;
+
+    [SerializeField] private float gameStartWalkSound = 1f;
     void Start()
     {
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
@@ -68,7 +70,7 @@ public class CameraManager : Singleton<CameraManager>
 
     public void StartGame()
     {
-        
+        _soundManager.PlaySound(SoundType.GameStartWalkSound, gameStartWalkSound);
 
         // DOTween ile döndür
         Sequence sequence = DOTween.Sequence();
@@ -83,10 +85,7 @@ public class CameraManager : Singleton<CameraManager>
             .OnUpdate((() => transform.LookAt(statue.transform)))
             .OnComplete((() =>
             {
-                foreach (var light in lights)
-                {
-                    light.gameObject.SetActive(true);
-                }
+                LightManager.Instance.GameLightShine(6.6f,2f);
             })));
         
         targetRotation = GetRotation(mask.gameObject.transform, cameraInGamePos);
@@ -131,32 +130,31 @@ public class CameraManager : Singleton<CameraManager>
             Sequence sequence = DOTween.Sequence();
 
             sequence.Append(transform.DOLocalRotate(new Vector3(6,45,0),2));
-            sequence.Append(transform.DOLocalRotate(new Vector3(6,-45,0),4).SetEase(Ease.InOutCubic));
+            sequence.Append(transform.DOLocalRotate(new Vector3(6,-45,0),4).SetEase(Ease.InOutCubic).OnComplete((() => LevelManager.Instance.DestroyLevel())));
             sequence.Append(transform.DOJump(new Vector3(-5, transform.position.y, 5),  walkJumpPower, 2, 4f)
                 .OnComplete((() => StartCoroutine(_skyController.ChangeSky(0.5f,1f,0.65f,1f,4f)))));
             sequence.Append(transform.DOLocalRotate(new Vector3(-19,-35,0),2).SetEase(Ease.InOutQuad));
-            sequence.Append(transform.DOLocalRotate(new Vector3(-54, -35, 0), 2).SetEase(Ease.InOutQuad))
-                .OnComplete((() => Timed.Run(ChangeCameraForLevel,4f)));
+            sequence.Append(transform.DOLocalRotate(new Vector3(-54, -35, 0), 2).SetEase(Ease.InOutQuad).OnComplete((() => InGameUITextMesh.Instance.OpenLevelSelection())));
 
         }
-
-        void ChangeCameraForLevel()
+    }
+    
+    public void ChangeCameraForLevel()
+    {
+        StartCoroutine(_skyController.ChangeSky(1f,0.5f,1f,0.65f, 4f));
+        transform.DOLocalRotate(new Vector3(6,-35,0),6).OnComplete((() =>
         {
-            StartCoroutine(_skyController.ChangeSky(1f,0.5f,1f,0.65f, 4f));
-            transform.DOLocalRotate(new Vector3(6,-35,0),6).OnComplete((() =>
+            var rotation = GetRotation(statue.transform, transform);
+            transform.DORotateQuaternion(rotation, 4f).OnComplete((() =>
             {
-                var rotation = GetRotation(statue.transform, transform);
-                transform.DORotateQuaternion(rotation, 4f).OnComplete((() =>
-                {
-                    transform.DOJump(cameraInGamePos.position, walkJumpPower, 2, 4f)
-                        .OnUpdate((() => transform.LookAt(statue.transform)))
-                        .OnComplete((() =>
-                        {
-                            transform.DOLocalRotate(new Vector3(45, 45, 0), 4);
-                        }));
-                }));
+                transform.DOJump(cameraInGamePos.position, walkJumpPower, 2, 4f)
+                    .OnUpdate((() => transform.LookAt(statue.transform)))
+                    .OnComplete((() =>
+                    {
+                        transform.DOLocalRotate(new Vector3(45, 45, 0), 4).OnComplete((() => StartCoroutine(TransitionToOrthographic(null))));
+                    }));
             }));
-        }
+        }));
     }
 
     private Quaternion GetRotation(Transform target, Transform current)
@@ -241,7 +239,7 @@ public class CameraManager : Singleton<CameraManager>
     IEnumerator TransitionToPerspective(Action onComplete, Action onMidComplete)
     {
         float elapsedTime = 0f;
-        float startOrthoSize = cam.orthographicSize;
+        float startOrthoSize = 0.65f;
         float targetFOV = 70f;
         float startFOV = 10;
 
@@ -251,7 +249,7 @@ public class CameraManager : Singleton<CameraManager>
             elapsedTime += Time.deltaTime;
             float t = EaseInOutQuad(elapsedTime / transitionDuration);
 
-            cam.orthographicSize = Mathf.Lerp(startOrthoSize, 5f, t);
+            cam.orthographicSize = Mathf.Lerp(5, startOrthoSize, t);
             yield return null;
         }
         
@@ -309,7 +307,7 @@ public class CameraManager : Singleton<CameraManager>
 
         isOrthographic = true;
 
-        Timed.Run(() => LevelManager.Instance.BuildLevel(), 2f);
+        Timed.Run(() => LevelManager.Instance.StartNewLevel(), 2f);
         
         //OnLevelCompleted();
     }

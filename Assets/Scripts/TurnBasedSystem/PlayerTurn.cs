@@ -75,6 +75,9 @@ public class PlayerTurn : ITurn
             pair.Key.SetPlayerTurn(false);
         }
         endTurnBTN.gameObject.SetActive(false);
+        
+        InGameUITextMesh.Instance.ResetEnemyArrangement();
+        
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
     }
 

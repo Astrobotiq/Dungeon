@@ -97,7 +97,8 @@ public class Move : MonoBehaviour
         
         if (gameObject.tag.Equals("Enemy"))
         {
-            GetComponent<EnemyBrain>().SetFinishMove(true);
+            var grid = GridManager.Instance.getGridFromLocation(transform.position);
+            GetComponent<EnemyBrain>().SetFinishMove(true, grid);
         }
 
         InputManager.Instance.canTakeInput = true;
@@ -144,7 +145,8 @@ public class Move : MonoBehaviour
         
         if (gameObject.tag.Equals("Enemy"))
         {
-            GetComponent<EnemyBrain>().SetFinishMove(true);
+            var grid = GridManager.Instance.getGridFromLocation(transform.position);
+            GetComponent<EnemyBrain>().SetFinishMove(true, grid);
         }
 
         InputManager.Instance.canTakeInput = true;

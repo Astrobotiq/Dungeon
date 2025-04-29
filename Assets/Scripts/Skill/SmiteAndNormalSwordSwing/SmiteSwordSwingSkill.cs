@@ -31,7 +31,7 @@ public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particlel
         //Hasar alacak ana düşman için
         if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IDamagable>())
         {
-            _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount);
+            _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount, true);
             soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
         }
         if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IPushable>())

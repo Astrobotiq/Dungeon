@@ -24,10 +24,13 @@ public class EnemySpawnLocation : ITurn
     {
         var gridList = GridManager.Instance.GridList;
 
+        var enemyCount = EnemyManager.Enemies.Count;
+
         StartCoroutine(PositionFinder());
         IEnumerator PositionFinder()
         {
-            var spawnNumber = Random.Range(minSpawnNumber, maxSpawnNumber);
+            var max = maxSpawnNumber - enemyCount;
+            var spawnNumber = Random.Range(minSpawnNumber, max);
             var spawnedEnemyNum = 0;
             List<GameObject> spawners = new List<GameObject>();
             while (spawnedEnemyNum<spawnNumber)

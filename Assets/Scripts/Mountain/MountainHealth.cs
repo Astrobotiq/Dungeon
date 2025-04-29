@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MountainHealth : IHealth
 {
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool willPush)
     {
         EventManager.Instance.InvokeOnMountainDestroyed();
         

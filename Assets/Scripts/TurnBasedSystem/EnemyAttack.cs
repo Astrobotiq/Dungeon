@@ -21,7 +21,8 @@ public class EnemyAttack : ITurn
         {
             foreach (var enemy in enemies)
             {
-                enemy.Attack();
+                if (!TurnBasedManager.Instance.hasLevelFailed)
+                    enemy.Attack();
 
                 yield return new WaitForSeconds(waitInterval);
             }

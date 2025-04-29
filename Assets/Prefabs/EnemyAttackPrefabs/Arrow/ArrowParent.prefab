@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  damageAmount: 3
+  damageAmount: 1
   ease:
     serializedVersion: 2
     m_Curve:

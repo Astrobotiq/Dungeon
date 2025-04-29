@@ -8,6 +8,8 @@ public class LightManager : Singleton<LightManager>
     [SerializeField] private List<Light> statueLights;
 
     [SerializeField] private List<Light> fireLights;
+    
+    [SerializeField] private List<Light> GameLights;
 
     [SerializeField] private float minFireIntensity = 0;
     
@@ -41,6 +43,29 @@ public class LightManager : Singleton<LightManager>
                 foreach (var statueLight in statueLights)
                 {
                     statueLight.intensity = intensity;
+                }
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+    }
+
+    public void GameLightShine(float target, float duration)
+    {
+        StartCoroutine(Shiner());
+        IEnumerator Shiner()
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                float intensity = Mathf.Lerp(_statueNormalIntensity, target, t);
+
+                foreach (var gameLight in GameLights)
+                {
+                    gameLight.intensity = intensity;
                 }
 
                 elapsed += Time.deltaTime;

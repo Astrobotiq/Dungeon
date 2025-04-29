@@ -24,6 +24,9 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] 
     private SoundManager soundManager;
 
+    [SerializeField]
+    private int currentLevelIndex;
+
     public float VillageInstantiateSoundVolume = 1f;
     public float PlayerNEnemyInstantiateSoundVolume = 1f;
     public float WaterInstantiateSoundVolume = 1f;
@@ -32,9 +35,15 @@ public class LevelManager : Singleton<LevelManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentLevel = LevelDB.Instance.GetRandomLevel();
+        currentLevelIndex = -1;
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+    }
+
+    public void StartNewLevel()
+    {
+        currentLevel = LevelDB.Instance.GetLevelByIndex(++currentLevelIndex);
+        BuildLevel();
     }
 
     public void BuildLevel()
@@ -86,7 +95,7 @@ public class LevelManager : Singleton<LevelManager>
                         player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
                         playerManager.playerListForEnemyAI.Add(player);
                         
-                        //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
                     }));
 
                     yield return new WaitForSeconds(1f);
@@ -109,7 +118,7 @@ public class LevelManager : Singleton<LevelManager>
                         player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
                         playerManager.playerListForEnemyAI.Add(player);
                         
-                        //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
                     }));
 
                     yield return new WaitForSeconds(1f);
@@ -134,7 +143,7 @@ public class LevelManager : Singleton<LevelManager>
                     
                     enemyManager.enemyListForEnemyAI.Add(EnemyObj);
                     
-                    //soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                    soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
                 }
 
                 if (line[j].Equals('+'))
@@ -157,7 +166,7 @@ public class LevelManager : Singleton<LevelManager>
                         VillageGO.GetComponent<Village>().SetGrid(grid);
                         playerManager.playerListForEnemyAI.Add(VillageGO);
                         
-                        //soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
                     }));
                     
                     yield return new WaitForSeconds(1f);
@@ -180,7 +189,7 @@ public class LevelManager : Singleton<LevelManager>
                         grid.GridObject = Village;
                         playerManager.playerListForEnemyAI.Add(Village);
                         
-                        //soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
                     }));
                     
                     yield return new WaitForSeconds(1f);
@@ -197,21 +206,21 @@ public class LevelManager : Singleton<LevelManager>
                     Village.transform.position = new Vector3(Village.transform.position.x,
                         Village.transform.position.y + 3, Village.transform.position.z);
                     
-                    //soundManager.PlaySound(SoundType.WaterInstantiateSound,WaterInstantiateSoundVolume);
+                    soundManager.PlaySound(SoundType.WaterInstantiateSound,WaterInstantiateSoundVolume);
                     
                     Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
                     {
                         var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
                         grid.GridObject = Village;
-                        playerManager.playerListForEnemyAI.Add(Village);
-                        
-                        
+                        //playerManager.playerListForEnemyAI.Add(Village);
                     }));
+                    
+                    yield return new WaitForSeconds(1f);
                 }
 
                 if (line[j].Equals('M'))
                 {
-                    Debug.Log("Village bulundu");
+                    Debug.Log("Mountain bulundu");
                     var Village = EnviromentFactory.Build(EnviromentType.Mountain,new Vector3(i, 1.4f, j),
                         quaternion.identity);
 
@@ -226,17 +235,18 @@ public class LevelManager : Singleton<LevelManager>
                         grid.GridObject = Village;
                         playerManager.playerListForEnemyAI.Add(Village);
                         
-                        //soundManager.PlaySound(SoundType.MountainInstantiateSound,MountainInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.MountainInstantiateSound,MountainInstantiateSoundVolume);
                     }));
+                    
+                    yield return new WaitForSeconds(1f);
                 }
                 
             }
         }
-        
+        InGameUITextMesh.Instance.OpenInGameUICanvas();
         InGameUITextMesh.Instance.UpdatePlayerBars();
         InGameUITextMesh.Instance.updatePublicBar();
-        //InGameUITextMesh.Instance.UpdateMissionInformation();
-        InGameUITextMesh.Instance.OpenMissionInformation(); // SİLİNECEK yularıdaki method zaten açacak ama şu an açma işini halletsin diye ekledim
+        InGameUITextMesh.Instance.UpdateMissionInformation(currentLevel.getMissions());
         
         foreach (var mission in currentLevel.getMissions())
         {
@@ -245,5 +255,27 @@ public class LevelManager : Singleton<LevelManager>
         
         TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
         
+    }
+
+    public void DestroyLevel()
+    {
+        PlayerManager.Instance.ClearPlayers();
+        EnemyManager.ClearEnemyList();
+        VillageManager.Instance.ClearVillageList();
+
+        foreach (var gridObjects in GridManager.Instance.GridList)
+        {
+            foreach (var gridObject in gridObjects)
+            {
+                var grid = gridObject.gameObject.GetComponent<Grid>();
+
+                if (grid.GridObject)
+                {
+                    var tempGridObject = grid.GridObject;
+                    grid.GridObject = null;
+                    Destroy(tempGridObject);
+                }
+            }
+        }
     }
 }

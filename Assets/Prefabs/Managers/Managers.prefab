@@ -815,7 +815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5096776682237179564
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1564,6 +1564,7 @@ Transform:
   - {fileID: 1964097100674623996}
   - {fileID: 5144540341762855556}
   - {fileID: 1614781196884258795}
+  - {fileID: 5030601340283946961}
   - {fileID: 2463835640502477677}
   - {fileID: 1105987412048634779}
   - {fileID: 542322221069442600}
@@ -1577,6 +1578,7 @@ Transform:
   - {fileID: 795344264812660775}
   - {fileID: 4230294887821164323}
   - {fileID: 8289339826081059265}
+  - {fileID: 1821523810022017695}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3732419863789485823
@@ -1724,7 +1726,6 @@ GameObject:
   - component: {fileID: 2143656165616104418}
   - component: {fileID: 7401592087128931005}
   - component: {fileID: 6208818260759486155}
-  - component: {fileID: 6027529723212470534}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1885,28 +1886,7 @@ MonoBehaviour:
   transitionDuration: 1.5
   isOrthographic: 0
   SkyRenderer: {fileID: 0}
---- !u!95 &6027529723212470534
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153201885183952528}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 39bbc37e4ad7a8b418a1db39e79a7e2e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  gameStartWalkSound: 0.7
 --- !u!1 &4553614102866011961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2220,6 +2200,142 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &5335460464222562788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1821523810022017695}
+  - component: {fileID: 1059690873367552071}
+  - component: {fileID: 4466766596010578463}
+  - component: {fileID: 3598142170171128991}
+  - component: {fileID: 2660122504462177210}
+  - component: {fileID: 2415050266077931520}
+  - component: {fileID: 1866832671973171880}
+  - component: {fileID: 6767629584420775941}
+  m_Layer: 0
+  m_Name: MissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1821523810022017695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5626144826569477647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1059690873367552071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69e9d3255ceb83b478027c4e92eb839e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missions: []
+  ActiveMissions: []
+--- !u!114 &4466766596010578463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86fa34dae9a34edf91044ba271c2ad05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Destroy a mountain
+  RewardType: 0
+--- !u!114 &3598142170171128991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f305bd8579f4f38b0501e34051150f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Kill four enemy
+  RewardType: 0
+--- !u!114 &2660122504462177210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfcbf5a237d6490aa9529c8f5fc626de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Player take no damage
+  RewardType: 0
+--- !u!114 &2415050266077931520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11acfc8238bd4752ba290c8167adc404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Village take no damage
+  RewardType: 0
+--- !u!114 &1866832671973171880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8774484fbd946ca9588d5427e519f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Prevent enemy spawn
+  RewardType: 0
+--- !u!114 &6767629584420775941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335460464222562788}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4911ed507cedc694e964df5278e4c71a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MissionInfo: Drum take no hit
+  RewardType: 0
 --- !u!1 &5463179811272450187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,7 +2381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TotalHp: 0
-  MaxTotalHp: 0
+  MaxTotalHp: 10
 --- !u!1 &6046906266362489815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,8 +2438,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6327144611778160351}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.0287067, z: -0, w: 0.9995879}
-  m_LocalPosition: {x: -7.3999996, y: -0.059999943, z: -20.22}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.920002, y: 1.4000001, z: -24.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2818,10 +2934,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc72f396a3f469b459ab09d905153b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statueLights: []
-  fireLights: []
-  minFireIntensity: 0
-  maxFireIntensity: 1
+  statueLights:
+  - {fileID: 0}
+  - {fileID: 0}
+  fireLights:
+  - {fileID: 0}
+  - {fileID: 0}
+  GameLights:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  minFireIntensity: 150
+  maxFireIntensity: 250
   fireIntensityChangeSpeed: 1
 --- !u!1 &7557921445799693189
 GameObject:
@@ -2877,6 +3003,7 @@ MonoBehaviour:
   _maxTurnNumber: 0
   soundManager: {fileID: 0}
   TurnSwitchSoundVolume: 1
+  hasLevelFailed: 0
 --- !u!114 &4331018550728971575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2925,10 +3052,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextTurn: 5
   isLastTurn: 0
-  endTurnBTN: {fileID: 4817018255973226868}
-  warningCanvas: {fileID: 27684806362406119}
-  passTurnAnywayBTN: {fileID: 7516181941294032520}
-  cancelBTN: {fileID: 7342478615247058929}
+  endTurnBTN: {fileID: 0}
+  warningCanvas: {fileID: 0}
+  passTurnAnywayBTN: {fileID: 0}
+  cancelBTN: {fileID: 0}
 --- !u!114 &2765938537377656417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2957,7 +3084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextTurn: 1
-  isLastTurn: 0
+  isLastTurn: 1
   waitInterval: 1
   armController: {fileID: 2509659985620994166}
   damageAmount: 3
@@ -3151,6 +3278,7 @@ MonoBehaviour:
   VillageFactory: {fileID: 852878394806789676}
   EnviromentFactory: {fileID: 2229279268441915657}
   soundManager: {fileID: 0}
+  currentLevelIndex: 0
   VillageInstantiateSoundVolume: 1
   PlayerNEnemyInstantiateSoundVolume: 1
   WaterInstantiateSoundVolume: 1
@@ -3962,4 +4090,79 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 80c5adf7e37c5544c8ee7cabce2ecc51, type: 3}
   m_PrefabInstance: {fileID: 7948869482735530302}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8332912294667161115
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5626144826569477647}
+    m_Modifications:
+    - target: {fileID: 2033859150251255990, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_Name
+      value: SoundManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 328.17084
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 238.4625
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 4363304350458864999}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: MainThemeSoundVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+--- !u!82 &4363304350458864999 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5704338503775251324, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+  m_PrefabInstance: {fileID: 8332912294667161115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5030601340283946961 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3923825844973570506, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+  m_PrefabInstance: {fileID: 8332912294667161115}
   m_PrefabAsset: {fileID: 0}

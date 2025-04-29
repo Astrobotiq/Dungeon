@@ -12,7 +12,7 @@ public class EnemySpawnTurn : ITurn
     private ArmController armController;
 
     [SerializeField] 
-    private int damageAmount = 3;
+    private int damageAmount = 1;
     
     [SerializeField]
     private EnemyFactory enemyFactory;
@@ -21,21 +21,29 @@ public class EnemySpawnTurn : ITurn
     {
         var spawners = EnemyManager.Instance.Spawners;
 
+        foreach (var spawner in spawners)
+        {
+            Debug.Log($"Spawner position : {spawner.gameObject.transform.position}");
+        }
+
         StartCoroutine(SpawnEnemies());
 
         IEnumerator SpawnEnemies()
         {
             foreach (var location in spawners)
             {
-                var armPos = ArmController.Instance.GetPosition;
-                var enemy = enemyFactory.BuildRandom(armPos,quaternion.identity);
-                var enemyGO = enemy.Item1;
-                enemyGO.transform.position = armPos;
-                var enemyOffset = enemy.Item2; 
-                var pos = new Vector3(location.transform.position.x,enemyOffset, location.transform.position.z);
-                ArmController.Instance.StartInstantiate(enemyGO,pos,waitInterval, damageAmount);
-                Destroy(location);
-                yield return new WaitForSeconds(2*waitInterval+1f);
+                if (!TurnBasedManager.Instance.hasLevelFailed)
+                {
+                    var armPos = ArmController.Instance.GetPosition;
+                    var enemy = enemyFactory.BuildRandom(armPos,quaternion.identity);
+                    var enemyGO = enemy.Item1;
+                    enemyGO.transform.position = armPos;
+                    var enemyOffset = enemy.Item2; 
+                    var pos = new Vector3(location.transform.position.x,enemyOffset, location.transform.position.z);
+                    ArmController.Instance.StartInstantiate(enemyGO,pos,waitInterval, damageAmount);
+                    Destroy(location);
+                    yield return new WaitForSeconds(2*waitInterval+3f);
+                }
             }
             EnemyManager.Instance.ResetSpawnerList();
             ExitTurn();

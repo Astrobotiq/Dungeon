@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyAI_Organizer : MonoBehaviour
 {
@@ -137,21 +138,26 @@ public class EnemyAI_Organizer : MonoBehaviour
         }
         
         TotalOptions = DecideBestActions_3();
-        
+        List<Vector3> temp = new List<Vector3>();
         foreach (var VARIABLE in TotalOptions) {
             Debug.Log("bulduğum en iyi loc biri : " + VARIABLE.Key + " sayısal değeri " + VARIABLE.Value);
+            temp.Add(VARIABLE.Key);
         }
-            
-        Vector3 bestLoc = new Vector3(99, 99, 99);
-        int bestValue = -99;
-            
-        foreach (KeyValuePair<Vector3, int> tile in TotalOptions) {
-            //Debug.Log("en iyi sayı " + bestValue + " şu anki sayı " + tile.Value);
-            if (tile.Value > bestValue) {
-                bestLoc = tile.Key;
-                bestValue = tile.Value;
-            }
-        }
+
+        int random = Random.Range(0, 3);
+
+        Vector3 bestLoc = temp[random];
+        //Vector3 bestLoc = new Vector3(99, 99, 99);
+        //int bestValue = -99;
+        //
+        // foreach (KeyValuePair<Vector3, int> tile in TotalOptions) {
+        //     //Debug.Log("en iyi sayı " + bestValue + " şu anki sayı " + tile.Value);
+        //     if (tile.Value > bestValue) {
+        //         bestLoc = tile.Key;
+        //         bestValue = tile.Value;
+        //     }
+        // }
+        
         //Debug.Log("boş");
         //Debug.Log("bulduğum en iyi loc " + bestLoc + " değeri " + bestValue);
         

@@ -72,6 +72,16 @@ public class SpiderEnemyBrain : EnemyBrain
             var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x + i, currentGridPos.y, currentGridPos.z));
             var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(currentGridPos.x, currentGridPos.y, currentGridPos.z + i));
 
+            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.CompareTag("Water"))
+            {
+                continue;
+            }
+            
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.CompareTag("Water"))
+            {
+                continue;
+            }
+
             if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<EnemyBrain>() == null)
             {
                 targetGrids.Add(xGrid);
@@ -143,7 +153,10 @@ public class SpiderEnemyBrain : EnemyBrain
                 soundManager.PlaySound(SoundType.SpiderAttack, SpiderAttackVolume);
                 
                 FeelManager.Instance.ShakeCamera();
-                TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(5);
+                if (TargetGrid.GridObject)
+                {
+                    TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(1);
+                }
                 transform.DOMove(effectStartPos, attackRecoveryTime);
             }));
         }));

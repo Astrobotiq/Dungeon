@@ -53,22 +53,23 @@ public enum SoundType
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
 public class SoundManager : Singleton<SoundManager>
 {
+    private static SoundManager instance;
+    
     public float MainThemeSoundVolume = 1f;
     public bool ContinueMainTheme = true;
     
-    [SerializeField] private SoundList[] soundList;
-    private static SoundManager instance;
+    [SerializeField] 
     private AudioSource audioSource;
-
-    private void Start() {
-         audioSource = GetComponent<AudioSource>();
-    }
+    
+    [SerializeField] 
+    private SoundList[] soundList;
 
     public void PlaySound(SoundType type, float volume=1) {
         //instance.audioSource.PlayOneShot(instance.soundList[(int)type], volume);
 
         AudioClip[] clips = soundList[(int)type].Sounds;
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+        
         audioSource.PlayOneShot(randomClip, volume);
     }
 

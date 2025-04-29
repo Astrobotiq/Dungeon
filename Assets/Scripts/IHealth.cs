@@ -20,18 +20,24 @@ public class IHealth : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, bool willPush = false)
     {
         currentHealth -= damage;
-        Debug.Log("ben geldim naber");
-        //InGameUITextMesh.Instance.UpdatePlayerBars();
-
+        
         if (currentHealth<=0)
         {
             if (gameObject.tag.Equals("Enemy"))
             {
                 var enemyBrain = GetComponent<EnemyBrain>();
-                enemyBrain.OnDeath();
+                if (willPush)
+                {
+                    var pushTime = GetComponent<IPushable>().GetDuration();
+                    enemyBrain.OnDeath(pushTime+ 1f);
+                }
+                else
+                {
+                    enemyBrain.OnDeath();
+                }
             }
             else
             {
@@ -40,7 +46,11 @@ public class IHealth : MonoBehaviour
             }
             
         }
+        
+        //InGameUITextMesh.Instance.UpdatePlayerBars();
     }
+
+    
 
     public virtual void Heal(int heal)
     {

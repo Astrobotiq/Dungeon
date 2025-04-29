@@ -21,12 +21,6 @@ public abstract class EnemyBrain : MonoBehaviour
     [SerializeField]
     protected Grid TargetGrid;
 
-    [SerializeField] 
-    protected GameObject AttackBTN;
-    
-    [SerializeField] 
-    protected GameObject AttackBTN2;
-
     protected bool _hasFinishedMoving;
 
     public int InitiationPoint;
@@ -44,9 +38,10 @@ public abstract class EnemyBrain : MonoBehaviour
     protected float duration = 1.5f; // Hareket süresi
     
 
-    public void SetFinishMove(bool hasFinished)
+    public void SetFinishMove(bool hasFinished, Grid grid)
     {
         _hasFinishedMoving = hasFinished;
+        currentGrid = grid;
     }
     
     
@@ -61,23 +56,13 @@ public abstract class EnemyBrain : MonoBehaviour
     {
         EnemyManager.Subscribe(this);
 
-        currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
+        //currentGrid = GridManager.Instance.getGridFromLocation(transform.position);
 
-        currentGrid.GridObject = gameObject;
+        //currentGrid.GridObject = gameObject;
 
         _hasFinishedMoving = false;
 
         InitiationPoint = Random.Range(1, 10) + InitiationBonus;
-        
-        AttackBTN.GetComponent<Button>().onClick.AddListener((() =>
-        {
-            StartCoroutine(Template());
-        }));
-        
-        AttackBTN2.GetComponent<Button>().onClick.AddListener((() =>
-        {
-            OnDeath();
-        }));
         
         MaterialController = new MaterialController(Renderer, 0.5f);
     }
@@ -97,7 +82,11 @@ public abstract class EnemyBrain : MonoBehaviour
         EnemyManager.Unsubscribe(this);
     }
 
-    public void SetGrid(Grid grid) => currentGrid = grid;
+    public void SetGrid(Grid grid)
+    {
+        currentGrid = grid;
+        Debug.Log($"current grid pos : {currentGrid.transform.position}");
+    }
 
     public Grid GetTargetGrid() =>  TargetGrid;
 
@@ -132,7 +121,7 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public virtual void Move(Vector3 attackPos)
     {
-        move.StartMove(currentGrid,GridManager.Instance.getGridFromLocation(attackPos));
+        move.StartMove(currentGrid,TargetGrid);
     }
 
     public virtual void PreAttack(){}
@@ -141,27 +130,20 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void OnEnemySelection(bool isActivate)
     {
-        Debug.Log($"Enemy seçilmiş : {isActivate}");
-        if (AttackBTN != null)
-        {
-            if (isActivate)
-                EnemyManager.Instance.SelectEnemy(this);
-            AttackBTN.SetActive(isActivate);
-            AttackBTN2.SetActive(isActivate);
-        }
+        if (isActivate) 
+            EnemyManager.Instance.SelectEnemy(this);
     }
 
-    public void OnDeath()
+    public void OnDeath(float waitTime = 0f)
     {
-        AnimateDeath((() =>
-        {
-            FeelManager.Instance.ShakeCamera();
-            ArmController.Instance.RemoveEnemyFromTable(transform.position,0.8f);
-        }));
+        Debug.Log($"wait time : {waitTime}");
+        StartCoroutine(AnimateDeath(waitTime));
     }
 
-    private void AnimateDeath(Action action = null)
+    private IEnumerator AnimateDeath(float waitTime)
     {
+        yield return new WaitForSeconds(waitTime);
+        
         Vector3 originalPosition = transform.position;
         Vector3 liftedPosition = originalPosition + Vector3.up * liftHeight;
 
@@ -173,8 +155,18 @@ public abstract class EnemyBrain : MonoBehaviour
 
         // 2. Aşağı inerken tamamen sırt üstü düşme
         sequence.Append(transform.DOMove(originalPosition, duration / 2).SetEase(Ease.InQuad));
-        sequence.Join(transform.DORotate(new Vector3(rotationAngle, 0, 0), duration / 2).OnComplete((() => action.Invoke())));
-;
+        sequence.Join(transform.DORotate(new Vector3(rotationAngle, 0, 0), duration / 2));
+
+        yield return new WaitForSeconds(duration*2+0.2f);
+        
+        AfterDeathEffect();
+    }
+
+    public void AfterDeathEffect()
+    {
+        FeelManager.Instance.ShakeCamera();
+        Debug.Log($"currentGrid : {currentGrid.transform.position}");
+        ArmController.Instance.RemoveEnemyFromTable(currentGrid.transform.position, 0.8f);
     }
     
 }
