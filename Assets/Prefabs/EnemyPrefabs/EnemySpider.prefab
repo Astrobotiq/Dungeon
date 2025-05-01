@@ -42,8 +42,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4911883508534120868}
-  - {fileID: 1974275425953544171}
-  - {fileID: 4660737014747172441}
   - {fileID: 7306100515953859037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -169,6 +167,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 2
   damageMultiplier: 1
+  enemyPopupHealthCanvas: {fileID: 6491732078674117930}
 --- !u!114 &3890701896330217761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b72bb49afc1e8944ac66e9cad41fe31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPopupHealthCanvas: {fileID: 6491732078674117930}
 --- !u!1 &638807195428022565
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,37 +601,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3614295915279120185
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1974275425953544171}
-  m_Layer: 0
-  m_Name: "bo\u015F"
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1974275425953544171
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3614295915279120185}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00061377883, y: 0, z: -0.0010224059}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4391393639908910517}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5081144433887782762
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,37 +691,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &5205744407152864613
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4660737014747172441}
-  m_Layer: 0
-  m_Name: "bo\u015F (1)"
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4660737014747172441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5205744407152864613}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00061377883, y: 0, z: -0.0010224059}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4391393639908910517}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6251984230943771976
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,7 +740,7 @@ GameObject:
   - component: {fileID: 6495046699885515943}
   - component: {fileID: 8867156084426984586}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PopUpHealth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

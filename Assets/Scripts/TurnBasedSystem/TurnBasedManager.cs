@@ -21,7 +21,11 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 
     public void Start()
     {
-        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben TurnBaseManager");
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
     }
 
     public void StartCombat(int maxTurnNumber)

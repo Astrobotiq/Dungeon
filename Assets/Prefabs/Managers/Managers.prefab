@@ -1886,7 +1886,12 @@ MonoBehaviour:
   transitionDuration: 1.5
   isOrthographic: 0
   SkyRenderer: {fileID: 0}
-  gameStartWalkSound: 0.7
+  _soundManager: {fileID: 2066824013080358483}
+  gameStartWalkSoundVolume: 1
+  SwitchingToLevelSelectionSoundVolume: 1
+  BigStatueEyeOpenSoundEffectVolume: 1
+  MaskSoundEffectVolume: 1
+  LevelChangeSnowWalkSoundVolume: 1
 --- !u!1 &4553614102866011961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,7 +2893,7 @@ MonoBehaviour:
   players: []
   playerListForEnemyAI: []
   offset: 1.4
-  soundManager: {fileID: 0}
+  soundManager: {fileID: 2066824013080358483}
   PlayerSelectSoundVolume: 1
 --- !u!1 &7414721686800075204
 GameObject:
@@ -3001,7 +3006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnNumber: 0
   _maxTurnNumber: 0
-  soundManager: {fileID: 0}
+  soundManager: {fileID: 2066824013080358483}
   TurnSwitchSoundVolume: 1
   hasLevelFailed: 0
 --- !u!114 &4331018550728971575
@@ -3036,7 +3041,7 @@ MonoBehaviour:
   minSpawnNumber: 1
   waitInterval: 1
   spawner: {fileID: 1102903959755594569, guid: b32c45120a783c34488d8595de504acf, type: 3}
-  soundManager: {fileID: 0}
+  soundManager: {fileID: 2066824013080358483}
   InTurnEnemyInstantiateSoundVolume: 1
 --- !u!114 &6836413923502902975
 MonoBehaviour:
@@ -3277,7 +3282,7 @@ MonoBehaviour:
   enemyFactory: {fileID: 8323063901155126538}
   VillageFactory: {fileID: 852878394806789676}
   EnviromentFactory: {fileID: 2229279268441915657}
-  soundManager: {fileID: 0}
+  soundManager: {fileID: 2066824013080358483}
   currentLevelIndex: 0
   VillageInstantiateSoundVolume: 1
   PlayerNEnemyInstantiateSoundVolume: 1
@@ -4151,11 +4156,50 @@ PrefabInstance:
       propertyPath: MainThemeSoundVolume
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: soundList.Array.data[43].name
+      value: MaskSoundEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: soundList.Array.data[44].name
+      value: BigStatueEyeOpenSoundEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: soundList.Array.data[43].sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: soundList.Array.data[44].sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: 'soundList.Array.data[2].sounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 82a764ce2d675604d82c1d3c6b13ec0b, type: 3}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: 'soundList.Array.data[43].sounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 6beffbac43a5c744492841963f324ab1, type: 3}
+    - target: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+      propertyPath: 'soundList.Array.data[44].sounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b4befb25bac4fb459234427f34b26ff, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+--- !u!114 &2066824013080358483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8001391204899610696, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}
+  m_PrefabInstance: {fileID: 8332912294667161115}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e5c46581546fa4da0c0d1755fbd936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &4363304350458864999 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 5704338503775251324, guid: c6ddcba9aed275642874cc78cc8d2ac6, type: 3}

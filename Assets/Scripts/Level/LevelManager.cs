@@ -37,7 +37,11 @@ public class LevelManager : Singleton<LevelManager>
     {
         currentLevelIndex = -1;
         
-        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben LevelManager");
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
     }
 
     public void StartNewLevel()

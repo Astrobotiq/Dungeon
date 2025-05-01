@@ -1460,6 +1460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainThemeSoundVolume: 0.2
   ContinueMainTheme: 1
+  audioSource: {fileID: 0}
   soundList:
   - name: SwordSwing
     sounds:
@@ -1592,6 +1593,15 @@ MonoBehaviour:
   - name: InTurnEnemyInstantiateSound
     sounds:
     - {fileID: 8300000, guid: fc9b34d1c5bfa334d90a884eb13efe3b, type: 3}
+  - name: InTurnEnemyInstantiateSound
+    sounds:
+    - {fileID: 8300000, guid: fc9b34d1c5bfa334d90a884eb13efe3b, type: 3}
+  - name: InTurnEnemyInstantiateSound
+    sounds:
+    - {fileID: 8300000, guid: fc9b34d1c5bfa334d90a884eb13efe3b, type: 3}
+  - name: LevelChangeSnowWalkSound
+    sounds:
+    - {fileID: 8300000, guid: bdba97aa706df1547b73de01c1a89b07, type: 3}
 --- !u!1 &2241129243495490255
 GameObject:
   m_ObjectHideFlags: 0

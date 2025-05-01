@@ -61,7 +61,11 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     public void Start()
     {
-        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben InGameUITextMesh");
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
     }
 
     void OnEnable()
@@ -156,8 +160,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         SortedEnemyBrains = new List<EnemyBrain>();
         SortedEnemyBrains = input;
         
-        if (SortedEnemyBrains.Count >= MaxEnemyUICount)
-        {
+        if (SortedEnemyBrains.Count >= MaxEnemyUICount) {
             EnemyUIRelatedGameobjectHolder = new List<GameObject>();
             for (int i = 0; i < MaxEnemyUICount; i++) {
                 GameObject temp = EnemyUIGameobjects[i];
@@ -171,21 +174,21 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         {
             EnemyUIRelatedGameobjectHolder = new List<GameObject>();
 
-            for (int i = 0; i < Math.Abs(SortedEnemyBrains.Count - MaxEnemyUICount); i++)
-            {
+            int dif = Math.Abs(SortedEnemyBrains.Count - MaxEnemyUICount);
+            
+            for (int i = 0; i < dif; i++) {
                 EnemyUIRelatedGameobjectHolder.Add(null);
             }
 
-            foreach (var enemyBrain in SortedEnemyBrains)
-            {
+            foreach (var enemyBrain in SortedEnemyBrains) {
                 EnemyUIRelatedGameobjectHolder.Add(enemyBrain.gameObject);
             }
             
-            for (int i = Math.Abs(SortedEnemyBrains.Count - MaxEnemyUICount); i < MaxEnemyUICount; i++) {
+            for (int i = dif; i < MaxEnemyUICount ; i++) {
                 GameObject temp = EnemyUIGameobjects[i];
                 temp.transform.GetChild(0).gameObject.SetActive(true); // EnemyProfıle active eder 
-                temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i-1].enemyPortrait;
-                //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation 
+                temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = input[i-dif].enemyPortrait;
+                //temp.transform.GetChild(1).gameObject.SetActive(true); // Enemy Level (bızım ıcın oynama sırası) active eder. DND initiation
             }
         }
     }
