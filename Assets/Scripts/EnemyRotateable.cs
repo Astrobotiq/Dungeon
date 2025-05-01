@@ -22,7 +22,7 @@ public class EnemyRotateable : IRotatable
     
     public override void Rotate(Vector3 direction, int rotateDegree)
     {
-        if (GetComponent<LineController>() is var lineController)
+        if (TryGetComponent<LineController>(out var lineController))
         {
             lineController.RemoveLine();
         }
@@ -50,10 +50,31 @@ public class EnemyRotateable : IRotatable
             {
                 newGridPos = new Vector3(transform.position.x - diffrence.z, transform.position.y, 0);
             }
+
+            //Check if pos out of bounds
+            if (newGridPos.x>7)
+            {
+                newGridPos = new Vector3(7, newGridPos.y, newGridPos.z);
+            }
+            else if (newGridPos.x<0)
+            {
+                newGridPos = new Vector3(0, newGridPos.y, newGridPos.z);
+            }
+            
+            if (newGridPos.z>7)
+            {
+                newGridPos = new Vector3(newGridPos.x, newGridPos.y, 7);
+            }
+            else if (newGridPos.z<0)
+            {
+                newGridPos = new Vector3(newGridPos.x, newGridPos.y, 0);
+            }
             
             newGrid = GridManager.Instance.getGridFromLocation(newGridPos);
             Debug.Log($"new Grid : {newGrid.transform.position}");
         }
+        
+        //TODO başka yönlere dönüyorlar BAZEN
         
         Vector3 temp = transform.rotation.eulerAngles;
         transform.DORotate(new Vector3(temp.x, temp.y + RotateValue, temp.z), duration).SetEase(curve).OnComplete(
