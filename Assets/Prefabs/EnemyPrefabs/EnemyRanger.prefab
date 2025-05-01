@@ -138,7 +138,7 @@ MonoBehaviour:
   normalDuration: 0.3
   dust: {fileID: 1248365930086534, guid: 8a7eff82d5211844591f2c46f6a7a82e, type: 3}
   dustPos: {fileID: 251532797695228454}
-  travelType: 0
+  travelType: 1
   soundManager: {fileID: 0}
   NormalWalkSoundVolume: 0.3
   JumpWalkSoundVolume: 0.3

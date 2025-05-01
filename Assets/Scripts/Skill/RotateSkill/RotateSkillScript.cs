@@ -34,7 +34,7 @@ public class RotateSkillScript : ISkillEffect
         {
             targetGrid.GridObject.GetComponent<IRotatable>().Rotate(Vector3.up, 90); //This will do not rotate because Rotate didn't overriden by
             
-            soundManager.PlaySound(SoundType.RotateHit,RotateHitSoundVolume);
+            //soundManager.PlaySound(SoundType.RotateHit,RotateHitSoundVolume);
         }
         Destroy(gameObject);
     }

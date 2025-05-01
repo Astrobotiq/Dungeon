@@ -68,6 +68,11 @@ public class SoundManager : Singleton<SoundManager>
         //instance.audioSource.PlayOneShot(instance.soundList[(int)type], volume);
 
         AudioClip[] clips = soundList[(int)type].Sounds;
+        
+        if (clips.Length == 0)
+        {
+            return;
+        }
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
         
         audioSource.PlayOneShot(randomClip, volume);

@@ -123,6 +123,29 @@ public class LevelManager : Singleton<LevelManager>
 
                     yield return new WaitForSeconds(1f);
                 }
+                
+                if (line[j].Equals('j'))
+                {
+                    Debug.Log("Player bulundu");
+                    var player =  playerFactory.Build(PlayerType.Rouge, new Vector3(i, 1.4f, j),
+                        quaternion.identity);
+
+                    var yPosTarget = player.transform.position.y;
+
+                    player.transform.position = new Vector3(player.transform.position.x,
+                        player.transform.position.y + 3, player.transform.position.z);
+
+                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+                        playerManager.playerListForEnemyAI.Add(player);
+                        
+                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                    }));
+
+                    yield return new WaitForSeconds(1f);
+                }
 
                 if (line[j].Equals('$'))
                 {

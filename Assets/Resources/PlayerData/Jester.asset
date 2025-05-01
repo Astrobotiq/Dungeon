@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84e8e44da8b14706896b025ee1f89c27, type: 3}
+  m_Name: Jester
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 7375778406333701460, guid: 709fe8f69b52c174da11dca11b16dc7e, type: 3}
+  Offset: 1.4
+  PlayerType: 2
