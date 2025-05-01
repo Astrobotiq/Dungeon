@@ -47,7 +47,10 @@ public enum SoundType
     BumpSound,
     GameStartWalkSound,
     DrumTakeDamageSound,
-    InTurnEnemyInstantiateSound
+    InTurnEnemyInstantiateSound,
+    MaskSoundEffect,
+    BigStatueEyeOpenSoundEffect,
+    LevelChangeSnowWalkSound
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

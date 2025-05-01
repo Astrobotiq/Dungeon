@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VillageHealth : IHealth
 {
@@ -7,6 +8,9 @@ public class VillageHealth : IHealth
     private SoundManager soundManager;
     
     public float VillageTakeDamageSoundVolume = 1f;
+
+    [SerializeField] 
+    private GameObject villagePopupHealthCanvas;
     public override void TakeDamage(int damage, bool willPush)
     {
         VillageManager.Instance.ChangeVillageHP(-1);
@@ -22,6 +26,15 @@ public class VillageHealth : IHealth
         }
         
         base.TakeDamage(damage);
+        
+        if(villagePopupHealthCanvas==null)
+        {
+            Debug.Log("Village Health Canvas assign edilmemiştir");
+            return;
+        }
+        
+        Slider slider = villagePopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
+        slider.value = GetComponent<VillageHealth>().getHealthPercentage();
         
     }
 }

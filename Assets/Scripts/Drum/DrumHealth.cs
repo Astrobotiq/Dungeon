@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DrumHealth : IHealth
 {
@@ -13,6 +14,10 @@ public class DrumHealth : IHealth
     private SoundManager soundManager;
     
     public float DrumTakeDamageSoundVolume = 1f;
+    
+    [SerializeField] 
+    private GameObject drumPopupHealthCanvas;
+    
     public override void TakeDamage(int damage, bool willPush)
     {
         StartCoroutine(PositionFinder());
@@ -26,6 +31,15 @@ public class DrumHealth : IHealth
         }
         
         base.TakeDamage(damage);
+        
+        if(drumPopupHealthCanvas==null)
+        {
+            Debug.Log("Drum Popup Health Canvas assign edilmemiştir");
+            return;
+        }
+        
+        Slider slider = drumPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
+        slider.value = GetComponent<DrumHealth>().getHealthPercentage();
         
         IEnumerator PositionFinder()
         {

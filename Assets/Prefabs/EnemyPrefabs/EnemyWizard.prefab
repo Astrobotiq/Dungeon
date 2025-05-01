@@ -170,6 +170,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 1
   damageMultiplier: 1
+  enemyPopupHealthCanvas: {fileID: 8168565986935308523}
 --- !u!114 &3890701896330217761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,6 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b72bb49afc1e8944ac66e9cad41fe31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyPopupHealthCanvas: {fileID: 8168565986935308523}
 --- !u!1 &1304080691722938073
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,7 +720,7 @@ GameObject:
   - component: {fileID: 7041510500584098001}
   - component: {fileID: 7011084592263115706}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PopUpHealth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

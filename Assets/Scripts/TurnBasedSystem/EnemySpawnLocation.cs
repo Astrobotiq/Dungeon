@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemySpawnLocation : ITurn
 {
@@ -20,6 +22,16 @@ public class EnemySpawnLocation : ITurn
     private SoundManager soundManager;
 
     public float InTurnEnemyInstantiateSoundVolume = 1f;
+
+    private void Start()
+    {
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben EnemySpawnLocation");
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+    }
+
     public override void EnterTurn()
     {
         var gridList = GridManager.Instance.GridList;
@@ -46,7 +58,6 @@ public class EnemySpawnLocation : ITurn
                     new Vector3(grid.transform.position.x, 0.5f, grid.transform.position.z), Quaternion.identity);
                 spawners.Add(Spawner);
                 
-                soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
                 soundManager.PlaySound(SoundType.InTurnEnemyInstantiateSound, InTurnEnemyInstantiateSoundVolume);
 
                 spawnedEnemyNum++;

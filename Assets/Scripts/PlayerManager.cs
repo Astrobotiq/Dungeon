@@ -22,6 +22,15 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public float PlayerSelectSoundVolume = 1f;
 
+    private void Start()
+    {
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben PlayerManager");
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+    }
+
     void OnEnable()
     {
         InputManager.Instance.onRightClicked += DeSelectPlayer;

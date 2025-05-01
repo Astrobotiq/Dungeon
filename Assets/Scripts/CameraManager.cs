@@ -50,10 +50,18 @@ public class CameraManager : Singleton<CameraManager>
     private SkyController _skyController;
 
     [SerializeField] private Renderer SkyRenderer;
+    
+    [SerializeField] private SoundManager _soundManager;
 
-    private SoundManager _soundManager;
+    [SerializeField] private float gameStartWalkSoundVolume = 1f;
+    
+    [SerializeField] private float SwitchingToLevelSelectionSoundVolume = 1f;
 
-    [SerializeField] private float gameStartWalkSound = 1f;
+    [SerializeField] private float BigStatueEyeOpenSoundEffectVolume = 1f;
+    
+    [SerializeField] private float MaskSoundEffectVolume = 1f;
+    
+    [SerializeField] private float LevelChangeSnowWalkSoundVolume = 1f;
     void Start()
     {
         cameraPivot.position = CalculatePivot(GridManager.Instance.GetCenter());
@@ -62,15 +70,22 @@ public class CameraManager : Singleton<CameraManager>
 
         if (SkyRenderer)
             _skyController = new SkyController(SkyRenderer);
-
-        _soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        
+        if (_soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben CameraManager");
+            _soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
         
         _soundManager.StartMainTheme();
     }
 
     public void StartGame()
     {
-        _soundManager.PlaySound(SoundType.GameStartWalkSound, gameStartWalkSound);
+        _soundManager.PlaySound(SoundType.GameStartWalkSound, gameStartWalkSoundVolume);
+        
+        Timed.Run(() => _soundManager.PlaySound(SoundType.BigStatueEyeOpenSoundEffect, BigStatueEyeOpenSoundEffectVolume), 11f);
+        Timed.Run(() => _soundManager.PlaySound(SoundType.MaskSoundEffect, MaskSoundEffectVolume), 9.5f);
 
         // DOTween ile döndür
         Sequence sequence = DOTween.Sequence();
@@ -123,8 +138,6 @@ public class CameraManager : Singleton<CameraManager>
     public void OnLevelCompleted()
     {
         StartCoroutine(TransitionToPerspective(ChangeCameraForLevelSelection,null));
-
-
         void ChangeCameraForLevelSelection()
         {
             Sequence sequence = DOTween.Sequence();
@@ -137,11 +150,17 @@ public class CameraManager : Singleton<CameraManager>
             sequence.Append(transform.DOLocalRotate(new Vector3(-54, -35, 0), 2).SetEase(Ease.InOutQuad).OnComplete((() => InGameUITextMesh.Instance.OpenLevelSelection())));
 
         }
+
+        Timed.Run(() => _soundManager.PlaySound(SoundType.SwitchingToLevelSelectionSound, SwitchingToLevelSelectionSoundVolume), 6f);
+        Timed.Run(() => _soundManager.PlaySound(SoundType.LevelChangeSnowWalkSound, LevelChangeSnowWalkSoundVolume), 9f);
     }
     
     public void ChangeCameraForLevel()
     {
         StartCoroutine(_skyController.ChangeSky(1f,0.5f,1f,0.65f, 4f));
+
+        Timed.Run(() => _soundManager.PlaySound(SoundType.LevelChangeSnowWalkSound, LevelChangeSnowWalkSoundVolume), 10f);
+        
         transform.DOLocalRotate(new Vector3(6,-35,0),6).OnComplete((() =>
         {
             var rotation = GetRotation(statue.transform, transform);

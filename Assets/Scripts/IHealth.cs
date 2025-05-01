@@ -69,7 +69,7 @@ public class IHealth : MonoBehaviour
 
         float temp_3 = Mathf.FloorToInt((temp_1 / temp_2) * 100);
         
-        Debug.Log("health percentage " + temp_3);
+        //Debug.Log("health percentage " + temp_3);
         return temp_3; 
 
     }

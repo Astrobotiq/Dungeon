@@ -8,6 +8,9 @@ public class EnemyHealth : IHealth
     public event Action OnDeath;
     public event Action OnHeal;
     
+    [SerializeField] 
+    private GameObject enemyPopupHealthCanvas;
+    
     public override void TakeDamage(int damage, bool willPush)
     {
         if (TryGetComponent<SpiderEnemyBrain>(out var spider))
@@ -28,8 +31,13 @@ public class EnemyHealth : IHealth
         
         base.TakeDamage(damage);
         
-        GameObject EnemyPopupHealthCanvas = gameObject.transform.GetChild(3).gameObject;
-        Slider slider = EnemyPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
+        if(enemyPopupHealthCanvas==null)
+        {
+            Debug.Log("Enemy Health Popup Canvas assign edilmemiştir");
+            return;
+        }
+        
+        Slider slider = enemyPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
         slider.value = GetComponent<EnemyHealth>().getHealthPercentage();
     }
 
