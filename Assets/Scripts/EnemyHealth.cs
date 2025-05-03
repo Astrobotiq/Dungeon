@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class EnemyHealth : IHealth
 {
-    public event Action OnDeath;
-    public event Action OnHeal;
     
     [SerializeField] 
     private GameObject enemyPopupHealthCanvas;
@@ -39,12 +37,5 @@ public class EnemyHealth : IHealth
         
         Slider slider = enemyPopupHealthCanvas.transform.GetChild(0).gameObject.GetComponent<Slider>();
         slider.value = GetComponent<EnemyHealth>().getHealthPercentage();
-    }
-
-    public override void Heal(int heal)
-    {
-        base.Heal(heal);
-        
-        OnHeal?.Invoke();
     }
 }

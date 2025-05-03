@@ -51,7 +51,6 @@ public class SpiderEnemyBrain : EnemyBrain
         soundManager.PlaySound(SoundType.SpiderSound, SpiderSoundVolume);
         
         Vector3 bestOption = gameObject.GetComponent<EnemyAI_Organizer>().ReturnBestOption(gameObject);
-        Debug.Log("seçtiğim en iyi loc " + bestOption);
         return bestOption;
     }
     

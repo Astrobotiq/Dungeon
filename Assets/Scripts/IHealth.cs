@@ -11,9 +11,6 @@ public class IHealth : MonoBehaviour
     
     [SerializeField]
     protected float damageMultiplier;
-    
-    public event Action OnDeath;
-    public event Action OnHeal;
 
     void Start()
     {

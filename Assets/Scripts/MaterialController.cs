@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MaterialController
 {
-    bool canChangeAlpha = false;
     private Renderer objRenderer;
     private MaterialPropertyBlock propertyBlock;
 

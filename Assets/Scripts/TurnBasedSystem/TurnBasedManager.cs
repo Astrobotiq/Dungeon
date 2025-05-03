@@ -19,6 +19,10 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 
     public bool hasLevelFailed = false;
 
+    public int TurnNumber => turnNumber;
+
+    public int MaxTurnNumber => _maxTurnNumber;
+
     public void Start()
     {
         if (soundManager == null)

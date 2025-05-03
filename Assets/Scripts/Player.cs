@@ -182,12 +182,13 @@ public class Player : MonoBehaviour
                 gameView.ResetGameView();
                 CommandManager.Instance.ClearCommands();
                 HasUsedSkill = true;
+                _hasWebbed = false;
                 var playerTurn = TurnBasedManager.Instance.GetCurrentTurn() as PlayerTurn;
                 playerTurn?.SetPlayerAsPlayed(this);
                 InputManager.Instance.canTakeInput = true;
             }
 
-            _hasWebbed = false;
+            
         }
     }
 

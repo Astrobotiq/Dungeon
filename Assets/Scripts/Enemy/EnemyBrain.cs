@@ -165,7 +165,7 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void AfterDeathEffect()
     {
-        FeelManager.Instance.ShakeCamera();
+        //FeelManager.Instance.ShakeCamera();
         Debug.Log($"currentGrid : {currentGrid.transform.position}");
         ArmController.Instance.RemoveEnemyFromTable(currentGrid.transform.position, 0.8f);
     }

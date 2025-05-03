@@ -21,9 +21,11 @@ public class EnemySpawnTurn : ITurn
     {
         var spawners = EnemyManager.Instance.Spawners;
 
-        foreach (var spawner in spawners)
+        if (spawners.Count == 0)
         {
-            Debug.Log($"Spawner position : {spawner.gameObject.transform.position}");
+            Debug.Log("Spawner olmadığı için spawn turu geçildi.");
+            ExitTurn();
+            return;
         }
 
         StartCoroutine(SpawnEnemies());
