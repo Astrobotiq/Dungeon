@@ -130,7 +130,7 @@ public class SpiderEnemyBrain : EnemyBrain
 
     public override void Attack()
     {
-        if (TargetGrid.gameObject == null)
+        if (TargetGrid == null)
         {
             return;
         }

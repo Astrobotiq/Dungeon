@@ -28,7 +28,13 @@ public class IHealth : MonoBehaviour
         {
             if (gameObject.tag.Equals("Enemy"))
             {
+                if (TryGetComponent<LineController>(out var lineController))
+                {
+                    lineController.RemoveLine();
+                }
+                
                 var enemyBrain = GetComponent<EnemyBrain>();
+                
                 if (willPush)
                 {
                     var pushTime = GetComponent<IPushable>().GetDuration();

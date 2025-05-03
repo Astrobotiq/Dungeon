@@ -98,6 +98,8 @@ public class Player : MonoBehaviour
         hasPreviewedTheSkill = false;
     }
 
+    public bool CanPlayerTravel() => !HasTraveled && !IsPlayerWebbed && IsPlayerTurn && !HasUsedSkill;
+
     public bool IsPlayerTurn => _isPlayerTurn;
 
     public void SetPlayerWebbed(bool hasWebbed)

@@ -66,7 +66,7 @@ public class PlayerManager : Singleton<PlayerManager>
         SelectedPlayer = Player;
         var PlayerScript = SelectedPlayer.GetComponent<Player>();
         GridManager.Instance.SetSelectedGridFromOutside(SelectedPlayer.transform.position,
-            !PlayerScript.HasTraveled && !PlayerScript.IsPlayerWebbed && PlayerScript.IsPlayerTurn , PlayerScript.range);
+            PlayerScript.CanPlayerTravel() , PlayerScript.range);
         EnemyManager.Instance.DeselectEnemy();
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();

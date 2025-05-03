@@ -33,6 +33,12 @@ public class EnemyRotateable : IRotatable
         {
             var diffrence = new Vector3(grid.transform.position.x - transform.position.x, 0,
                 grid.transform.position.z - transform.position.z);
+            
+            if (diffrence.z>0 || diffrence.z<0)
+            {
+                diffrence = new Vector3(diffrence.x, diffrence.y, -diffrence.z);
+            }
+            
             var newGridPos = new Vector3(transform.position.x + diffrence.z, transform.position.y, transform.position.z + diffrence.x);
             
             if (newGridPos.x>=GridManager.Instance.EndPosition)
@@ -73,8 +79,6 @@ public class EnemyRotateable : IRotatable
             newGrid = GridManager.Instance.getGridFromLocation(newGridPos);
             Debug.Log($"new Grid : {newGrid.transform.position}");
         }
-        
-        //TODO başka yönlere dönüyorlar BAZEN
         
         Vector3 temp = transform.rotation.eulerAngles;
         transform.DORotate(new Vector3(temp.x, temp.y + RotateValue, temp.z), duration).SetEase(curve).OnComplete(

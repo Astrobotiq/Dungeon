@@ -136,6 +136,7 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void OnDeath(float waitTime = 0f)
     {
+        
         Debug.Log($"wait time : {waitTime}");
         StartCoroutine(AnimateDeath(waitTime));
     }

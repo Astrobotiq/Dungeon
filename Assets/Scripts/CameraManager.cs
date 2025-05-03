@@ -119,20 +119,20 @@ public class CameraManager : Singleton<CameraManager>
         sequence.Append(mask.gameObject.transform.DOLocalRotate(new Vector3(0f,mask.transform.eulerAngles.y,mask.transform.eulerAngles.z),2f)
             .OnUpdate((() => transform.LookAt(mask.gameObject.transform))));
         
-        sequence.Append(mask.gameObject.transform.DOLocalRotate(new Vector3(0f,80f,mask.transform.eulerAngles.z),2f)
+        sequence.Append(mask.gameObject.transform.DOLocalRotate(new Vector3(0f,55f,mask.transform.eulerAngles.z),2f)
             .OnUpdate((() => transform.LookAt(mask.gameObject.transform))));
-        
-        sequence.Append(mask.gameObject.transform.DOMove(new Vector3(-0.25999999f,5.88999987f,-0.449999988f), 2f)
-            .OnUpdate((() => Debug.DrawLine(transform.position,mask.transform.position, Color.red)))
-            .OnComplete(() => mask.gameObject.transform.parent = this.transform));
-        
-        sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2)
-            .OnComplete((() => StartCoroutine(TransitionToOrthographic((() => mask.gameObject.SetActive(false))))
-                )));
-        
-        _soundManager.StopMainThemeTimed();
 
-        
+        sequence.Append(mask.gameObject.transform.DOMove(new Vector3(-0.195999995f,6.99f,-0.261999995f), 2f)
+            .OnUpdate((() => Debug.DrawLine(transform.position, mask.transform.position, Color.red)))
+        .OnComplete(() => mask.gameObject.transform.parent = this.transform));
+
+    sequence.Append(transform.DOLocalRotate(new Vector3(45,45,0),2)
+        .OnComplete((() => StartCoroutine(TransitionToOrthographic((() => mask.gameObject.SetActive(false))))
+            )));
+
+    _soundManager.StopMainThemeTimed();
+
+
     }
 
     public void OnLevelCompleted()

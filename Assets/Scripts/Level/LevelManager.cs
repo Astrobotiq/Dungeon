@@ -162,15 +162,27 @@ public class LevelManager : Singleton<LevelManager>
                     EnemyObj.name = EnemyObj.name + enemynumber;
                     enemynumber++;
                     
+                    var yPosTarget = EnemyObj.transform.position.y;
+
+                    EnemyObj.transform.position = new Vector3(EnemyObj.transform.position.x,
+                        EnemyObj.transform.position.y + 3, EnemyObj.transform.position.z);
+                    
                     var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0f, j));
-                    grid.GridObject = EnemyObj;
+
+                    EnemyObj.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
+                    {
+                        
+                        grid.GridObject = EnemyObj;
                     
-                    if(EnemyObj.GetComponent<EnemyBrain>() != null)
-                        EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
+                        if(EnemyObj.GetComponent<EnemyBrain>() != null)
+                            EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
                     
-                    enemyManager.enemyListForEnemyAI.Add(EnemyObj);
+                        enemyManager.enemyListForEnemyAI.Add(EnemyObj);
                     
-                    soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
+                    }));
+                    
+                    yield return new WaitForSeconds(1f);
                 }
 
                 if (line[j].Equals('+'))
