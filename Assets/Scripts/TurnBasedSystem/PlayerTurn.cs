@@ -43,6 +43,7 @@ public class PlayerTurn : ITurn
         endTurnBTN.enabled = true;
         var playerList = PlayerManager.Instance.GetPlayers();
         _playerDictionary = new();
+        InGameUITextMesh.Instance.OpenClosePlayerTurnIndicator();
         foreach (var playerGO in playerList)
         {
             var player = playerGO.GetComponent<Player>();

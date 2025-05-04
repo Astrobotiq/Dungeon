@@ -165,9 +165,11 @@ public class Player : MonoBehaviour
                     break;
                 case AttackPreviewType.PushFourSide:
                     attackPreview.PreviewFourSidedPushable(Grid.gameObject.transform.position);
+                    attackPreview.PreviewDamageGiven(Grid.gameObject.transform.position, SelectedSkill.Skill.SkillGO.GetComponent<ISkillEffect>().DamageAmount);
                     break;
                 case AttackPreviewType.PushOneSide:
                     attackPreview.PreviewOneSidedPushable(transform.position,Grid.gameObject.transform.position);
+                    attackPreview.PreviewDamageGiven(Grid.gameObject.transform.position, SelectedSkill.Skill.SkillGO.GetComponent<ISkillEffect>().DamageAmount);
                     break;
             }
 

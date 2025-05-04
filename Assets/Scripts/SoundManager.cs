@@ -50,7 +50,8 @@ public enum SoundType
     InTurnEnemyInstantiateSound,
     MaskSoundEffect,
     BigStatueEyeOpenSoundEffect,
-    LevelChangeSnowWalkSound
+    LevelChangeSnowWalkSound,
+    ButtonHoverSound
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

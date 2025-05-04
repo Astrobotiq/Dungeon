@@ -17,7 +17,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     public List<GameObject> EnemyUIGameobjects;
 
-    public List<GameObject> EnemyUIRelatedGameobjectHolder;
+    private List<GameObject> EnemyUIRelatedGameobjectHolder;
     
     #endregion
 
@@ -47,6 +47,17 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     [SerializeField] 
     private GameObject LevelCanvas;
+
+    [SerializeField] 
+    private GameObject EndTurnButton;
+
+    private ColorBlock EndTurnBaseColorBlock;
+
+    [SerializeField] 
+    private GameObject PlayerTurnIndicator;
+
+    [SerializeField] 
+    private float PlayerTurnIndicatorTimeOnScreen = 1f;
     
     [SerializeField]
     private SoundManager soundManager; //Şu an duruyor ama duruma göre SİLİNECEK duruma gelebilir
@@ -83,15 +94,6 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     public void OpenInGameUICanvas()
     {
         InGameUICanvas.gameObject.SetActive(true);
-    }
-    public void EnemyHoverEnter(int input) {
-        //Debug.Log("ben hover giriyorum " + SortedEnemyBrains[input - 1].gameObject.name);
-        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverEnter();
-    }
-    
-    public void EnemyHoverExit(int input) {
-        //Debug.Log("ben hover çıkıyorum " + SortedEnemyBrains[input - 1].gameObject.name);
-        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverExit();
     }
 
     public void updatePublicBar() {
@@ -203,10 +205,29 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         
         EnemyUIRelatedGameobjectHolder.Clear();
     }
+    
+    public void EnemyHoverEnter(int input) {
+        //Debug.Log("ben hover giriyorum " + SortedEnemyBrains[input - 1].gameObject.name);
+        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverEnter();
+    }
+    
+    public void EnemyHoverExit(int input) {
+        //Debug.Log("ben hover çıkıyorum " + SortedEnemyBrains[input - 1].gameObject.name);
+        EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverExit();
+    }
 
     public void UpdateTurnDisplay(int currentTurn, int maxTurn) { // TURNMANAGER GELINCE GUNCELLENECEK SU AN PSEUDO TURNMANAGER KULLANIYOR
         turnCounterGameobject.gameObject.SetActive(true);
         turnCounterGameobject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (currentTurn + " / " + maxTurn);
+    }
+
+    public void OpenClosePlayerTurnIndicator()
+    {
+        GameObject tempRef = PlayerTurnIndicator.transform.GetChild(0).gameObject;
+        
+        tempRef.SetActive(true);
+
+        Timed.Run((() => tempRef.SetActive(false)),PlayerTurnIndicatorTimeOnScreen);
     }
 
     public void OpenMissionInformation() { // SİLİNECEK geçici olarak çözmek için böyle yaptım
@@ -256,6 +277,37 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         UpdateWinScreenStars(completedMissionCount);
         
         soundManager.PlaySound(SoundType.YouWinSound, WinSoundVolume);
+    }
+    
+    public void AttractToEndTurn()
+    {
+        EndTurnBaseColorBlock = EndTurnButton.GetComponent<Button>().colors;
+        
+        StartCoroutine(OpenCloseEndTurn());
+    }
+    IEnumerator OpenCloseEndTurn()
+    {
+        ColorBlock firstColorBlock = EndTurnButton.GetComponent<Button>().colors;
+
+        // This part lover the alpha value so it becomes nearly invisible
+        ColorBlock tempcolorBlock = firstColorBlock;
+        Color changedColor = new Color(tempcolorBlock.normalColor.r, tempcolorBlock.normalColor.g, tempcolorBlock.normalColor.b, tempcolorBlock.normalColor.a - 0.5f);
+        tempcolorBlock.normalColor = changedColor;
+
+        EndTurnButton.GetComponent<Button>().colors = tempcolorBlock;
+        EndTurnButton.transform.GetChild(0).gameObject.SetActive(false); // Deactivate Text
+        yield return new WaitForSeconds(1f);
+
+        EndTurnButton.GetComponent<Button>().colors = firstColorBlock;
+        EndTurnButton.transform.GetChild(0).gameObject.SetActive(true); // Activate Text
+        yield return new WaitForSeconds(1f);
+        
+        StartCoroutine(OpenCloseEndTurn());
+        yield return null;
+    }
+    public void MakeEndTurnNormal() {
+        StopCoroutine(OpenCloseEndTurn());
+        EndTurnButton.GetComponent<Button>().colors = EndTurnBaseColorBlock;
     }
     
     public void UpdateWinScreenStars(int completedMissionCount) {

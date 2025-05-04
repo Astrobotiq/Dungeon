@@ -84,4 +84,9 @@ public class IHealth : MonoBehaviour
     {
         return currentHealth;
     }
+
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
 }

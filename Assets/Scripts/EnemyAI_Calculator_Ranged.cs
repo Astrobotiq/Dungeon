@@ -137,9 +137,17 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
     public void setGridUIValueAttack(Grid gridReference, int value) {
         //GameObject gridCanvas = gridReference.transform.GetChild(0).gameObject;
         //TextMeshProUGUI textObject = gridCanvas.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
-
-        //textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
-        gridReference.GridValue += value;
+        
+        if(gridReference.transform.position.x==0 || gridReference.transform.position.x==7 || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) {
+            //Debug.Log("ranged kose attack " + gridReference.transform.position);
+            //textObject.SetText(mapEdgeValue.ToString());
+            gridReference.GridValue = mapEdgeValue;
+        }
+        else {
+            //textObject.SetText( (Int32.Parse(textObject.text) + value) .ToString());
+            gridReference.GridValue += value;
+        }
+        
     }
     
     public override void CalculateGridMoveValues(GameObject gameObject, AttackedObjectType type, int enemyWalkDistance) {
@@ -175,7 +183,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
                 //lookedGrids.Add(grid);
                 setGridUIValueMove(gridManager.getGridFromLocation(grid), temp_mult);
                 //Debug.Log("sayiyi da yazdim");
-                //workOnNearNodes(grid, enemyRef, enemyWalkDistance);
+                //workOnNearNodes(grid, enemyRef, enemyWalkDistance); // BUNU BİR SEBEPTEN KAPAMIŞIM UMARIM HATA ÇIKARTTIĞI İÇİN DEĞİLDİR // DİKKAT
             }
         }
     }
@@ -192,6 +200,7 @@ public class EnemyAI_Calculator_Ranged : AbstractEnemyAI_Calculator
         if(gridReference.transform.position.x==0 || gridReference.transform.position.x==7
             || gridReference.transform.position.z==0 || gridReference.transform.position.z==7) 
         {
+            //Debug.Log("ben geldim pos " + gridReference.transform.position + " ben");
             //textObject.SetText(mapEdgeValue.ToString());
             gridReference.GridValue = mapEdgeValue;
         }
