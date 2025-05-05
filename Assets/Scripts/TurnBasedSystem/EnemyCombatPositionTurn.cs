@@ -19,9 +19,7 @@ public class EnemyCombatPositionTurn : ITurn
         {
             foreach (var enemy in enemyList)
             {
-                StartCoroutine(enemy.Template());
-
-                yield return new WaitForSeconds(5f);
+                yield return StartCoroutine(enemy.Template());
             }
             
             ExitTurn();

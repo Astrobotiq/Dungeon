@@ -15,16 +15,15 @@ public class EnemyHealth : IHealth
         {
             spider.DestroyWeb();
         }
-        
-        if (GetComponent<MMPositionShaker>() is var shaker)
-        {
-            FeelManager.Instance.ShakeGameObject(shaker);
-        }
 
         if (currentHealth - damage <= 0)
         {
             
             EventManager.Instance.InvokeOnEnemyKilled();
+        }
+        else if (GetComponent<MMPositionShaker>() is var shaker)
+        {
+            FeelManager.Instance.ShakeGameObject(shaker);
         }
         
         base.TakeDamage(damage);

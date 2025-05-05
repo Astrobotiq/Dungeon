@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private bool _isPlayerTurn = false;
     
     private bool _hasWebbed = false;
+    
+    private GameObject _previewedGrid;
 
     [SerializeField] bool hasPreviewedTheSkill = false;
 
@@ -148,13 +150,16 @@ public class Player : MonoBehaviour
                 return;
             }
 
-            if (hasPreviewedTheSkill)
+            if (hasPreviewedTheSkill && _previewedGrid == Grid)
             {
                 InputManager.Instance.canTakeInput = false;
                 attackPreview.ClosePreviews();
                 StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position, (InstantiateSkill)));
                 return;
             }
+            
+            attackPreview.ClosePreviews();
+            _previewedGrid = Grid;
 
             switch (SelectedSkill.Skill.AttackPreviewType)
             {

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Paladin
   m_EditorClassIdentifier: 
   Prefab: {fileID: 7375778406333701460, guid: 7b770af98428fb3439fbe47fe7ce3755, type: 3}
-  Offset: 1.4
+  Offset: 1.046
   PlayerType: 0

@@ -42,7 +42,7 @@ public class EnemySpawnTurn : ITurn
                     enemyGO.transform.position = armPos;
                     var enemyOffset = enemy.Item2; 
                     var pos = new Vector3(location.transform.position.x,enemyOffset, location.transform.position.z);
-                    ArmController.Instance.StartInstantiate(enemyGO,pos,waitInterval, damageAmount);
+                    ArmController.Instance.EnqueueStartInstantiate(enemyGO,pos,waitInterval, damageAmount);
                     Destroy(location);
                     yield return new WaitForSeconds(2*waitInterval+3f);
                 }

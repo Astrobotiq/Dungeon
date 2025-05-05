@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Wizard
   m_EditorClassIdentifier: 
   Prefab: {fileID: 7375778406333701460, guid: 8b8cdc37a1195db46b4435ac07e3b27f, type: 3}
-  Offset: 1.4
+  Offset: 1.184
   PlayerType: 1

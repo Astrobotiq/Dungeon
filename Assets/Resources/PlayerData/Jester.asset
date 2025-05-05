@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Jester
   m_EditorClassIdentifier: 
   Prefab: {fileID: 7375778406333701460, guid: 709fe8f69b52c174da11dca11b16dc7e, type: 3}
-  Offset: 1.4
+  Offset: 1.12
   PlayerType: 2

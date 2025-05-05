@@ -155,6 +155,7 @@ public class SpiderEnemyBrain : EnemyBrain
                 if (TargetGrid.GridObject)
                 {
                     TargetGrid.GridObject.GetComponent<IHealth>().TakeDamage(1);
+                    TargetGrid = null;
                 }
                 transform.DOMove(effectStartPos, attackRecoveryTime);
             }));

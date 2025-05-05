@@ -406,7 +406,7 @@ public class LevelManager : Singleton<LevelManager>
         player.transform.DOMoveY(yTarget, 1f).OnComplete(() =>
         {
             var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-            player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
+            player.GetComponent<Player>().SetGridStart(grid.gameObject, yTarget);
             playerManager.playerListForEnemyAI.Add(player);
             soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound, PlayerNEnemyInstantiateSoundVolume);
         });

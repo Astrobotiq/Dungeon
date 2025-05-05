@@ -190,6 +190,7 @@ public class RangerEnemyBrain : EnemyBrain
         sequence.Append(transform.DOMove(effectStartPos, attackRecoveryTime));
         sequence.Play();
         _targetLineController.RemoveLine();
+        TargetGrid = null;
     }
     
     

@@ -111,6 +111,7 @@ public abstract class EnemyBrain : MonoBehaviour
         Debug.Log("Template 2");
         DecideAttackTile();
         PreAttack();
+        yield return new WaitForSeconds(2f);
     }
 
     public virtual void RecalculateTarget(string name){}
@@ -136,7 +137,10 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void OnDeath(float waitTime = 0f)
     {
-        
+        if (TryGetComponent<LineController>(out var lineController))
+        {
+            lineController.RemoveLine();
+        }
         Debug.Log($"wait time : {waitTime}");
         StartCoroutine(AnimateDeath(waitTime));
     }
@@ -167,7 +171,7 @@ public abstract class EnemyBrain : MonoBehaviour
     {
         //FeelManager.Instance.ShakeCamera();
         Debug.Log($"currentGrid : {currentGrid.transform.position}");
-        ArmController.Instance.RemoveEnemyFromTable(currentGrid.transform.position, 0.8f);
+        ArmController.Instance.EnqueueRemoveEnemy(currentGrid.transform.position, 0.8f);
     }
     
 }
