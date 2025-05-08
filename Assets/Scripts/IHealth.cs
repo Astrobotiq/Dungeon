@@ -48,6 +48,10 @@ public class IHealth : MonoBehaviour
             else
             {
                 GridManager.Instance.getGridFromLocation(transform.position).GridObject = null;
+                if (gameObject.GetComponent<Player>())
+                {
+                    InGameUITextMesh.Instance.UpdateSpecificPlayer(this.gameObject);
+                }
                 Destroy(this.gameObject);
             }
             

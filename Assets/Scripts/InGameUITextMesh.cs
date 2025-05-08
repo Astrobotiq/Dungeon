@@ -18,7 +18,9 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     public List<GameObject> EnemyUIGameobjects;
 
     private List<GameObject> EnemyUIRelatedGameobjectHolder;
-    
+
+    public List<GameObject> PlayerUIGameobjects;
+     
     #endregion
 
 
@@ -114,7 +116,40 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         }
     }
 
-    public void UpdatePlayerBars() {
+    // Bu metodun kullandigi PlayerUIGameobjects listesine PaladinUI -> JesterUI-> WizardUI seklinde oldugundan emin ol yoksa yanlis calisir su an baya stricly typed bir method
+    public void UpdatePlayerBars() 
+    {
+        players = PlayerManager.Instance.GetPlayers();
+        
+        for (int i = 0; i < players.Count; i++)
+        {
+            GameObject temp = null;
+
+            if (players[i].GetComponent<Player>().CharacterType == CharacterType.Paladin) {
+                temp = PlayerUIGameobjects[0];
+                temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+                temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+            }
+            else if (players[i].GetComponent<Player>().CharacterType == CharacterType.Jester) {
+                temp = PlayerUIGameobjects[1];
+                temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+                temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+            }
+            else if (players[i].GetComponent<Player>().CharacterType == CharacterType.Wizard) {
+                temp = PlayerUIGameobjects[2];
+                temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+                temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+            }
+            else {
+                Debug.Log("Burada bi sıkıntı var gel bak");
+            }
+            
+            UpdatePlayerImage(temp,players[i]);
+            UpdatePlayerHP(temp, players[i]);
+        }
+    }
+
+    /*public void UpdatePlayerBars() {
         players = PlayerManager.Instance.GetPlayers();
         
         for (int i = 0; i < players.Count; i++) {
@@ -125,7 +160,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
             UpdatePlayerImage(temp,players[i]);
             UpdatePlayerHP(temp, players[i]);
         }
-    }
+    }*/
     
     private void UpdatePlayerImage(GameObject PlayerBar, GameObject player) {
         Image tempImage = PlayerBar.transform.GetChild(1).GetComponent<Image>();
@@ -145,7 +180,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         //Debug.Log("Slider value " + tempSlider.value + " player health " + playerHealth.getHealthPercentage() );
         
-        //Debug.Log("Slider value " + tempSlider.value + " player health " + playerHealth.getHealthPercentage() );
+        Debug.Log("Slider value " + tempSlider.value + " player health " + playerHealth.getHealthPercentage() + "player name " + player.name);
         tempSlider.value = playerHealth.getHealthPercentage();
         
         if (tempSlider.value < 0) {
@@ -155,6 +190,33 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
             tempSlider.value = 100;
         }
         
+    }
+
+    public void UpdateSpecificPlayer(GameObject player)
+    {
+        GameObject temp = null;
+        
+        if (player.GetComponent<Player>().CharacterType == CharacterType.Paladin) {
+            temp = PlayerUIGameobjects[0];
+            temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+            temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+        }
+        else if (player.GetComponent<Player>().CharacterType == CharacterType.Jester) {
+            temp = PlayerUIGameobjects[1];
+            temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+            temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+        }
+        else if (player.GetComponent<Player>().CharacterType == CharacterType.Wizard) {
+            temp = PlayerUIGameobjects[2];
+            temp.transform.GetChild(0).gameObject.SetActive(true); // PlayerHealth slider active eder
+            temp.transform.GetChild(1).gameObject.SetActive(true); // PlayerHealth iconFrame active eder
+        }
+        else {
+            Debug.Log("Burada bi sıkıntı var gel bak");
+        }
+            
+        UpdatePlayerImage(temp,player);
+        UpdatePlayerHP(temp, player);
     }
     
     public void UpdateEnemyArrangement(List<EnemyBrain> input)

@@ -121,6 +121,7 @@ MonoBehaviour:
   _selectedSkillEffect: {fileID: 0}
   startSkillList: 01000000
   IsInWater: 0
+  CharacterType: 1
   soundManager: {fileID: 0}
   PlayerEffectSoundVolume: 0.3
 --- !u!114 &1029285654706939780
@@ -170,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60b552479aa431892cc1b401b6dc091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 7
-  maxHealth: 12
+  currentHealth: 2
+  maxHealth: 2
   damageMultiplier: 1
 --- !u!114 &-1865325853239297727
 MonoBehaviour:

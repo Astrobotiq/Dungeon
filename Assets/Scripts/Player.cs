@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
         get { return playerSprite; }
     }
 
+    public CharacterType CharacterType;
+
     #endregion
     
     [SerializeField] 
@@ -288,4 +290,11 @@ public class Player : MonoBehaviour
         Grid.GetComponent<Grid>().GridObject = this.gameObject;
     }
 
+}
+
+public enum CharacterType
+{
+    Paladin,
+    Wizard, 
+    Jester
 }
