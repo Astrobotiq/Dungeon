@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerTurn : ITurn
+public class TutorialPlayerTurn : ITurn
 {
     [SerializeField]
     private Button endTurnBTN;
@@ -19,8 +18,10 @@ public class PlayerTurn : ITurn
 
     private Dictionary<Player, bool> _playerDictionary;
 
+    private bool hasPlayerSawTutorial;
     void Start()
     {
+        hasPlayerSawTutorial = false;
         endTurnBTN.onClick.AddListener((() =>
         {
             TryExitTurn();
@@ -37,12 +38,12 @@ public class PlayerTurn : ITurn
             warningCanvas.SetActive(false);
         }));
     }
-
     public override void EnterTurn()
     {
-        if (TutorialManager.Instance.isInTutorialLevel)
+        if (!hasPlayerSawTutorial)
         {
             TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerSelect);
+            hasPlayerSawTutorial = true;
         }
         
         endTurnBTN.enabled = true;
@@ -56,7 +57,7 @@ public class PlayerTurn : ITurn
         }
         endTurnBTN.gameObject.SetActive(true);
     }
-
+    
     private void TryExitTurn()
     {
         GridManager.Instance.ResetTable();
@@ -80,22 +81,17 @@ public class PlayerTurn : ITurn
             pair.Key.SetPlayerTurn(false);
         }
         endTurnBTN.gameObject.SetActive(false);
-
-        if (TutorialManager.Instance.isInTutorialLevel)
-        {
-            InGameUITextMesh.Instance.ResetEnemyArrangement();
-        }
+        
+        InGameUITextMesh.Instance.ResetEnemyArrangement();
         
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
     }
-
+    
     public void SetPlayerAsPlayed(Player player)
     {
         if(!_playerDictionary.ContainsKey(player))
             return;
 
         _playerDictionary[player] = true;
-        
-        //Burada tutorial gösterilecek (Bütün playerlar oynadı geçebilirsin.)
     }
 }

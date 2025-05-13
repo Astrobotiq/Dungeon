@@ -228,6 +228,10 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.ShowTutorial(TutorialType.PlayerMove);
+        }
         HandleUI(true, this);
         PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
     }
@@ -254,6 +258,11 @@ public class Player : MonoBehaviour
             soundManager.PlaySound(SelectedSkill.Skill.SoundType);
 
             GridManager.Instance.StartSearchForSkill(SelectedSkill.Skill.SearchType);
+
+            if (TutorialManager.Instance.isInTutorialLevel)
+            {
+                TutorialManager.Instance.ShowTutorial(TutorialType.PlayerAttack);
+            }
         }
     }
 

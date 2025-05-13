@@ -10,7 +10,8 @@ public class Water : MonoBehaviour
         {
             Debug.Log("Enemy girdi");
             _enemyBrain = enemyBrain;
-              enemyBrain.OnDeath(); 
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.Water);
+            enemyBrain.OnDeath();
         }
 
         if (other.gameObject.TryGetComponent<Player>(out var player))

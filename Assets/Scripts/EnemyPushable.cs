@@ -139,6 +139,7 @@ public class EnemyPushable : IPushable
                 targetGrid.GridObject = gameObject;
                 
                 _enemyBrain.SetGrid(targetGrid);
+                
                 if (newGrid != null)
                     _enemyBrain.SetTargetGrid(newGrid);
             }

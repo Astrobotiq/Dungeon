@@ -21,6 +21,10 @@ public abstract class ITurn : MonoBehaviour
                 return GetComponent<EnemyAttack>();
             case TurnNames.EnemySpawns:
                 return GetComponent<EnemySpawnTurn>();
+            case TurnNames.TutorialEnemyCombatPosition:
+                return GetComponent<TutorialEnemyCombatPosition>();
+            case TurnNames.TutorialEnemySpawnPosition:
+                return GetComponent<TutorialEnemySpawnPosition>();
             default:
                 return null;
         }
@@ -39,4 +43,6 @@ public enum TurnNames
     LevelEffects = 4,
     EnemyAttacks = 5,
     EnemySpawns = 6,
+    TutorialEnemyCombatPosition = 7,
+    TutorialEnemySpawnPosition = 8,
 }

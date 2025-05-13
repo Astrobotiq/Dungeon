@@ -54,6 +54,11 @@ public class EnemySpawnTurn : ITurn
 
     public override void ExitTurn()
     {
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.BuildTutorialLevel();
+            return;
+        }
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
     }
 }
