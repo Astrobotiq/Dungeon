@@ -41,6 +41,11 @@ public class VillageManager : Singleton<VillageManager>
 
     public void ChangeVillageHP(int amount)
     {
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            return;
+        }
+        
         TotalHp += amount;
 
         if (TotalHp <= 0)

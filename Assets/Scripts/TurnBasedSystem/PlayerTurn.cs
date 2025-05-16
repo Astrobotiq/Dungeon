@@ -104,6 +104,12 @@ public class PlayerTurn : ITurn
                 return;
             }
         }
+
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            Timed.Run(()=> TutorialManager.Instance.EnqueueTutorial(TutorialType.EndTurnButton),3f);
+        }
+        
         InGameUITextMesh.Instance.AttractToEndTurn();
     }
 }

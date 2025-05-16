@@ -115,7 +115,7 @@ public class TutorialManager : Singleton<TutorialManager>
         currentTutorialStep = -1;
         playerManager = PlayerManager.Instance;
         enemyManager = EnemyManager.Instance;
-        soundManager = SoundManager.Instance;
+        soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     public void CloseTutorial()
@@ -320,7 +320,7 @@ public class TutorialManager : Singleton<TutorialManager>
             tileObj.gameObject.transform.DOMoveY(3f, 1f).OnComplete((() => Destroy(tileObj)));
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f);            
     }
 }
 
@@ -333,6 +333,7 @@ public enum TutorialType
     Water,
     Undo,
     PaladinAttack,
-    JesterAttack
+    JesterAttack,
+    EndTurnButton
 }
 

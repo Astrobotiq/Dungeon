@@ -72,6 +72,8 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     //Bu duruma göre gidecek o yüzden SİLİNECEK yazıyorum
     public int MaxEnemyUICount;
 
+    public bool continueToAttract = true;
+
     public void Start()
     {
         if (soundManager == null)
@@ -344,7 +346,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     public void AttractToEndTurn()
     {
         EndTurnBaseColorBlock = EndTurnButton.GetComponent<Button>().colors;
-        
+        continueToAttract = true;
         StartCoroutine(OpenCloseEndTurn());
     }
     IEnumerator OpenCloseEndTurn()
@@ -356,18 +358,22 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         Color changedColor = new Color(tempcolorBlock.normalColor.r, tempcolorBlock.normalColor.g, tempcolorBlock.normalColor.b, tempcolorBlock.normalColor.a - 0.5f);
         tempcolorBlock.normalColor = changedColor;
 
-        EndTurnButton.GetComponent<Button>().colors = tempcolorBlock;
-        EndTurnButton.transform.GetChild(0).gameObject.SetActive(false); // Deactivate Text
-        yield return new WaitForSeconds(1f);
+        while (continueToAttract)
+        {
+            EndTurnButton.GetComponent<Button>().colors = tempcolorBlock;
+            EndTurnButton.transform.GetChild(0).gameObject.SetActive(false); // Deactivate Text
+            yield return new WaitForSeconds(1f);
 
-        EndTurnButton.GetComponent<Button>().colors = firstColorBlock;
-        EndTurnButton.transform.GetChild(0).gameObject.SetActive(true); // Activate Text
-        yield return new WaitForSeconds(1f);
+            EndTurnButton.GetComponent<Button>().colors = firstColorBlock;
+            EndTurnButton.transform.GetChild(0).gameObject.SetActive(true); // Activate Text
+            yield return new WaitForSeconds(1f);
+        }
         
-        StartCoroutine(OpenCloseEndTurn());
         yield return null;
     }
-    public void MakeEndTurnNormal() {
+    public void MakeEndTurnNormal()
+    {
+        continueToAttract = false;
         StopCoroutine(OpenCloseEndTurn());
         EndTurnButton.GetComponent<Button>().colors = EndTurnBaseColorBlock;
     }
