@@ -26,6 +26,10 @@ public class ButtonHover : MonoBehaviour
         }
     }
 
+    public void MakeButtonSizeNormal() {
+        gameObject.GetComponent<RectTransform>().localScale = tempRectTransformLocalScale;
+    }
+
     public void OnPointerEnter()
     {
         if(ReferedButton==null)
@@ -43,11 +47,11 @@ public class ButtonHover : MonoBehaviour
         
         soundManager.PlaySound(SoundType.ButtonHoverSound, ButtonHoverSoundVolume);
         
-        tempRectTransformLocalScale = gameObject.GetComponent<RectTransform>().localScale;
+        Vector3 temp = gameObject.GetComponent<RectTransform>().localScale;
         gameObject.GetComponent<RectTransform>().localScale = new Vector3(
-            tempRectTransformLocalScale.x + HoverScaleValue, 
-            tempRectTransformLocalScale.y + HoverScaleValue,
-            tempRectTransformLocalScale.z );
+            temp.x + HoverScaleValue, 
+            temp.y + HoverScaleValue,
+            temp.z );
     }
 
     public void OnPointerExit()

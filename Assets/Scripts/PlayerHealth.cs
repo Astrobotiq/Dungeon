@@ -25,7 +25,7 @@ public class PlayerHealth : IHealth
         {
             InGameUITextMesh.Instance.UpdateSpecificPlayer(this.gameObject);
         
-            InGameUITextMesh.Instance.UpdatePlayerBars();
+            //InGameUITextMesh.Instance.UpdatePlayerBars();
         }
     }
 }

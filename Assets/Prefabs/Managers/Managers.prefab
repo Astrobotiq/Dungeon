@@ -3097,7 +3097,7 @@ MonoBehaviour:
   isLastTurn: 1
   waitInterval: 1
   armController: {fileID: 2509659985620994166}
-  damageAmount: 3
+  damageAmount: 1
   enemyFactory: {fileID: 8323063901155126538}
 --- !u!114 &1158903663074232358
 MonoBehaviour:

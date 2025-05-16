@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoreMountains.Feedbacks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.UI;
@@ -101,12 +102,22 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         }
     }
 
+    public void OpenEndTurn()
+    {
+        UndoBTN.gameObject.SetActive(true);
+    }
+
+    public void CloseEndTurn()
+    {
+        UndoBTN.gameObject.SetActive(false);
+    }
+
     public void OpenInGameUICanvas()
     {
         InGameUICanvas.gameObject.SetActive(true);
     }
 
-    public void updatePublicBar() {
+    public void updatePublicBar(bool willShake) {
         if (! (publicHealth.transform.GetChild(0).gameObject.activeInHierarchy)) {
             publicHealth.transform.GetChild(0).gameObject.SetActive(true);
             publicHealth.transform.GetChild(1).gameObject.SetActive(true);
@@ -121,6 +132,12 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         }
         else if (publicBarSlider.value > 100) {
             publicBarSlider.value = 100;
+        }
+
+        if (willShake)
+        {
+            publicHealth.GetComponent<MMPositionShaker>().Play();
+            publicHealth.GetComponent<MMScaleShaker>().Play();
         }
     }
 
@@ -151,6 +168,7 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
             else {
                 Debug.Log("Burada bi sıkıntı var gel bak");
             }
+            
             
             UpdatePlayerImage(temp,players[i]);
             UpdatePlayerHP(temp, players[i]);
@@ -222,6 +240,9 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
         else {
             Debug.Log("Burada bi sıkıntı var gel bak");
         }
+        
+        temp.GetComponent<MMPositionShaker>().Play();
+        temp.GetComponent<MMScaleShaker>().Play();
             
         UpdatePlayerImage(temp,player);
         UpdatePlayerHP(temp, player);
@@ -278,12 +299,40 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
     
     public void EnemyHoverEnter(int input) {
         //Debug.Log("ben hover giriyorum " + SortedEnemyBrains[input - 1].gameObject.name);
+        if (!EnemyUIRelatedGameobjectHolder[input - 1]) {
+            return;
+        }
         EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverEnter();
     }
     
     public void EnemyHoverExit(int input) {
         //Debug.Log("ben hover çıkıyorum " + SortedEnemyBrains[input - 1].gameObject.name);
+        if (!EnemyUIRelatedGameobjectHolder[input - 1]) {
+            return;
+        }
         EnemyUIRelatedGameobjectHolder[input - 1].GetComponent<EnemyBrain>().UIRefHoverExit();
+    }
+
+    public void EnemyDeathRemoveFromUI(GameObject gameObjectRef)
+    {
+        int relatedIndex = -1;
+        for (int i = 0; i<EnemyUIRelatedGameobjectHolder.Count; i++)
+        {
+            if (gameObject == gameObjectRef)
+            {
+                Debug.Log("buldum aynı enemy'yi");
+                relatedIndex = i;
+                break;
+            }
+        }
+
+        if (relatedIndex != -1)
+        {
+            EnemyUIRelatedGameobjectHolder.Remove(gameObjectRef);
+            GameObject temp = EnemyUIGameobjects[relatedIndex];
+            temp.transform.GetChild(0).gameObject.SetActive(false); // EnemyProfıle active eder 
+            temp.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = null;
+        }
     }
 
     public void UpdateTurnDisplay(int currentTurn, int maxTurn) { // TURNMANAGER GELINCE GUNCELLENECEK SU AN PSEUDO TURNMANAGER KULLANIYOR

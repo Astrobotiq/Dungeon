@@ -21,6 +21,7 @@ public class EnemyHealth : IHealth
         {
             
             EventManager.Instance.InvokeOnEnemyKilled();
+            //InGameUITextMesh.Instance.EnemyDeathRemoveFromUI(this.gameObject);
         }
         else if (GetComponent<MMPositionShaker>() is var shaker)
         {
