@@ -82,12 +82,14 @@ public class PlayerTurn : ITurn
         }
         endTurnBTN.gameObject.SetActive(false);
 
-        if (TutorialManager.Instance.isInTutorialLevel)
+        if (!TutorialManager.Instance.isInTutorialLevel)
         {
             InGameUITextMesh.Instance.ResetEnemyArrangement();
         }
         
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
+        
+        InGameUITextMesh.Instance.MakeEndTurnNormal();
     }
 
     public void SetPlayerAsPlayed(Player player)
