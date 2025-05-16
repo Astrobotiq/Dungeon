@@ -6,8 +6,6 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 {
     private ITurn _currentTurn;
     
-    private bool isThisTutorial;
-    
     [SerializeField]
     private int turnNumber;
     
@@ -34,13 +32,12 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         }
     }
 
-    public void StartCombat(int maxTurnNumber, bool isThisTutorial)
+    public void StartCombat(int maxTurnNumber)
     {
-        this.isThisTutorial = isThisTutorial;
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
 
-        if (!isThisTutorial)
+        if (!TutorialManager.Instance.isInTutorialLevel)
         {
             InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
             NextTurn(GetComponent<EnemyCombatPositionTurn>());
@@ -60,20 +57,20 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         {
             Debug.Log("Game is finished");
             
-            if (!isThisTutorial)
+            if (!TutorialManager.Instance.isInTutorialLevel)
                 InGameUITextMesh.Instance.OpenWinScreen(MissionManager.Instance.GetCompletedMissionNumber());
             else
             {
                 CameraManager.Instance.OnLevelCompleted();
             }
             _currentTurn = null;
-            return;
+            return;         
         }
         
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
-            if (!isThisTutorial)
+            if (!TutorialManager.Instance.isInTutorialLevel)
                 InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         }
             

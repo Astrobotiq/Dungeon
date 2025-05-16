@@ -28,15 +28,24 @@ public class GameView : MonoBehaviour
 
     void OnEnable()
     {
-        CommandManager.Instance.onCommandActivated += () => undoButton.gameObject.SetActive(true);
-        CommandManager.Instance.onCommandDeactivated += () => undoButton.gameObject.SetActive(false);
+        if (CommandManager.Instance != null)
+        {
+            CommandManager.Instance.onCommandActivated += () => undoButton.gameObject.SetActive(true);
+            CommandManager.Instance.onCommandDeactivated += () => undoButton.gameObject.SetActive(false);
+        }
+        
     }
 
     void OnDisable()
     {
-        CommandManager.Instance.onCommandActivated += () => undoButton.gameObject.SetActive(true);
-        CommandManager.Instance.onCommandDeactivated += () => undoButton.gameObject.SetActive(false);
+        if (CommandManager.Instance != null)
+        {
+            CommandManager.Instance.onCommandActivated += () => undoButton.gameObject.SetActive(true);
+            CommandManager.Instance.onCommandDeactivated += () => undoButton.gameObject.SetActive(false);
+        }
+        
     }
+    
 
     public void OpenSkillPanel(bool isActive, Player player = null)
     {

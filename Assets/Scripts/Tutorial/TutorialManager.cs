@@ -59,6 +59,10 @@ public class TutorialManager : Singleton<TutorialManager>
     // Public method to enqueue a tutorial
     public void EnqueueTutorial(TutorialType tutorialType)
     {
+        if (!isInTutorialLevel)
+        {
+            return;
+        }
         tutorialQueue.Enqueue(ShowTutorialRoutine(tutorialType));
         ProcessQueue();
     }
@@ -138,6 +142,8 @@ public class TutorialManager : Singleton<TutorialManager>
         
         if (this.currentTutorialStep>= tutorialLevelSo.GetTutorialSteps.Count)
         {
+            CameraManager.Instance.OnLevelCompleted();
+            isInTutorialLevel = false;
             yield break;
         }
         
@@ -295,7 +301,7 @@ public class TutorialManager : Singleton<TutorialManager>
     }
     yield return new WaitForSeconds(1f);
     
-    TurnBasedManager.Instance.StartCombat(tutorialLevelSo.GetTutorialSteps.Count(),true);
+    TurnBasedManager.Instance.StartCombat(tutorialLevelSo.GetTutorialSteps.Count());
     }
 
     public IEnumerator DestroyTutorial()

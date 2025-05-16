@@ -85,14 +85,20 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
 
     void OnEnable()
     {
-        CommandManager.Instance.onCommandActivated += () => UndoBTN.gameObject.SetActive(true);
-        CommandManager.Instance.onCommandDeactivated += () => UndoBTN.gameObject.SetActive(false);
+        if (CommandManager.Instance != null)
+        {
+            CommandManager.Instance.onCommandActivated += () => UndoBTN.gameObject.SetActive(true);
+            CommandManager.Instance.onCommandDeactivated += () => UndoBTN.gameObject.SetActive(false);
+        }
     }
 
     void OnDisable()
     {
-        CommandManager.Instance.onCommandActivated += () => UndoBTN.gameObject.SetActive(true);
-        CommandManager.Instance.onCommandDeactivated += () => UndoBTN.gameObject.SetActive(false);
+        if (CommandManager.Instance != null)
+        {
+            CommandManager.Instance.onCommandActivated += () => UndoBTN.gameObject.SetActive(true);
+            CommandManager.Instance.onCommandDeactivated += () => UndoBTN.gameObject.SetActive(false);
+        }
     }
 
     public void OpenInGameUICanvas()
@@ -369,13 +375,12 @@ public class InGameUITextMesh : Singleton<InGameUITextMesh> {
             yield return new WaitForSeconds(1f);
         }
         
+        EndTurnButton.GetComponent<Button>().colors = EndTurnBaseColorBlock;
         yield return null;
     }
     public void MakeEndTurnNormal()
     {
         continueToAttract = false;
-        StopCoroutine(OpenCloseEndTurn());
-        EndTurnButton.GetComponent<Button>().colors = EndTurnBaseColorBlock;
     }
     
     public void UpdateWinScreenStars(int completedMissionCount) {

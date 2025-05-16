@@ -20,8 +20,12 @@ public class PlayerHealth : IHealth
         }
         
         base.TakeDamage(damage);
-        InGameUITextMesh.Instance.UpdateSpecificPlayer(this.gameObject);
         
-        InGameUITextMesh.Instance.UpdatePlayerBars();
+        if (!TutorialManager.Instance.isInTutorialLevel)
+        {
+            InGameUITextMesh.Instance.UpdateSpecificPlayer(this.gameObject);
+        
+            InGameUITextMesh.Instance.UpdatePlayerBars();
+        }
     }
 }

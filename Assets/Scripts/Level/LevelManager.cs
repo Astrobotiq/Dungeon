@@ -221,7 +221,7 @@ public class LevelManager : Singleton<LevelManager>
     foreach (var mission in currentLevel.getMissions())
         MissionManager.Instance.StartMission(mission);
 
-    TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber,false);
+    TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
 }
 
 

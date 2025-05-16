@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 public class SmiteSwordSwingSkill : ISkillEffect { //Bir yön skill GO particleların yönü konusunda bir problemi olduğunun farkındayım halledeceğim
     [SerializeField] float swingDuration = 1.5f;
-    public int DamageAmount;
     public float DamageFallOf;
     [SerializeField] Grid _target;
     [SerializeField] GameObject _player;

@@ -15,3 +15,4 @@ MonoBehaviour:
   tutorialSteps:
   - {fileID: 4900000, guid: 3e9bdc791d327134dbf132cab45c831b, type: 3}
   - {fileID: 4900000, guid: 9e44f944f7f698141972ce68355698f0, type: 3}
+  - {fileID: 4900000, guid: 72c55ad6a2fdc224ca044a3372cd064c, type: 3}

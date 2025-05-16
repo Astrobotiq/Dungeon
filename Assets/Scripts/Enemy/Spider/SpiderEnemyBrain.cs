@@ -73,23 +73,25 @@ public class SpiderEnemyBrain : EnemyBrain
 
             if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.CompareTag("Water"))
             {
-                continue;
+                
             }
-            
-            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.CompareTag("Water"))
-            {
-                continue;
-            }
-
-            if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<EnemyBrain>() == null)
+            else if (xGrid.gameObject && xGrid.GridObject && xGrid.GridObject.GetComponent<EnemyBrain>() == null)
             {
                 targetGrids.Add(xGrid);
             }
             
-            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<EnemyBrain>() == null)
+            if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.CompareTag("Water"))
+            {
+                
+            }
+            else if (zGrid.gameObject && zGrid.GridObject && zGrid.GridObject.GetComponent<EnemyBrain>() == null)
             {
                 targetGrids.Add(zGrid);
             }
+
+            
+            
+            
         }
 
         if (targetGrids.Count == 0)

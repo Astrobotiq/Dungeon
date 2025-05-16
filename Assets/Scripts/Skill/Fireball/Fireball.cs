@@ -23,8 +23,6 @@ public class Fireball : ISkillEffect
     
     [SerializeField]
     AnimationCurve curve;
-    
-    public int DamageAmount;
 
     [SerializeField] 
     private SoundManager soundManager;
