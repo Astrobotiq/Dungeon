@@ -8,8 +8,9 @@ public class EnemyHealth : IHealth
     public event Action OnDeath;
     public event Action OnHeal;
     
-    [SerializeField] 
-    private GameObject enemyPopupHealthCanvas;
+    public GameObject enemyPopupHealthCanvas;
+
+    public GameObject AttackPreviewHealthCanvas;
     
     public override void TakeDamage(int damage, bool willPush)
     {

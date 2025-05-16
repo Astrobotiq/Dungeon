@@ -5,6 +5,8 @@ public class VillageHover : MonoBehaviour
 {
     [SerializeField] 
     private GameObject villagePopupHealthCanvas;
+
+    public bool inAttackPreview = false;
     
     private void OnMouseEnter()
     {
@@ -13,6 +15,10 @@ public class VillageHover : MonoBehaviour
             Debug.Log("Village Health Canvas assign edilmemiştir");
             return;
         }
+        
+        if(inAttackPreview)
+            return;
+        
         villagePopupHealthCanvas.SetActive(true);
         
         villagePopupHealthCanvas.transform.LookAt(Camera.main.transform.position, Vector3.up);

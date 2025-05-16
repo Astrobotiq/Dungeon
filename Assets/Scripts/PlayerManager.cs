@@ -128,6 +128,7 @@ public class PlayerManager : Singleton<PlayerManager>
         }
 
         players.Remove(player.gameObject);
+        playerListForEnemyAI.Remove(player.gameObject);
 
         if (players.Count == 0)
         {

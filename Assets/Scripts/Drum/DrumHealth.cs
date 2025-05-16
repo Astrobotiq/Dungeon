@@ -15,8 +15,11 @@ public class DrumHealth : IHealth
     
     public float DrumTakeDamageSoundVolume = 1f;
     
-    [SerializeField] 
-    private GameObject drumPopupHealthCanvas;
+    public GameObject drumPopupHealthCanvas;
+    
+    public GameObject AttackPreviewHealthCanvas;
+    
+    
     
     public override void TakeDamage(int damage, bool willPush)
     {

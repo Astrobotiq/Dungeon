@@ -8,9 +8,10 @@ public class VillageHealth : IHealth
     private SoundManager soundManager;
     
     public float VillageTakeDamageSoundVolume = 1f;
-
-    [SerializeField] 
-    private GameObject villagePopupHealthCanvas;
+    
+    public GameObject villagePopupHealthCanvas;
+    
+    public GameObject AttackPreviewHealthCanvas;
     public override void TakeDamage(int damage, bool willPush)
     {
         VillageManager.Instance.ChangeVillageHP(-1);

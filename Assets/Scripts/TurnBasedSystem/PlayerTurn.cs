@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +44,7 @@ public class PlayerTurn : ITurn
         endTurnBTN.enabled = true;
         var playerList = PlayerManager.Instance.GetPlayers();
         _playerDictionary = new();
+        InGameUITextMesh.Instance.OpenClosePlayerTurnIndicator();
         foreach (var playerGO in playerList)
         {
             var player = playerGO.GetComponent<Player>();
@@ -64,7 +66,6 @@ public class PlayerTurn : ITurn
                 return;
             }
         }
-        
         ExitTurn();
     }
 
@@ -79,6 +80,8 @@ public class PlayerTurn : ITurn
         InGameUITextMesh.Instance.ResetEnemyArrangement();
         
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
+        
+        InGameUITextMesh.Instance.MakeEndTurnNormal();
     }
 
     public void SetPlayerAsPlayed(Player player)
@@ -87,5 +90,12 @@ public class PlayerTurn : ITurn
             return;
 
         _playerDictionary[player] = true;
+        foreach (var item in _playerDictionary)
+        {
+            if (!item.Value) {
+                return;
+            }
+        }
+        InGameUITextMesh.Instance.AttractToEndTurn();
     }
 }
