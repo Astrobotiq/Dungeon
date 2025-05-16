@@ -31,13 +31,15 @@ public class MissionManager : Singleton<MissionManager>
     void Start()
     {
         missions = GetComponents<IMission>();
-        
+        ActiveMissions = new();
         DisableOpenMissions();
     }
+    
+    
 
     public void StartMission(MissionParameter mission)
     {
-        ActiveMissions = new();
+        
         switch (mission)
         {
             case MissionParameter.NoDamage:
@@ -50,7 +52,8 @@ public class MissionManager : Singleton<MissionManager>
                 break;
             case MissionParameter.NoDamageToVillages:
                 GetComponent<NoDamageToVillageMission>().enabled = true;
-                ActiveMissions.Add(GetComponent<NoDamageToVillageMission>());
+                var vilMission = GetComponent<NoDamageToVillageMission>();
+                ActiveMissions.Add(vilMission);
                 break;
             case MissionParameter.DestroyAMountain:
                 GetComponent<DestroyAMountainMission>().enabled = true;

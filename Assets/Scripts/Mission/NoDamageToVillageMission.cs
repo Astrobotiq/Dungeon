@@ -13,6 +13,5 @@
     public override void UpdateOnMission()
     {
         isCompleted = false;
-        //UI'a bildiğim yolla
     }
 }

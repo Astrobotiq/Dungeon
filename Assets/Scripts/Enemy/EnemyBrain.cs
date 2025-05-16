@@ -36,6 +36,8 @@ public abstract class EnemyBrain : MonoBehaviour
     
     [SerializeField]
     protected float duration = 1.5f; // Hareket süresi
+
+    [SerializeField] protected bool isDead = false;
     
 
     public void SetFinishMove(bool hasFinished, Grid grid)
@@ -180,6 +182,8 @@ public abstract class EnemyBrain : MonoBehaviour
         {
             lineController.RemoveLine();
         }
+
+        isDead = true;
         Debug.Log($"wait time : {waitTime}");
         StartCoroutine(AnimateDeath(waitTime));
     }

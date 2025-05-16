@@ -324,6 +324,7 @@ MonoBehaviour:
   liftHeight: 1.5
   rotationAngle: 90
   duration: 0.8
+  isDead: 0
   attackEffect: {fileID: 3377181292992421420, guid: 89696257d6286e746a81c599cabebd05, type: 3}
   attackAnimHeight: 0.5
   attackFlyCurve:
@@ -417,6 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPopupHealthCanvas: {fileID: 8168565986935308523}
+  inAttackPreview: 0
 --- !u!1 &1304080691722938073
 GameObject:
   m_ObjectHideFlags: 0

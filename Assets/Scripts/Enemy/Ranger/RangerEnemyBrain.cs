@@ -170,7 +170,7 @@ public class RangerEnemyBrain : EnemyBrain
 
     public override void Attack()
     {
-        if (!TargetGrid)
+        if (!TargetGrid || isDead)
         {
             return;
         }

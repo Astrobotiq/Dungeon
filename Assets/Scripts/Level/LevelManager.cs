@@ -41,7 +41,6 @@ public class LevelManager : Singleton<LevelManager>
     void Start()
     {
         currentLevelIndex = -1;
-        hasSeenTutorial = false;
         
         if (soundManager == null)
         {
@@ -218,7 +217,9 @@ public class LevelManager : Singleton<LevelManager>
     InGameUITextMesh.Instance.updatePublicBar();
     InGameUITextMesh.Instance.UpdateMissionInformation(currentLevel.getMissions());
 
-    foreach (var mission in currentLevel.getMissions())
+    var missions = currentLevel.getMissions();
+
+    foreach (var mission in missions)
         MissionManager.Instance.StartMission(mission);
 
     TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
