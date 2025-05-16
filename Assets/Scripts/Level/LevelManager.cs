@@ -214,7 +214,7 @@ public class LevelManager : Singleton<LevelManager>
     // Game start UI and mission logic
     InGameUITextMesh.Instance.OpenInGameUICanvas();
     InGameUITextMesh.Instance.UpdatePlayerBars();
-    InGameUITextMesh.Instance.updatePublicBar();
+    InGameUITextMesh.Instance.updatePublicBar(false);
     InGameUITextMesh.Instance.UpdateMissionInformation(currentLevel.getMissions());
 
     var missions = currentLevel.getMissions();

@@ -59,7 +59,7 @@ public class VillageManager : Singleton<VillageManager>
             TotalHp = MaxTotalHp;
         }
         
-        InGameUITextMesh.Instance.updatePublicBar();
+        InGameUITextMesh.Instance.updatePublicBar(true);
     }
 
     public float getHealthPercentage()

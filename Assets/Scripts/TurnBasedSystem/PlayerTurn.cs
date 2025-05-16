@@ -45,6 +45,8 @@ public class PlayerTurn : ITurn
         {
             TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerSelect);
         }
+
+        InGameUITextMesh.Instance.OpenClosePlayerTurnIndicator();
         
         endTurnBTN.enabled = true;
         var playerList = PlayerManager.Instance.GetPlayers();
@@ -90,6 +92,8 @@ public class PlayerTurn : ITurn
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
         
         InGameUITextMesh.Instance.MakeEndTurnNormal();
+
+        InGameUITextMesh.Instance.CloseEndTurn();
     }
 
     public void SetPlayerAsPlayed(Player player)
