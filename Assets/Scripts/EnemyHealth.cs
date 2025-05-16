@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class EnemyHealth : IHealth
 {
     
-    [SerializeField] 
-    private GameObject enemyPopupHealthCanvas;
+    public GameObject enemyPopupHealthCanvas;
+
+    public GameObject AttackPreviewHealthCanvas;
     
     public override void TakeDamage(int damage, bool willPush)
     {

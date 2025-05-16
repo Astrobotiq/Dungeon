@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -95,7 +96,12 @@ public class PlayerTurn : ITurn
             return;
 
         _playerDictionary[player] = true;
-        
-        //Burada tutorial gösterilecek (Bütün playerlar oynadı geçebilirsin.)
+        foreach (var item in _playerDictionary)
+        {
+            if (!item.Value) {
+                return;
+            }
+        }
+        InGameUITextMesh.Instance.AttractToEndTurn();
     }
 }

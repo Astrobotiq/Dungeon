@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SwordSwingSkill : ISkillEffect {
     [SerializeField] float swingDuration = 1.5f;
-    public int DamageAmount;
     [SerializeField] Grid _target;
     [SerializeField] private GameObject _player;
     
