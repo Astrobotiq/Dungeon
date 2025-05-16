@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -104,24 +105,39 @@ public class WizardEnemyBrain : EnemyBrain
 
     public override void Attack()
     {
-        var effectStartPos = transform.position;
-
-        var diffrence = new Vector3(0, attackAnimHeight, 0);
-        
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(transform.DOMove(transform.position + diffrence, attackDashTime).SetEase(attackFlyCurve));
-        sequence.Append(transform.DOMove(effectStartPos, attackRecoveryTime).OnComplete((() =>
+        StartCoroutine(Attacker());
+        IEnumerator Attacker()
         {
-            FeelManager.Instance.ShakeCamera();
-            var effect =Instantiate(attackEffect, TargetGrid.transform.position + diffrence, Quaternion.identity);
-            if (effect != null)
-            {
-                effect.GetComponent<ISkillEffect>().StartMoving(TargetGrid);
-            }
+            _targetLineController.RemoveLine();
+            
+            var effectStartPos = transform.position;
 
-        })));
-        sequence.Play();
-        _targetLineController.RemoveLine();
-        TargetGrid = null;
+            var diffrence = new Vector3(0, attackAnimHeight, 0);
+
+            yield return transform.DOMove(transform.position + diffrence, attackDashTime).SetEase(attackFlyCurve)
+                .WaitForCompletion();
+            yield return transform.DOMove(effectStartPos, attackRecoveryTime).WaitForCompletion();
+            
+            FeelManager.Instance.ShakeCamera();
+            Debug.Log(attackEffect.name);
+                
+            if (attackEffect == null)
+                Debug.LogError("attackEffect prefab is not assigned!");
+
+            if (TargetGrid == null)
+                Debug.LogError("TargetGrid is null!");
+
+            var effect =Instantiate(attackEffect, TargetGrid.transform.position + diffrence, Quaternion.identity);
+        
+            WizardBall wb = effect.GetComponent<WizardBall>();
+            if (wb == null)
+                Debug.LogError("WizardBall component not found on effect!");
+            else
+                wb.StartMoving(TargetGrid);
+            
+            
+            TargetGrid = null;
+        }
+        
     }
 }

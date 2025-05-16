@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class WİzardBall : ISkillEffect
+public class WizardBall : ISkillEffect
 {
     private Grid _targetGrid;
-    
-    [SerializeField]
-    private int damageAmount = 3;
     
     [SerializeField] 
     private SoundManager soundManager;
@@ -24,7 +21,7 @@ public class WİzardBall : ISkillEffect
     {
         if (_targetGrid.GridObject != null)
         {
-            _targetGrid.GridObject.GetComponent<IHealth>()?.TakeDamage(damageAmount);
+            _targetGrid.GridObject.GetComponent<IHealth>()?.TakeDamage(DamageAmount);
         }
         
         soundManager.PlaySound(SoundType.EnemyWizardSkillHitSound,EnemyWizardHitSoundVolume);

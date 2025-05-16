@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -11,7 +12,14 @@ public class ArmController : Singleton<ArmController>
     [SerializeField]
     private GameObject Arm;
     public Vector3 GetPosition => transform.position;
-    
+
+    public Vector3 StartPosition;
+
+    void Start()
+    {
+        StartPosition = transform.position;
+    }
+
     private Queue<IEnumerator> armTaskQueue = new Queue<IEnumerator>();
     
     private bool isProcessing = false;
@@ -40,6 +48,7 @@ public class ArmController : Singleton<ArmController>
         isProcessing = true;
 
         yield return StartCoroutine(armTaskQueue.Dequeue());
+        yield return new WaitForSeconds(0.2f);
 
         isProcessing = false;
 
@@ -67,7 +76,8 @@ public class ArmController : Singleton<ArmController>
             FeelManager.Instance.ShakeCamera();
             EventManager.Instance.InvokeOnSpawnerPrevented();
 
-            yield return transform.DOMove(startPos, duration).WaitForCompletion();
+            yield return transform.DOMove(StartPosition, duration).WaitForCompletion();
+            transform.position = StartPosition;
 
             enemy.transform.SetParent(null);
             Destroy(enemy);
@@ -87,7 +97,8 @@ public class ArmController : Singleton<ArmController>
 
             EnemyManager.Instance.enemyListForEnemyAI.Add(enemy);
 
-            yield return transform.DOMove(startPos, duration).WaitForCompletion();
+            yield return transform.DOMove(StartPosition, duration).WaitForCompletion();
+            transform.position = StartPosition;
         }
 
         SetArmVisible(false);
@@ -110,8 +121,9 @@ public class ArmController : Singleton<ArmController>
         grid.GridObject = null;
         enemy.transform.SetParent(transform);
 
-        yield return transform.DOMove(startPos, duration).WaitForCompletion();
-
+        yield return transform.DOMove(StartPosition, duration).WaitForCompletion();
+        transform.position = StartPosition;
+        
         Destroy(enemy);
         SetArmVisible(false);
     }

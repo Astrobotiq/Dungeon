@@ -131,7 +131,7 @@ public class SpiderEnemyBrain : EnemyBrain
 
     public override void Attack()
     {
-        if (TargetGrid == null)
+        if (TargetGrid == null || isDead)
         {
             return;
         }

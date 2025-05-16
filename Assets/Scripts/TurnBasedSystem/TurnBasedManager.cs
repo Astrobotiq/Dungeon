@@ -36,6 +36,7 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
     {
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
+        _currentTurn = null;
 
         if (!TutorialManager.Instance.isInTutorialLevel)
         {

@@ -274,7 +274,6 @@ public class Player : MonoBehaviour
                         TutorialManager.Instance.EnqueueTutorial(TutorialType.PaladinAttack);
                         break;
                     case PlayerType.Wizard:
-                        Debug.Log("Wizard attack yapacak");
                         TutorialManager.Instance.EnqueueTutorial(TutorialType.WizardAttack);
                         break;
                     case PlayerType.Rouge:
