@@ -35,6 +35,12 @@ public class ButtonHover : MonoBehaviour
             return;
         }
         
+        if (soundManager == null)
+        {
+            Debug.Log("Soundmanager'ım yok, ben ButtonHover ve şunun içindeki " + gameObject.name);
+            soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
+        }
+        
         soundManager.PlaySound(SoundType.ButtonHoverSound, ButtonHoverSoundVolume);
         
         tempRectTransformLocalScale = gameObject.GetComponent<RectTransform>().localScale;

@@ -130,7 +130,7 @@ public class PlayerManager : Singleton<PlayerManager>
         players.Remove(player.gameObject);
         playerListForEnemyAI.Remove(player.gameObject);
 
-        if (players.Count == 0)
+        if (players.Count == 0 && !TutorialManager.Instance.isInTutorialLevel)
         {
             TurnBasedManager.Instance.hasLevelFailed = true;
             InGameUITextMesh.Instance.OpenGameOverScreen();

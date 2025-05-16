@@ -14,6 +14,8 @@ public class GridManager : Singleton<GridManager>
     [SerializeField] public int EndPosition; 
     
     public List<List<GameObject>> GridList;
+    
+    private GameObject previewedGrid = null;
 
     public bool IsInSearchState = false;
     public bool hasPreviewed = false;
@@ -194,12 +196,13 @@ public class GridManager : Singleton<GridManager>
                 EnemyManager.Instance.DeselectEnemy();
             }
 
-            if (hasPreviewed)
+            if (hasPreviewed && previewedGrid == selectedGrid)
             {
                 IsInSearchState = false;
                 ResetTable();
             }
 
+            previewedGrid = selectedGrid;
             hasPreviewed = true;
         }
         else

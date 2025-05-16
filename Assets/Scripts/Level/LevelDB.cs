@@ -1,10 +1,16 @@
 ﻿using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class LevelDB : Singleton<LevelDB>
 {
        [SerializeField] 
        List<LevelSO> Levels;
+
+       [SerializeField] 
+       private TutorialLevelSO tutorialLevelSo;
+
+       public TutorialLevelSO GetTutorialLevel() => tutorialLevelSo;
 
        public List<LevelSO> GetAllLevels() => Levels;
 

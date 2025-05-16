@@ -41,10 +41,14 @@ public class PlayerTurn : ITurn
 
     public override void EnterTurn()
     {
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerSelect);
+        }
+        
         endTurnBTN.enabled = true;
         var playerList = PlayerManager.Instance.GetPlayers();
         _playerDictionary = new();
-        InGameUITextMesh.Instance.OpenClosePlayerTurnIndicator();
         foreach (var playerGO in playerList)
         {
             var player = playerGO.GetComponent<Player>();
@@ -66,6 +70,7 @@ public class PlayerTurn : ITurn
                 return;
             }
         }
+        
         ExitTurn();
     }
 
@@ -76,8 +81,11 @@ public class PlayerTurn : ITurn
             pair.Key.SetPlayerTurn(false);
         }
         endTurnBTN.gameObject.SetActive(false);
-        
-        InGameUITextMesh.Instance.ResetEnemyArrangement();
+
+        if (!TutorialManager.Instance.isInTutorialLevel)
+        {
+            InGameUITextMesh.Instance.ResetEnemyArrangement();
+        }
         
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
         

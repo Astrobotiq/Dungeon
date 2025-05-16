@@ -6,6 +6,8 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 {
     private ITurn _currentTurn;
     
+    private bool isThisTutorial;
+    
     [SerializeField]
     private int turnNumber;
     
@@ -19,6 +21,10 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
 
     public bool hasLevelFailed = false;
 
+    public int TurnNumber => turnNumber;
+
+    public int MaxTurnNumber => _maxTurnNumber;
+
     public void Start()
     {
         if (soundManager == null)
@@ -28,12 +34,21 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         }
     }
 
-    public void StartCombat(int maxTurnNumber)
+    public void StartCombat(int maxTurnNumber, bool isThisTutorial)
     {
+        this.isThisTutorial = isThisTutorial;
         turnNumber = 1;
         _maxTurnNumber = maxTurnNumber;
-        InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
-        NextTurn(GetComponent<EnemyCombatPositionTurn>());
+
+        if (!isThisTutorial)
+        {
+            InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+            NextTurn(GetComponent<EnemyCombatPositionTurn>());
+            return;
+        }
+            
+        
+        NextTurn(GetComponent<TutorialEnemyCombatPosition>());
     }
 
     public void NextTurn(ITurn nextTurn)
@@ -44,7 +59,13 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         if (_currentTurn &&_currentTurn.isLastTurn && turnNumber+1 > _maxTurnNumber)
         {
             Debug.Log("Game is finished");
-            InGameUITextMesh.Instance.OpenWinScreen(MissionManager.Instance.GetCompletedMissionNumber());
+            
+            if (!isThisTutorial)
+                InGameUITextMesh.Instance.OpenWinScreen(MissionManager.Instance.GetCompletedMissionNumber());
+            else
+            {
+                CameraManager.Instance.OnLevelCompleted();
+            }
             _currentTurn = null;
             return;
         }
@@ -52,7 +73,8 @@ public class TurnBasedManager : Singleton<TurnBasedManager>
         if (_currentTurn && _currentTurn.isLastTurn)
         {
             turnNumber++;
-            InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
+            if (!isThisTutorial)
+                InGameUITextMesh.Instance.UpdateTurnDisplay(turnNumber,_maxTurnNumber);
         }
             
         soundManager.PlaySound(SoundType.TurnSwitchSound,TurnSwitchSoundVolume);

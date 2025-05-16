@@ -144,7 +144,18 @@ public class EnemyAI_Organizer : MonoBehaviour
             temp.Add(VARIABLE.Key);
         }
 
-        int random = Random.Range(0, 3);
+        int random;
+        
+        //What if there is only two best option??
+        if (temp.Count>3)
+        {
+            random =Random.Range(0, 3);
+        }
+        else
+        {
+            random = Random.Range(0, temp.Count);
+        }
+         
 
         Vector3 bestLoc = temp[random];
         //Vector3 bestLoc = new Vector3(99, 99, 99);

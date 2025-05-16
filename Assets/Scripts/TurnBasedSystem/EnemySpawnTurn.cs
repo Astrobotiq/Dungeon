@@ -21,9 +21,11 @@ public class EnemySpawnTurn : ITurn
     {
         var spawners = EnemyManager.Instance.Spawners;
 
-        foreach (var spawner in spawners)
+        if (spawners.Count == 0)
         {
-            Debug.Log($"Spawner position : {spawner.gameObject.transform.position}");
+            Debug.Log("Spawner olmadığı için spawn turu geçildi.");
+            ExitTurn();
+            return;
         }
 
         StartCoroutine(SpawnEnemies());
@@ -40,7 +42,7 @@ public class EnemySpawnTurn : ITurn
                     enemyGO.transform.position = armPos;
                     var enemyOffset = enemy.Item2; 
                     var pos = new Vector3(location.transform.position.x,enemyOffset, location.transform.position.z);
-                    ArmController.Instance.StartInstantiate(enemyGO,pos,waitInterval, damageAmount);
+                    ArmController.Instance.EnqueueStartInstantiate(enemyGO,pos,waitInterval, damageAmount);
                     Destroy(location);
                     yield return new WaitForSeconds(2*waitInterval+3f);
                 }
@@ -52,6 +54,11 @@ public class EnemySpawnTurn : ITurn
 
     public override void ExitTurn()
     {
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.BuildTutorialLevel();
+            return;
+        }
         TurnBasedManager.Instance.NextTurn(GetNextTurn());
     }
 }

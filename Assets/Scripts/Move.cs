@@ -100,6 +100,15 @@ public class Move : MonoBehaviour
             var grid = GridManager.Instance.getGridFromLocation(transform.position);
             GetComponent<EnemyBrain>().SetFinishMove(true, grid);
         }
+        
+        if (gameObject.tag.Equals("Player"))
+        {
+            if (TutorialManager.Instance.isInTutorialLevel)
+            {
+                TutorialManager.Instance.EnqueueTutorial(TutorialType.Undo);
+                TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerSkill);
+            }
+        }
 
         InputManager.Instance.canTakeInput = true;
     }
@@ -147,6 +156,15 @@ public class Move : MonoBehaviour
         {
             var grid = GridManager.Instance.getGridFromLocation(transform.position);
             GetComponent<EnemyBrain>().SetFinishMove(true, grid);
+        }
+
+        if (gameObject.tag.Equals("Player"))
+        {
+            if (TutorialManager.Instance.isInTutorialLevel)
+            {
+                TutorialManager.Instance.EnqueueTutorial(TutorialType.Undo);
+                TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerSkill);
+            }
         }
 
         InputManager.Instance.canTakeInput = true;

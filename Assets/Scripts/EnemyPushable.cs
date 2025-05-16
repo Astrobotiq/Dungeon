@@ -47,7 +47,7 @@ public class EnemyPushable : IPushable
 
         if (targetGrid)
         {
-            if (targetGrid.GridObject )
+            if (targetGrid.GridObject && targetGrid.GridObject.GetComponent<Water>() == null)
             {
                 Crash(targetGrid,currentGrid);
                 
@@ -131,11 +131,18 @@ public class EnemyPushable : IPushable
             {
                 spider.DestroyWeb();
             }
-            currentGrid.GridObject = null;
-            targetGrid.GridObject = gameObject;
-            _enemyBrain.SetGrid(targetGrid);
-            if (newGrid != null)
-                _enemyBrain.SetTargetGrid(newGrid);
+
+            //If the target grid is water then we do not need to do this
+            if (!targetGrid.GridObject || (targetGrid.GridObject && targetGrid.GridObject.GetComponent<Water>() == null))
+            {
+                currentGrid.GridObject = null;
+                targetGrid.GridObject = gameObject;
+                
+                _enemyBrain.SetGrid(targetGrid);
+                
+                if (newGrid != null)
+                    _enemyBrain.SetTargetGrid(newGrid);
+            }
             
             EventManager.Instance.InvokeOnPush();
         }));

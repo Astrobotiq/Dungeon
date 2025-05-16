@@ -34,6 +34,13 @@ public class EnemySpawnLocation : ITurn
 
     public override void EnterTurn()
     {
+        if (TurnBasedManager.Instance.TurnNumber == TurnBasedManager.Instance.MaxTurnNumber)
+        {
+            Debug.Log("Son tur olduğu için enemy spawner koymadım.");
+            ExitTurn();
+            return;
+        }
+        
         var gridList = GridManager.Instance.GridList;
 
         var enemyCount = EnemyManager.Enemies.Count;

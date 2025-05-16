@@ -122,5 +122,6 @@ public class WizardEnemyBrain : EnemyBrain
         })));
         sequence.Play();
         _targetLineController.RemoveLine();
+        TargetGrid = null;
     }
 }

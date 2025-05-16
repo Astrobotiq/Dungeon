@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PlayerPushable : IPushable
 {
-    [SerializeField]
-    private float duration;
     
     [SerializeField]
     private Player player;

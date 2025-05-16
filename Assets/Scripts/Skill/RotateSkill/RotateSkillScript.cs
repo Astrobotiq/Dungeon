@@ -5,14 +5,9 @@ using UnityEngine;
 
 public class RotateSkillScript : ISkillEffect
 {
-    [SerializeField,Range(0.1f,5)] 
-    float jumpPower = 1;
-    
-    [SerializeField, ReadOnly]
-    int jumpNumber = 1;
     
     [SerializeField] 
-    float jumpDuration = 1;
+    float rotateDuration = 1;
     
     [SerializeField] 
     private SoundManager soundManager;
@@ -25,7 +20,7 @@ public class RotateSkillScript : ISkillEffect
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
 
-        Timed.Run((() => ApplyEffect(targetGrid)), jumpDuration);
+        Timed.Run((() => ApplyEffect(targetGrid)), rotateDuration/2);
     }
 
     public override void ApplyEffect(Grid targetGrid) {
@@ -36,6 +31,6 @@ public class RotateSkillScript : ISkillEffect
             
             //soundManager.PlaySound(SoundType.RotateHit,RotateHitSoundVolume);
         }
-        Destroy(gameObject);
+        Timed.Run((() => Destroy(gameObject)),rotateDuration/2);
     }
 }

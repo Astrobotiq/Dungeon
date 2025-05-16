@@ -1,126 +1,90 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AttackPreview : MonoBehaviour
 {
-    [SerializeField] 
-    private GameObject RotateMark;
-    
-    [SerializeField] 
-    private GameObject FourSidedPushMark;
-    
-    [SerializeField] 
-    private GameObject FourSidedZPlusMark;
-    
-    [SerializeField] 
-    private GameObject FourSidedZMinusMark;
-    
-    [SerializeField] 
-    private GameObject FourSidedXPlusMark;
-    
-    [SerializeField] 
-    private GameObject FourSidedXMinusMark;
+     [Header("Prefabs")]
+    [SerializeField] private GameObject RotateMarkPrefab;
+    [SerializeField] private GameObject FourSidedZPlusMarkPrefab;
+    [SerializeField] private GameObject FourSidedZMinusMarkPrefab;
+    [SerializeField] private GameObject FourSidedXPlusMarkPrefab;
+    [SerializeField] private GameObject FourSidedXMinusMarkPrefab;
+
+    private List<GameObject> activePreviews = new List<GameObject>();
     
     private GameObject RealSlideBar;
     private GameObject FakeSliderBar;
     private GameObject gridObjectRef;
-    
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void PreviewRotateable(Vector3 position)
     {
-        RotateMark.gameObject.SetActive(true);
-        RotateMark.gameObject.transform.position = new Vector3(position.x, 0.5f, position.z);
+        GameObject go = Instantiate(RotateMarkPrefab, new Vector3(position.x, 0.5f, position.z), Quaternion.identity);
+        activePreviews.Add(go);
     }
 
     public void PreviewFourSidedPushable(Vector3 position)
     {
-        FourSidedPushMark.gameObject.SetActive(true);
-        FourSidedPushMark.gameObject.transform.position = new Vector3(position.x, 0.5f,position.z);
-
         for (int i = -1; i <= 1; i++)
         {
-            if (i == 0)
-                continue;
-            var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(position.x, 0, position.z + i));
+            if (i == 0) continue;
 
+            var zGrid = GridManager.Instance.getGridFromLocation(new Vector3(position.x, 0, position.z + i));
             if (zGrid != null)
             {
-                if (i == -1)
-                {
-                    FourSidedZMinusMark.gameObject.SetActive(true);
-                }
-                else
-                {
-                    FourSidedZPlusMark.gameObject.SetActive(true);
-                }
+                GameObject zMark = Instantiate(i == -1 ? FourSidedZMinusMarkPrefab : FourSidedZPlusMarkPrefab,
+                    new Vector3(position.x, 0.5f, position.z + i), Quaternion.identity);
+                activePreviews.Add(zMark);
             }
-            
-            var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(position.x + i, 0, position.z));
 
+            var xGrid = GridManager.Instance.getGridFromLocation(new Vector3(position.x + i, 0, position.z));
             if (xGrid != null)
             {
-                if (i == -1)
-                {
-                    FourSidedXMinusMark.gameObject.SetActive(true);
-                }
-                else
-                {
-                    FourSidedXPlusMark.gameObject.SetActive(true);
-                }
+                GameObject xMark = Instantiate(i == -1 ? FourSidedXMinusMarkPrefab : FourSidedXPlusMarkPrefab,
+                    new Vector3(position.x + i, 0.5f, position.z), Quaternion.identity);
+                activePreviews.Add(xMark);
             }
         }
     }
 
     public void PreviewOneSidedPushable(Vector3 throwerPos, Vector3 targetPos)
     {
-        var direction = (targetPos - throwerPos);
-        FourSidedPushMark.SetActive(true);
+        Vector3 direction = targetPos - throwerPos;
 
         if (direction.x > 0)
         {
-            FourSidedXPlusMark.SetActive(true);
+            activePreviews.Add(Instantiate(FourSidedXPlusMarkPrefab, new Vector3(targetPos.x, 0.5f, targetPos.z), Quaternion.identity));
         }
-        
         if (direction.x < 0)
         {
-            FourSidedXMinusMark.SetActive(true);
+            activePreviews.Add(Instantiate(FourSidedXMinusMarkPrefab, new Vector3(targetPos.x, 0.5f, targetPos.z), Quaternion.identity));
         }
-        
         if (direction.z > 0)
         {
-            FourSidedZPlusMark.SetActive(true);
+            activePreviews.Add(Instantiate(FourSidedZPlusMarkPrefab, new Vector3(targetPos.x, 0.5f, targetPos.z), Quaternion.identity));
         }
-        
         if (direction.z < 0)
         {
-            FourSidedXMinusMark.SetActive(true);
+            activePreviews.Add(Instantiate(FourSidedZMinusMarkPrefab, new Vector3(targetPos.x, 0.5f, targetPos.z), Quaternion.identity));
         }
     }
 
     public void ClosePreviews()
     {
-        RotateMark.gameObject.SetActive(false);
-        FourSidedPushMark.gameObject.SetActive(false);
-        FourSidedZPlusMark.gameObject.SetActive(false);
-        FourSidedZMinusMark.gameObject.SetActive(false);
-        FourSidedXPlusMark.gameObject.SetActive(false);
-        FourSidedXMinusMark.gameObject.SetActive(false);
+        foreach (var preview in activePreviews)
+        {
+            if (preview != null)
+            {
+                Destroy(preview);
+            }
+        }
+
+        activePreviews.Clear();
+        
         ClosePreviewDamageGiven();
     }
-
+    
     public void PreviewDamageGiven(Vector3 targetPos, int damage)
     {
         if (!GridManager.Instance.getGridFromLocation(targetPos).GridObject) {}
@@ -231,31 +195,35 @@ public class AttackPreview : MonoBehaviour
         }
     }
     
-    
-
     public void ClosePreviewDamageGiven()
     {
         if (FakeSliderBar && RealSlideBar)
         {
-            if (gridObjectRef.GetComponent<EnemyHover>()) {
+            if (gridObjectRef.GetComponent<EnemyHover>())
+            {
                 gridObjectRef.GetComponent<EnemyHover>().enabled = true;
                 gridObjectRef.GetComponent<EnemyHover>().inAttackPreview = false;
             }
-            
-            else if (gridObjectRef.GetComponent<VillageHover>()) {
+
+            else if (gridObjectRef.GetComponent<VillageHover>())
+            {
                 gridObjectRef.GetComponent<VillageHover>().enabled = true;
                 gridObjectRef.GetComponent<VillageHover>().inAttackPreview = false;
             }
-            
-            else if (gridObjectRef.GetComponent<DrumHover>()) {
+
+            else if (gridObjectRef.GetComponent<DrumHover>())
+            {
                 gridObjectRef.GetComponent<DrumHover>().enabled = true;
                 gridObjectRef.GetComponent<DrumHover>().inAttackPreview = false;
             }
-            
+
             FakeSliderBar.SetActive(false);
-            
-            Color color = RealSlideBar.transform.GetChild(0).gameObject.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color;
-            FakeSliderBar.transform.GetChild(0).gameObject.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color = color;
+
+            Color color = RealSlideBar.transform.GetChild(0).gameObject.transform.GetChild(1).transform.GetChild(0)
+                .GetComponent<Image>().color;
+            FakeSliderBar.transform.GetChild(0).gameObject.transform.GetChild(1).transform.GetChild(0)
+                .GetComponent<Image>().color = color;
         }
     }
+
 }

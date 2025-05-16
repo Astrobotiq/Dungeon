@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -9,10 +10,118 @@ public class ArmController : Singleton<ArmController>
     
     [SerializeField]
     private GameObject Arm;
-
     public Vector3 GetPosition => transform.position;
     
+    private Queue<IEnumerator> armTaskQueue = new Queue<IEnumerator>();
+    
+    private bool isProcessing = false;
+    
+    public void EnqueueStartInstantiate(GameObject enemy, Vector3 pos, float duration, int damage)
+    {
+        armTaskQueue.Enqueue(StartInstantiateRoutine(enemy, pos, duration, damage));
+        ProcessQueue();
+    }
 
+    public void EnqueueRemoveEnemy(Vector3 pos, float duration)
+    {
+        armTaskQueue.Enqueue(RemoveEnemyRoutine(pos, duration));
+        ProcessQueue();
+    }
+
+    private void ProcessQueue()
+    {
+        if (isProcessing || armTaskQueue.Count == 0) return;
+
+        StartCoroutine(ProcessTask());
+    }
+
+    private IEnumerator ProcessTask()
+    {
+        isProcessing = true;
+
+        yield return StartCoroutine(armTaskQueue.Dequeue());
+
+        isProcessing = false;
+
+        // İş bitti, sıradaki varsa devam et
+        ProcessQueue();
+    }
+
+    private IEnumerator StartInstantiateRoutine(GameObject enemy, Vector3 pos, float duration, int damage)
+    {
+        SetArmVisible(true);
+        var startPos = transform.position;
+
+        var grid = GridManager.Instance.getGridFromLocation(pos);
+
+        if (grid.GridObject != null)
+        {
+            // InstantiateFail
+            var newPos = new Vector3(pos.x, 1f, pos.z);
+            enemy.transform.SetParent(transform);
+
+            yield return transform.DOMove(newPos, duration).WaitForCompletion();
+
+            var gridObject = grid.GridObject;
+            gridObject.GetComponent<IHealth>().TakeDamage(damage);
+            FeelManager.Instance.ShakeCamera();
+            EventManager.Instance.InvokeOnSpawnerPrevented();
+
+            yield return transform.DOMove(startPos, duration).WaitForCompletion();
+
+            enemy.transform.SetParent(null);
+            Destroy(enemy);
+        }
+        else
+        {
+            // InstantiateSuccess
+            enemy.transform.SetParent(transform);
+
+            yield return transform.DOMove(pos, duration).WaitForCompletion();
+
+            enemy.transform.SetParent(null);
+            grid.GridObject = enemy;
+
+            if (enemy.TryGetComponent<EnemyBrain>(out var enemyBrain))
+                enemyBrain.SetGrid(grid);
+
+            EnemyManager.Instance.enemyListForEnemyAI.Add(enemy);
+
+            yield return transform.DOMove(startPos, duration).WaitForCompletion();
+        }
+
+        SetArmVisible(false);
+    }
+
+    private IEnumerator RemoveEnemyRoutine(Vector3 pos, float duration)
+    {
+        SetArmVisible(true);
+        var startPos = transform.position;
+        var grid = GridManager.Instance.getGridFromLocation(pos);
+        var enemy = grid.GridObject;
+        var enemyPos = enemy.transform.position;
+
+        yield return transform.DOMove(enemyPos, duration).WaitForCompletion();
+        
+
+        if (enemy == null)
+            Debug.LogError("Bulduğun grid'in enemy'si yok");
+
+        grid.GridObject = null;
+        enemy.transform.SetParent(transform);
+
+        yield return transform.DOMove(startPos, duration).WaitForCompletion();
+
+        Destroy(enemy);
+        SetArmVisible(false);
+    }
+
+    public void SetArmVisible(bool visible)
+    {
+        Arm.gameObject.SetActive(visible);
+    }
+    
+    //Old code
     public void StartInstantiate(GameObject enemy, Vector3 pos, float duration, int damage)
     {
         if (!Arm.gameObject.activeInHierarchy)
@@ -102,8 +211,5 @@ public class ArmController : Singleton<ArmController>
         }));
     }
 
-    public void SetArmVisible(bool visible)
-    {
-        Arm.gameObject.SetActive(visible);
-    }
+    
 }

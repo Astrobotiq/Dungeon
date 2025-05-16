@@ -25,6 +25,21 @@ public class SwordSwingSkill : ISkillEffect {
 
     public override void ApplyEffect(Grid targetGrid = null)
     {
+        //bir sonraki gridi su mu diye check et
+        var direction = _target.gameObject.transform.position - _player.gameObject.transform.position;
+        var newPos = new Vector3(_target.gameObject.transform.position.x + direction.x, 0, _target.gameObject.transform.position.z + direction.z);
+        var grid = GridManager.Instance.getGridFromLocation(newPos);
+        
+        if (grid && grid.GridObject && grid.GridObject.GetComponent<Water>() != null)
+        {
+            if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IPushable>()) {
+                FeelManager.Instance.ShakeCamera();
+                _target.GridObject.GetComponent<IPushable>().Push( PlayerManager.Instance.GetSelectedPlayer().GetComponent<Player>().Grid.transform.position);
+                soundManager.PlaySound(SoundType.SwordHit,SwordHitSoundVolume);
+            }
+            return;
+            
+        }
         if (_target.gameObject && _target.GridObject && _target.GridObject.GetComponent<IDamagable>()) {
             _target.GridObject.GetComponent<IDamagable>().Damage(DamageAmount, true);
             

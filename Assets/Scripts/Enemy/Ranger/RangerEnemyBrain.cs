@@ -72,15 +72,11 @@ public class RangerEnemyBrain : EnemyBrain
         {
             Vector3 nextPos = new Vector3(currentPos.x + direction.x,currentPos.y,currentPos.z + direction.y);
             
-            Debug.Log($"next pos : {nextPos}");
                 
             Grid grid = GridManager.Instance.getGridFromLocation(nextPos);
             if (grid == null)
             {
-                Debug.Log("Arama tahtanın dışına çıktı." +
-                          $"Next pos : {nextPos}");
                 nextPos = new Vector3(nextPos.x - direction.x,nextPos.y,nextPos.z - direction.y);
-                Debug.Log($"Yeni pos : {nextPos}");
                 grid = GridManager.Instance.getGridFromLocation(nextPos);
                 TargetGrid = grid;
                 _targetLineController.DrawLine(transform.position,nextPos);
@@ -88,7 +84,7 @@ public class RangerEnemyBrain : EnemyBrain
             }
             
 
-            if (grid.GridObject != null)
+            if (grid.GridObject != null && grid.GridObject.GetComponent<Water>() == null)
             {
                 TargetGrid = grid;
                 _targetLineController.DrawLine(transform.position,TargetGrid.GridObject.transform.position);
@@ -97,12 +93,6 @@ public class RangerEnemyBrain : EnemyBrain
 
             currentPos = nextPos;
         }
-    }
-
-    public override void Move(Vector3 attackPos)
-    {
-        _targetLineController.RemoveLine();
-        base.Move(attackPos);
     }
 
     protected override void DecideAttackTile()
@@ -200,6 +190,7 @@ public class RangerEnemyBrain : EnemyBrain
         sequence.Append(transform.DOMove(effectStartPos, attackRecoveryTime));
         sequence.Play();
         _targetLineController.RemoveLine();
+        TargetGrid = null;
     }
     
     

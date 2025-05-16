@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private bool _isPlayerTurn = false;
     
     private bool _hasWebbed = false;
+    
+    private GameObject _previewedGrid;
 
     [SerializeField] bool hasPreviewedTheSkill = false;
 
@@ -36,6 +38,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] 
     private List<uint> startSkillList;
+
+    [SerializeField] 
+    private PlayerType playerType;
 
     #endregion
 
@@ -88,7 +93,7 @@ public class Player : MonoBehaviour
 
     void OnDestroy()
     {
-        
+        PlayerManager.Instance.Unsubscribe(this);
     }
 
     public void SetPlayerTurn(bool isIt)
@@ -150,13 +155,16 @@ public class Player : MonoBehaviour
                 return;
             }
 
-            if (hasPreviewedTheSkill)
+            if (hasPreviewedTheSkill && _previewedGrid == Grid)
             {
                 InputManager.Instance.canTakeInput = false;
                 attackPreview.ClosePreviews();
                 StartCoroutine(move.Turn(this.Grid.transform.position, Grid.transform.position, (InstantiateSkill)));
                 return;
             }
+            
+            attackPreview.ClosePreviews();
+            _previewedGrid = Grid;
 
             switch (SelectedSkill.Skill.AttackPreviewType)
             {
@@ -186,12 +194,13 @@ public class Player : MonoBehaviour
                 gameView.ResetGameView();
                 CommandManager.Instance.ClearCommands();
                 HasUsedSkill = true;
+                _hasWebbed = false;
                 var playerTurn = TurnBasedManager.Instance.GetCurrentTurn() as PlayerTurn;
                 playerTurn?.SetPlayerAsPlayed(this);
                 InputManager.Instance.canTakeInput = true;
             }
 
-            _hasWebbed = false;
+            
         }
     }
 
@@ -226,6 +235,10 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerMove);
+        }
         HandleUI(true, this);
         PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
     }
@@ -252,6 +265,24 @@ public class Player : MonoBehaviour
             soundManager.PlaySound(SelectedSkill.Skill.SoundType);
 
             GridManager.Instance.StartSearchForSkill(SelectedSkill.Skill.SearchType);
+
+            if (TutorialManager.Instance.isInTutorialLevel)
+            {
+                switch (playerType)
+                {
+                    case PlayerType.Paladin:
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.PaladinAttack);
+                        break;
+                    case PlayerType.Wizard:
+                        Debug.Log("Wizard attack yapacak");
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.WizardAttack);
+                        break;
+                    case PlayerType.Rouge:
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.JesterAttack);
+                        break;
+                }
+                
+            }
         }
     }
 

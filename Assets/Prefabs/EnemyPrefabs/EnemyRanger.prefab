@@ -68,8 +68,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2.03, z: 1}
-  m_Center: {x: 0, y: -0.85, z: 0}
+  m_Size: {x: 0.5, y: 2.03, z: 0.5}
+  m_Center: {x: 0, y: -0.16, z: 0}
 --- !u!114 &3866763660584052155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpPower: 1
   jumpNumber: 1
-  jumpDuration: 1
+  jumpDuration: 0.3
   normalDuration: 0.3
   dust: {fileID: 1248365930086534, guid: 8a7eff82d5211844591f2c46f6a7a82e, type: 3}
   dustPos: {fileID: 251532797695228454}

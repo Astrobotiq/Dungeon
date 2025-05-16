@@ -111,6 +111,46 @@ public abstract class EnemyBrain : MonoBehaviour
         Debug.Log("Template 2");
         DecideAttackTile();
         PreAttack();
+        yield return new WaitForSeconds(2f);
+    }
+
+    public IEnumerator TutorialTemplate()
+    {
+        _hasFinishedMoving = false;
+        var attackPos = TutorialDecide();
+        TargetGrid = GridManager.Instance.getGridFromLocation(attackPos);
+        Move(attackPos);
+        while (!_hasFinishedMoving)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(2f);
+        DecideAttackTile();
+        PreAttack();
+        yield return new WaitForSeconds(2f);
+        
+        
+        Vector3 TutorialDecide()
+        {
+            var currentTutorialStep = TutorialManager.Instance.GetCurrentTutorialStep();
+            string[] lines = currentTutorialStep.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                for (int j = 0; j < line.Length; j++)
+                {
+                    char symbol = line[j];
+                    if (symbol.Equals('T'))
+                    {
+                        if (GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j)).GridObject == null)
+                        {
+                            return new Vector3(i, 0, j);
+                        }
+                    }
+                }
+            }
+            return new Vector3(0, 0, 0);
+        }
     }
 
     public virtual void RecalculateTarget(string name){}
@@ -136,7 +176,10 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void OnDeath(float waitTime = 0f)
     {
-        
+        if (TryGetComponent<LineController>(out var lineController))
+        {
+            lineController.RemoveLine();
+        }
         Debug.Log($"wait time : {waitTime}");
         StartCoroutine(AnimateDeath(waitTime));
     }
@@ -165,9 +208,9 @@ public abstract class EnemyBrain : MonoBehaviour
 
     public void AfterDeathEffect()
     {
-        FeelManager.Instance.ShakeCamera();
+        //FeelManager.Instance.ShakeCamera();
         Debug.Log($"currentGrid : {currentGrid.transform.position}");
-        ArmController.Instance.RemoveEnemyFromTable(currentGrid.transform.position, 0.8f);
+        ArmController.Instance.EnqueueRemoveEnemy(currentGrid.transform.position, 0.8f);
     }
     
 }

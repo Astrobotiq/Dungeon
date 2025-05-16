@@ -40,22 +40,6 @@ public class EnemyRotateable : IRotatable
             }
             
             var newGridPos = new Vector3(transform.position.x + diffrence.z, transform.position.y, transform.position.z + diffrence.x);
-            
-            if (newGridPos.x>=GridManager.Instance.EndPosition)
-            {
-                newGridPos = new Vector3(7, transform.position.y, transform.position.z - diffrence.x);
-            }else if (newGridPos.x<0)
-            {
-                newGridPos = new Vector3(0, transform.position.y, transform.position.z - diffrence.x);
-            }
-            
-            if (newGridPos.z>=GridManager.Instance.EndPosition)
-            {
-                newGridPos = new Vector3(transform.position.x - diffrence.z, transform.position.y, 7);
-            }else if (newGridPos.x<0)
-            {
-                newGridPos = new Vector3(transform.position.x - diffrence.z, transform.position.y, 0);
-            }
 
             //Check if pos out of bounds
             if (newGridPos.x>7)
@@ -87,7 +71,7 @@ public class EnemyRotateable : IRotatable
                 if (newGrid != null)
                 {
                     _enemyBrain.SetTargetGrid(newGrid);
-                    lineController.DrawLine(transform.position,new Vector3(newGrid.transform.position.x,transform.position.y,newGrid.transform.position.z));
+                    //lineController.DrawLine(transform.position,new Vector3(newGrid.transform.position.x,transform.position.y,newGrid.transform.position.z));
                 }
             }));
     }

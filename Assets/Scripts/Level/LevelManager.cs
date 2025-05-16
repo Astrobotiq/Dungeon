@@ -27,6 +27,11 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField]
     private int currentLevelIndex;
 
+    [SerializeField] 
+    private bool hasSeenTutorial;
+
+    
+
     public float VillageInstantiateSoundVolume = 1f;
     public float PlayerNEnemyInstantiateSoundVolume = 1f;
     public float WaterInstantiateSoundVolume = 1f;
@@ -36,6 +41,7 @@ public class LevelManager : Singleton<LevelManager>
     void Start()
     {
         currentLevelIndex = -1;
+        hasSeenTutorial = false;
         
         if (soundManager == null)
         {
@@ -46,8 +52,15 @@ public class LevelManager : Singleton<LevelManager>
 
     public void StartNewLevel()
     {
-        currentLevel = LevelDB.Instance.GetLevelByIndex(++currentLevelIndex);
-        BuildLevel();
+        if (hasSeenTutorial)
+        {
+            currentLevel = LevelDB.Instance.GetLevelByIndex(++currentLevelIndex);
+            BuildLevel();
+            return;
+        }
+
+        hasSeenTutorial = true;
+        TutorialManager.Instance.BuildTutorialLevel();
     }
 
     public void BuildLevel()
@@ -55,246 +68,162 @@ public class LevelManager : Singleton<LevelManager>
         StartCoroutine(LevelDesign());
     }
 
+    
+    
     IEnumerator LevelDesign()
+{
+    PlayerManager playerManager = PlayerManager.Instance;
+    EnemyManager enemyManager = EnemyManager.Instance;
+
+    while (!GridManager.Instance.hasInstantiated)
+        yield return null;
+
+    string[] lines = currentLevel.LevelLayout.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
+
+    List<(char symbol, int i, int j)> waterAndMountain = new();
+    List<(char symbol, int i, int j)> villageAndDrum = new();
+    List<(char symbol, int i, int j)> players = new();
+    List<(char symbol, int i, int j)> enemies = new();
+
+    for (int i = 0; i < lines.Length; i++)
     {
-        PlayerManager playerManager = PlayerManager.Instance;
-        EnemyManager enemyManager = EnemyManager.Instance;
-        
-        Debug.Log("Level");
-        while (!GridManager.Instance.hasInstantiated)
+        var line = lines[i];
+        for (int j = 0; j < line.Length; j++)
         {
-            yield return null;
-        }
-
-        Debug.Log("Level hazırlanıyor");
-
-        string[] lines = currentLevel.LevelLayout.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
-
-        var enemynumber = 0;
-        for (int i = 0; i < lines.Length; i++)
-        {
-            
-            var line = lines[i];
-            for (int j = 0; j < line.Length; j++)
+            char symbol = line[j];
+            switch (symbol)
             {
-                if (line[j].Equals('0'))
-                {
-                    continue;
-                }
-
-                if (line[j].Equals('#'))
-                {
-                    Debug.Log("Player bulundu");
-                    var player =  playerFactory.Build(PlayerType.Paladin, new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = player.transform.position.y;
-
-                    player.transform.position = new Vector3(player.transform.position.x,
-                        player.transform.position.y + 3, player.transform.position.z);
-
-                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
-                        playerManager.playerListForEnemyAI.Add(player);
-                        
-                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
-                    }));
-
-                    yield return new WaitForSeconds(1f);
-                }
-                
-                if (line[j].Equals('?'))
-                {
-                    Debug.Log("Player bulundu");
-                    var player =  playerFactory.Build(PlayerType.Wizard, new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = player.transform.position.y;
-
-                    player.transform.position = new Vector3(player.transform.position.x,
-                        player.transform.position.y + 3, player.transform.position.z);
-
-                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
-                        playerManager.playerListForEnemyAI.Add(player);
-                        
-                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
-                    }));
-
-                    yield return new WaitForSeconds(1f);
-                }
-                
-                if (line[j].Equals('j'))
-                {
-                    Debug.Log("Player bulundu");
-                    var player =  playerFactory.Build(PlayerType.Rouge, new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = player.transform.position.y;
-
-                    player.transform.position = new Vector3(player.transform.position.x,
-                        player.transform.position.y + 3, player.transform.position.z);
-
-                    player.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        player.GetComponent<Player>().SetGridStart(grid.gameObject, 1.4f);
-                        playerManager.playerListForEnemyAI.Add(player);
-                        
-                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
-                    }));
-
-                    yield return new WaitForSeconds(1f);
-                }
-
-                if (line[j].Equals('$'))
-                {
-                    Debug.Log("EnemyBulundu");
-                    var Enemy = enemyFactory.BuildRandom(new Vector3(i, 0f, j),
-                        Quaternion.identity);
-
-                    var EnemyObj = Enemy.Item1;
-
-                    EnemyObj.name = EnemyObj.name + enemynumber;
-                    enemynumber++;
-                    
-                    var yPosTarget = EnemyObj.transform.position.y;
-
-                    EnemyObj.transform.position = new Vector3(EnemyObj.transform.position.x,
-                        EnemyObj.transform.position.y + 3, EnemyObj.transform.position.z);
-                    
-                    var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0f, j));
-
-                    EnemyObj.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        
-                        grid.GridObject = EnemyObj;
-                    
-                        if(EnemyObj.GetComponent<EnemyBrain>() != null)
-                            EnemyObj.GetComponent<EnemyBrain>().SetGrid(grid);
-                    
-                        enemyManager.enemyListForEnemyAI.Add(EnemyObj);
-                    
-                        soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound,PlayerNEnemyInstantiateSoundVolume);
-                    }));
-                    
-                    yield return new WaitForSeconds(1f);
-                }
-
-                if (line[j].Equals('+'))
-                {
-                    Debug.Log("Village bulundu");
-                    var Village = VillageFactory.BuildRandom(new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var offset = Village.Item2;
-                    var VillageGO = Village.Item1;
-
-                    var yPosTarget = VillageGO.transform.position.y;
-
-                    VillageGO.transform.position = new Vector3(VillageGO.transform.position.x,
-                        VillageGO.transform.position.y + 3, VillageGO.transform.position.z);
-
-                    VillageGO.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        VillageGO.GetComponent<Village>().SetGrid(grid);
-                        playerManager.playerListForEnemyAI.Add(VillageGO);
-                        
-                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
-                    }));
-                    
-                    yield return new WaitForSeconds(1f);
-                }
-
-                if (line[j].Equals('%'))
-                {
-                    Debug.Log("Village bulundu");
-                    var Village = EnviromentFactory.Build(EnviromentType.Drum,new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = Village.transform.position.y;
-
-                    Village.transform.position = new Vector3(Village.transform.position.x,
-                        Village.transform.position.y + 3, Village.transform.position.z);
-
-                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        grid.GridObject = Village;
-                        playerManager.playerListForEnemyAI.Add(Village);
-                        
-                        soundManager.PlaySound(SoundType.VillageInstantiateSound,VillageInstantiateSoundVolume);
-                    }));
-                    
-                    yield return new WaitForSeconds(1f);
-                }
-
-                if (line[j].Equals('W'))
-                {
-                    Debug.Log("Village bulundu");
-                    var Village = EnviromentFactory.Build(EnviromentType.Water,new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = Village.transform.position.y;
-
-                    Village.transform.position = new Vector3(Village.transform.position.x,
-                        Village.transform.position.y + 3, Village.transform.position.z);
-                    
-                    soundManager.PlaySound(SoundType.WaterInstantiateSound,WaterInstantiateSoundVolume);
-                    
-                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        grid.GridObject = Village;
-                        //playerManager.playerListForEnemyAI.Add(Village);
-                    }));
-                    
-                    yield return new WaitForSeconds(1f);
-                }
-
-                if (line[j].Equals('M'))
-                {
-                    Debug.Log("Mountain bulundu");
-                    var Village = EnviromentFactory.Build(EnviromentType.Mountain,new Vector3(i, 1.4f, j),
-                        quaternion.identity);
-
-                    var yPosTarget = Village.transform.position.y;
-
-                    Village.transform.position = new Vector3(Village.transform.position.x,
-                        Village.transform.position.y + 3, Village.transform.position.z);
-
-                    Village.transform.DOMoveY(yPosTarget, 1f).OnComplete((() =>
-                    {
-                        var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
-                        grid.GridObject = Village;
-                        playerManager.playerListForEnemyAI.Add(Village);
-                        
-                        soundManager.PlaySound(SoundType.MountainInstantiateSound,MountainInstantiateSoundVolume);
-                    }));
-                    
-                    yield return new WaitForSeconds(1f);
-                }
-                
+                case 'W':
+                case 'M':
+                    waterAndMountain.Add((symbol, i, j));
+                    break;
+                case '+':
+                case '%':
+                    villageAndDrum.Add((symbol, i, j));
+                    break;
+                case '#':
+                case '?':
+                case 'j':
+                    players.Add((symbol, i, j));
+                    break;
+                case '$':
+                    enemies.Add((symbol, i, j));
+                    break;
             }
         }
-        InGameUITextMesh.Instance.OpenInGameUICanvas();
-        InGameUITextMesh.Instance.UpdatePlayerBars();
-        InGameUITextMesh.Instance.updatePublicBar();
-        InGameUITextMesh.Instance.UpdateMissionInformation(currentLevel.getMissions());
-        
-        foreach (var mission in currentLevel.getMissions())
-        {
-            MissionManager.Instance.StartMission(mission);
-        }
-        
-        TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber);
-        
     }
+
+    // 1. Water and Mountain
+    foreach (var (symbol, i, j) in waterAndMountain)
+    {
+        var type = symbol == 'W' ? EnviromentType.Water : EnviromentType.Mountain;
+        var obj = EnviromentFactory.Build(type, new Vector3(i, 1.4f, j), quaternion.identity);
+
+        var yTarget = obj.transform.position.y;
+        obj.transform.position += Vector3.up * 3;
+        obj.transform.DOMoveY(yTarget, 1f).OnComplete(() =>
+        {
+            var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+            grid.GridObject = obj;
+
+            if (symbol == 'M')
+                playerManager.playerListForEnemyAI.Add(obj);
+
+            var sound = symbol == 'W' ? SoundType.WaterInstantiateSound : SoundType.MountainInstantiateSound;
+            var vol = symbol == 'W' ? WaterInstantiateSoundVolume : MountainInstantiateSoundVolume;
+            soundManager.PlaySound(sound, vol);
+        });
+    }
+    yield return new WaitForSeconds(1f);
+
+    // 2. Village and Drum
+    foreach (var (symbol, i, j) in villageAndDrum)
+    {
+        GameObject obj = null;
+        if (symbol == '+')
+        {
+            var result = VillageFactory.BuildRandom(new Vector3(i, 1.4f, j), quaternion.identity);
+            obj = result.Item1;
+        }
+        else if (symbol == '%')
+        {
+            obj = EnviromentFactory.Build(EnviromentType.Drum, new Vector3(i, 1.4f, j), quaternion.identity);
+        }
+
+        var yTarget = obj.transform.position.y;
+        obj.transform.position += Vector3.up * 3;
+        obj.transform.DOMoveY(yTarget, 1f).OnComplete(() =>
+        {
+            var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+            grid.GridObject = obj;
+
+            playerManager.playerListForEnemyAI.Add(obj);
+            soundManager.PlaySound(SoundType.VillageInstantiateSound, VillageInstantiateSoundVolume);
+        });
+    }
+    yield return new WaitForSeconds(1f);
+
+    // 3. Players
+    foreach (var (symbol, i, j) in players)
+    {
+        PlayerType type = symbol switch
+        {
+            '#' => PlayerType.Paladin,
+            '?' => PlayerType.Wizard,
+            'j' => PlayerType.Rouge,
+            _ => PlayerType.Paladin
+        };
+
+        var player = playerFactory.Build(type, new Vector3(i, 1.4f, j), quaternion.identity);
+        var yTarget = player.transform.position.y;
+        player.transform.position += Vector3.up * 3;
+        player.transform.DOMoveY(yTarget, 1f).OnComplete(() =>
+        {
+            var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0, j));
+            player.GetComponent<Player>().SetGridStart(grid.gameObject, yTarget);
+            playerManager.playerListForEnemyAI.Add(player);
+            soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound, PlayerNEnemyInstantiateSoundVolume);
+        });
+    }
+    yield return new WaitForSeconds(1f);
+
+    // 4. Enemies
+    int enemynumber = 0;
+    foreach (var (symbol, i, j) in enemies)
+    {
+        var enemyTuple = enemyFactory.BuildRandom(new Vector3(i, 0f, j), Quaternion.identity);
+        var enemy = enemyTuple.Item1;
+
+        enemy.name += enemynumber++;
+        var yTarget = enemy.transform.position.y;
+        enemy.transform.position += Vector3.up * 3;
+
+        enemy.transform.DOMoveY(yTarget, 1f).OnComplete(() =>
+        {
+            var grid = GridManager.Instance.getGridFromLocation(new Vector3(i, 0f, j));
+            grid.GridObject = enemy;
+
+            if (enemy.TryGetComponent<EnemyBrain>(out var brain))
+                brain.SetGrid(grid);
+
+            enemyManager.enemyListForEnemyAI.Add(enemy);
+            soundManager.PlaySound(SoundType.CharacterNEnemyInstantiateSound, PlayerNEnemyInstantiateSoundVolume);
+        });
+    }
+    yield return new WaitForSeconds(1f);
+
+    // Game start UI and mission logic
+    InGameUITextMesh.Instance.OpenInGameUICanvas();
+    InGameUITextMesh.Instance.UpdatePlayerBars();
+    InGameUITextMesh.Instance.updatePublicBar();
+    InGameUITextMesh.Instance.UpdateMissionInformation(currentLevel.getMissions());
+
+    foreach (var mission in currentLevel.getMissions())
+        MissionManager.Instance.StartMission(mission);
+
+    TurnBasedManager.Instance.StartCombat(currentLevel.MaxTurnNumber,false);
+}
+
 
     public void DestroyLevel()
     {

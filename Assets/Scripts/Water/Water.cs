@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class Water : MonoBehaviour
 {
+    private EnemyBrain _enemyBrain;
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<EnemyBrain>(out var enemyBrain))
+        if (other.gameObject.TryGetComponent<EnemyBrain>(out var enemyBrain) && _enemyBrain != enemyBrain)
         {
-              enemyBrain.OnDeath(); 
+            Debug.Log("Enemy girdi");
+            _enemyBrain = enemyBrain;
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.Water);
+            enemyBrain.OnDeath();
         }
 
         if (other.gameObject.TryGetComponent<Player>(out var player))
