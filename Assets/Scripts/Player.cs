@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private List<uint> startSkillList;
 
+    [SerializeField] 
+    private PlayerType playerType;
+
     #endregion
 
     #region Publics
@@ -88,7 +91,7 @@ public class Player : MonoBehaviour
 
     void OnDestroy()
     {
-        
+        PlayerManager.Instance.Unsubscribe(this);
     }
 
     public void SetPlayerTurn(bool isIt)
@@ -230,7 +233,7 @@ public class Player : MonoBehaviour
         }
         if (TutorialManager.Instance.isInTutorialLevel)
         {
-            TutorialManager.Instance.ShowTutorial(TutorialType.PlayerMove);
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerMove);
         }
         HandleUI(true, this);
         PlayerManager.Instance.SetSelectedPlayer(this.gameObject);
@@ -261,7 +264,20 @@ public class Player : MonoBehaviour
 
             if (TutorialManager.Instance.isInTutorialLevel)
             {
-                TutorialManager.Instance.ShowTutorial(TutorialType.PlayerAttack);
+                switch (playerType)
+                {
+                    case PlayerType.Paladin:
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.PaladinAttack);
+                        break;
+                    case PlayerType.Wizard:
+                        Debug.Log("Wizard attack yapacak");
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.WizardAttack);
+                        break;
+                    case PlayerType.Rouge:
+                        TutorialManager.Instance.EnqueueTutorial(TutorialType.JesterAttack);
+                        break;
+                }
+                
             }
         }
     }

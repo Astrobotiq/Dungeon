@@ -119,6 +119,7 @@ MonoBehaviour:
   hasPreviewedTheSkill: 0
   _selectedSkillEffect: {fileID: 0}
   startSkillList: 03000000
+  playerType: 2
   IsInWater: 0
   soundManager: {fileID: 0}
   PlayerEffectSoundVolume: 0.3

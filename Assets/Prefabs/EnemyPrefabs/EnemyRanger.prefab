@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpPower: 1
   jumpNumber: 1
-  jumpDuration: 1
+  jumpDuration: 0.3
   normalDuration: 0.3
   dust: {fileID: 1248365930086534, guid: 8a7eff82d5211844591f2c46f6a7a82e, type: 3}
   dustPos: {fileID: 251532797695228454}

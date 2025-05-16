@@ -7,11 +7,16 @@ public class TutorialStep : MonoBehaviour
     public GameObject TutorialPanel;
     public Button OkBtn;
 
+    [SerializeField]
     private bool hasBeenShown = false;
 
     public void EnterTutorial()
     {
-        if (hasBeenShown) return;
+        if (hasBeenShown)
+        {
+            TutorialManager.Instance.CloseTutorial();
+            return;
+        }
         
         hasBeenShown = true;
         TutorialPanel.SetActive(true);

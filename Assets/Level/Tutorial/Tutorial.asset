@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialSteps:
   - {fileID: 4900000, guid: 3e9bdc791d327134dbf132cab45c831b, type: 3}
+  - {fileID: 4900000, guid: 9e44f944f7f698141972ce68355698f0, type: 3}

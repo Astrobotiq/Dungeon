@@ -93,6 +93,7 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             if (step.TutorialType == tutorialType)
             {
+                Debug.Log($"Tutorial type : {tutorialType}");
                 _isTutorialActive = true;
                 _currentTutorialStep = step;
                 step.EnterTutorial();
@@ -115,24 +116,6 @@ public class TutorialManager : Singleton<TutorialManager>
         playerManager = PlayerManager.Instance;
         enemyManager = EnemyManager.Instance;
         soundManager = SoundManager.Instance;
-    }
-
-    public void ShowTutorial(TutorialType tutorialType)
-    {
-        if (_isTutorialActive)
-        {
-            Debug.Log("There is already another tutorial that shown");
-            return;
-        }
-
-        foreach (var tutorialStep in tutorialSteps)
-        {
-            if (tutorialType == tutorialStep.TutorialType)
-            {
-                tutorialStep.EnterTutorial();
-                _currentTutorialStep = tutorialStep;
-            }
-        }
     }
 
     public void CloseTutorial()
@@ -160,11 +143,16 @@ public class TutorialManager : Singleton<TutorialManager>
         
         while (!GridManager.Instance.hasInstantiated)
             yield return null;
+
+        if (this.currentTutorialStep>0)
+        {
+            yield return StartCoroutine(DestroyTutorial());
+        }
         
         var currentTutorialStep = tutorialLevelSo.GetTutorialSteps[this.currentTutorialStep];
         
         string[] lines = currentTutorialStep.text.Split('\n', System.StringSplitOptions.RemoveEmptyEntries);
-
+        
         List<(char symbol, int i, int j)> waterAndMountain = new();
         List<(char symbol, int i, int j)> villageAndDrum = new();
         List<(char symbol, int i, int j)> players = new();
@@ -191,6 +179,8 @@ public class TutorialManager : Singleton<TutorialManager>
                     case 'j':
                         players.Add((symbol, i, j));
                         break;
+                    case 'B':
+                    case 'R':
                     case '$':
                         enemies.Add((symbol, i, j));
                         break;
@@ -276,8 +266,16 @@ public class TutorialManager : Singleton<TutorialManager>
     int enemynumber = 0;
     foreach (var (symbol, i, j) in enemies)
     {
-        var enemyTuple = enemyFactory.BuildRandom(new Vector3(i, 0f, j), Quaternion.identity);
-        var enemy = enemyTuple.Item1;
+        EnemyType type = symbol switch
+        {
+            'R' => EnemyType.Ranger,
+            '$' => EnemyType.Spider,
+            'B' => EnemyType.Wizard,
+            _ => EnemyType.Ranger
+        };
+        
+        var enemyTuple = enemyFactory.Build(type,new Vector3(i, 0f, j), Quaternion.identity);
+        var enemy = enemyTuple;
 
         enemy.name += enemynumber++;
         var yTarget = enemy.transform.position.y;
@@ -297,7 +295,32 @@ public class TutorialManager : Singleton<TutorialManager>
     }
     yield return new WaitForSeconds(1f);
     
-    TurnBasedManager.Instance.StartCombat(1,true);
+    TurnBasedManager.Instance.StartCombat(tutorialLevelSo.GetTutorialSteps.Count(),true);
+    }
+
+    public IEnumerator DestroyTutorial()
+    {
+        List<GameObject> objects = new();
+        var gridLists = GridManager.Instance.GridList;
+        foreach (var gridList in gridLists)
+        {
+            foreach (var gridObj in gridList)
+            {
+                var grid = gridObj.GetComponent<Grid>();
+                if (grid.GridObject)
+                {
+                    objects.Add(grid.GridObject);
+                    grid.GridObject = null;
+                }
+            }
+        }
+
+        foreach (var tileObj in objects)
+        {
+            tileObj.gameObject.transform.DOMoveY(3f, 1f).OnComplete((() => Destroy(tileObj)));
+        }
+
+        yield return new WaitForSeconds(2f);
     }
 }
 
@@ -305,9 +328,11 @@ public enum TutorialType
 {
     PlayerSelect,
     PlayerMove,
+    WizardAttack,
     PlayerSkill,
-    PlayerAttack,
     Water,
     Undo,
+    PaladinAttack,
+    JesterAttack
 }
 

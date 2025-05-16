@@ -4125,17 +4125,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 852878394806789676}
     - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      propertyPath: tutorialLevelSo
-      value: 
-      objectReference: {fileID: 11400000, guid: 7675ec93c5873ed4eaa3c25354b1c7e7, type: 2}
-    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
       propertyPath: EnviromentFactory
       value: 
       objectReference: {fileID: 2229279268441915657}
-    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      propertyPath: tutorialSteps.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
       propertyPath: m_Name
       value: TutorialManager
@@ -4143,103 +4135,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1149113309327257022}
-    - targetCorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4108540089429078617}
-    - targetCorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7166014349504331736}
-    - targetCorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8587224192521358241}
-    - targetCorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 326268997159828699}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
---- !u!1 &3744717777006335027 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
-  m_PrefabInstance: {fileID: 4975549701570915114}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1149113309327257022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744717777006335027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebbfb2d8a0f40eca2f7f9091d84095f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialType: 3
-  TutorialPanel: {fileID: 0}
-  OkBtn: {fileID: 0}
---- !u!114 &4108540089429078617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744717777006335027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebbfb2d8a0f40eca2f7f9091d84095f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialType: 4
-  TutorialPanel: {fileID: 0}
-  OkBtn: {fileID: 0}
---- !u!114 &7166014349504331736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744717777006335027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebbfb2d8a0f40eca2f7f9091d84095f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialType: 2
-  TutorialPanel: {fileID: 0}
-  OkBtn: {fileID: 0}
---- !u!114 &8587224192521358241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744717777006335027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebbfb2d8a0f40eca2f7f9091d84095f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialType: 1
-  TutorialPanel: {fileID: 0}
-  OkBtn: {fileID: 0}
---- !u!114 &326268997159828699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744717777006335027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebbfb2d8a0f40eca2f7f9091d84095f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TutorialType: 5
-  TutorialPanel: {fileID: 0}
-  OkBtn: {fileID: 0}
 --- !u!4 &5159345951274245690 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 186083380065105168, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
