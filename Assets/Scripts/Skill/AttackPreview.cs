@@ -179,6 +179,36 @@ public class AttackPreview : MonoBehaviour
             StartCoroutine(FakeHealthFlickering());
         }
         
+        else if (GridManager.Instance.getGridFromLocation(targetPos).GridObject.GetComponent<MountainHealth>())
+        {
+            gridObjectRef = GridManager.Instance.getGridFromLocation(targetPos).GridObject;
+            RealSlideBar = gridObjectRef.GetComponent<MountainHealth>().MountainPopupHealthCanvas;
+            FakeSliderBar = gridObjectRef.GetComponent<MountainHealth>().AttackPreviewHealthCanvas;
+            
+            FakeSliderBar.transform.LookAt(Camera.main.transform.position, Vector3.up);
+            
+            RealSlideBar.SetActive(false);
+            FakeSliderBar.SetActive(true);
+            
+            gridObjectRef.GetComponent<MountainHover>().inAttackPreview = true;
+            gridObjectRef.GetComponent<MountainHover>().enabled = false;
+            
+            float MountainHealthValue = gridObjectRef.GetComponent<MountainHealth>().getHealth();
+            float remainingHealth = MountainHealthValue - damage;
+            
+            if (remainingHealth < 0)
+            {
+                remainingHealth = 0;
+            }
+            
+            float temp_1 = (float) remainingHealth;
+            float temp_2 = (float) gridObjectRef.GetComponent<MountainHealth>().getMaxHealth();
+            float temp_3 = Mathf.FloorToInt((temp_1 / temp_2) * 100);
+            FakeSliderBar.transform.GetChild(0).gameObject.GetComponent<Slider>().value = temp_3;
+            
+            StartCoroutine(FakeHealthFlickering());
+        }
+        
         IEnumerator FakeHealthFlickering() {
             Color initial = FakeSliderBar.transform.GetChild(0).gameObject.transform.GetChild(1).transform.GetChild(0).GetComponent<Image>().color;
             Color temp = initial;
@@ -215,6 +245,12 @@ public class AttackPreview : MonoBehaviour
             {
                 gridObjectRef.GetComponent<DrumHover>().enabled = true;
                 gridObjectRef.GetComponent<DrumHover>().inAttackPreview = false;
+            }
+            
+            else if (gridObjectRef.GetComponent<MountainHover>())
+            {
+                gridObjectRef.GetComponent<MountainHover>().enabled = true;
+                gridObjectRef.GetComponent<MountainHover>().inAttackPreview = false;
             }
 
             FakeSliderBar.SetActive(false);

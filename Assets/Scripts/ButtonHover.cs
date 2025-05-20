@@ -13,7 +13,7 @@ public class ButtonHover : MonoBehaviour
     [SerializeField] 
     private SoundManager soundManager;
 
-    public float ButtonHoverSoundVolume = 1f;
+    public float ButtonHoverSoundVolume = 0.5f;
 
     private void Start()
     {
