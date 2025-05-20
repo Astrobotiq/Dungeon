@@ -16,6 +16,11 @@ public class VillageHealth : IHealth
     {
         VillageManager.Instance.ChangeVillageHP(-1);
         EventManager.Instance.InvokeOnVillageTakeDamage();
+
+        if (TutorialManager.Instance.isInTutorialLevel)
+        {
+            TutorialManager.Instance.EnqueueTutorial(TutorialType.VillageDamage);
+        }
         
         soundManager = GameObject.FindWithTag("SoundManager").GetComponent<SoundManager>();
         soundManager.PlaySound(SoundType.VillageTakeDamageSound, VillageTakeDamageSoundVolume);

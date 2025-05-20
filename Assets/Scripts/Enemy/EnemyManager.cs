@@ -70,12 +70,6 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void DeselectEnemy()
     {
-        if (selectedEnemy == null)
-        {
-            return;
-        }
-        
-        selectedEnemy.OnEnemySelection(false);
         selectedEnemy = null;
     }
 

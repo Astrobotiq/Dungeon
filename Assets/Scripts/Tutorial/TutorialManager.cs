@@ -340,6 +340,7 @@ public enum TutorialType
     Undo,
     PaladinAttack,
     JesterAttack,
-    EndTurnButton
+    EndTurnButton,
+    VillageDamage
 }
 

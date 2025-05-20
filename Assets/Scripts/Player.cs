@@ -231,10 +231,9 @@ public class Player : MonoBehaviour
 
     public void SetSelectedPlayerFromOutside()
     {
-        if (PlayerManager.Instance.GetSelectedPlayer() == this.gameObject)
-        {
-            return;
-        }
+        PlayerManager.Instance.DeselectPlayer();
+        
+        
         if (TutorialManager.Instance.isInTutorialLevel)
         {
             TutorialManager.Instance.EnqueueTutorial(TutorialType.PlayerMove);
@@ -287,6 +286,13 @@ public class Player : MonoBehaviour
 
     public void Undo(GameObject grid, float offset)
     {
+        if (_selectedSkillEffect)
+        {
+            Debug.Log("Skill Destroy edilecek");
+            Destroy(_selectedSkillEffect);
+            _selectedSkillEffect = null;
+        }
+        attackPreview.ClosePreviews();
         move.StartMove(Grid.GetComponent<Grid>(), grid.GetComponent<Grid>());
         onPositionChange(grid);
         GridManager.Instance.SetSelectedGridFromOutside(Grid.transform.position, false);
@@ -296,8 +302,9 @@ public class Player : MonoBehaviour
 
     public void onDeselected()
     {
-        if (_selectedSkillEffect != null)
+        if (_selectedSkillEffect)
         {
+            Debug.Log("Skill Destroy edilecek");
             Destroy(_selectedSkillEffect);
             _selectedSkillEffect = null;
         }

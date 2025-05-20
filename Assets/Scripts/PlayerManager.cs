@@ -103,7 +103,6 @@ public class PlayerManager : Singleton<PlayerManager>
         
         if (SelectedPlayer)
         {
-            GridManager.Instance.ResetTable();
             SelectedPlayer.GetComponent<Player>().onDeselected();
             SelectedPlayer = null;
         }

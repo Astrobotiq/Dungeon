@@ -19,6 +19,7 @@ public class GridManager : Singleton<GridManager>
 
     public bool IsInSearchState = false;
     public bool hasPreviewed = false;
+    public bool WillPreview = false;
     public bool hasInstantiated = false;
 
     void Start()
@@ -173,53 +174,123 @@ public class GridManager : Singleton<GridManager>
         {
             return;
         }
-        
+        Debug.Log("1");
         //önceki grid'in scale shader'ını resetle
-        if (selectedGrid)
+        if (selectedGrid && selectedGrid != grid)
         {
-            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale(); 
+            //Eğer seçili bir grid varsa tabloyu resetle
+            Debug.Log("2");
+            selectedGrid.GetComponent<Grid>().MaterialController.ResetOutlineScale();
         }
         
+        Debug.Log("3");
+        var oldSelectedGrid = selectedGrid;
         selectedGrid = grid;
         selectedGrid.GetComponent<Grid>().MaterialController.SetOutlineScale();
+        
 
-        //search ediyorsak.
-        if (IsInSearchState)
+        if (!IsInSearchState)
         {
-            if (selectedGrid.GetComponent<Grid>().IsAvailable)
+            Debug.Log("4 : search statete değil");
+            var sGrid = selectedGrid.GetComponent<Grid>();
+            if (sGrid.GridObject != null)
             {
-                PlayerManager.Instance.SetNewGridForSelectedPlayer(selectedGrid);
+                var gridObject = sGrid.GridObject;
+                if (gridObject.TryGetComponent(out Player player))
+                {
+                    Debug.Log("5: grid objesinde player var. player seçilecek.");
+                    player.SetSelectedPlayerFromOutside();
+                }
+
+                if (gridObject.TryGetComponent(out EnemyBrain enemyBrain))
+                {
+                    Debug.Log("6 : grid objesinde enemy var deselect yapılacak");
+                    EnemyManager.Instance.DeselectEnemy();
+                }
             }
             else
             {
                 PlayerManager.Instance.DeselectPlayer();
-                EnemyManager.Instance.DeselectEnemy();
             }
-
-            if (hasPreviewed && previewedGrid == selectedGrid)
-            {
-                IsInSearchState = false;
-                ResetTable();
-            }
-
-            previewedGrid = selectedGrid;
-            hasPreviewed = true;
         }
         else
+        {
+            Debug.Log("7 : seach state'deyiz");
+            if (selectedGrid.GetComponent<Grid>().IsAvailable)
+            {
+                Debug.Log("8 : seach state'de is available bir grid'e tıkladık");
+                PlayerManager.Instance.SetNewGridForSelectedPlayer(selectedGrid);
+            }
+            else
+            {
+                Debug.Log("9 : search state'de seçilebilir bir grid'e tıklamadık");
+                if (oldSelectedGrid != selectedGrid)
+                {
+                    Debug.Log("10 : search statete seçilebilir olmayan grid old grid ile aynı değilmiş");
+                    ResetTable();
+                    PlayerManager.Instance.DeselectPlayer();
+                    EnemyManager.Instance.DeselectEnemy();
+                    var gridObject = selectedGrid.GetComponent<Grid>().GridObject;
+                    
+                    if (gridObject)
+                    {
+                        if (gridObject.TryGetComponent(out Player player))
+                        {
+                            Debug.Log("11: grid objesinde player var. player seçilecek.");
+                            player.SetSelectedPlayerFromOutside();
+                        }
+                        if (gridObject.TryGetComponent(out EnemyBrain enemyBrain))
+                        {
+                            Debug.Log("12 : grid objesinde enemy var deselect yapılacak");
+                            EnemyManager.Instance.DeselectEnemy();
+                        }
+                    }
+                    
+                }
+                else if(selectedGrid.GetComponent<Grid>().GridObject == PlayerManager.Instance.GetSelectedPlayer())
+                {
+                    ResetTable();
+                    var gridObject = selectedGrid.GetComponent<Grid>().GridObject;
+
+                    if (gridObject)
+                    {
+                        if (gridObject.TryGetComponent(out Player player))
+                        {
+                            Debug.Log("11: grid objesinde player var. player seçilecek.");
+                            player.SetSelectedPlayerFromOutside();
+                        }
+                    }
+                }
+                
+            }
+
+            if (WillPreview)
+            {
+                Debug.Log("13");
+                if ( hasPreviewed && previewedGrid == selectedGrid)
+                {
+                    Debug.Log("14");
+                    IsInSearchState = false;
+                    WillPreview = false;
+                    ResetTable();
+                }
+                previewedGrid = selectedGrid;
+                hasPreviewed = true;
+            }
+            
+
+            
+        }
+        /*else
         {
             if (selectedGrid.GetComponent<Grid>().GridObject != PlayerManager.Instance.GetSelectedPlayer())
             {
                 PlayerManager.Instance.DeselectPlayer();
             }
-
-            if (selectedGrid.GetComponent<Grid>().GridObject != EnemyManager.Instance.EnemyBrain?.gameObject)
-            {
-                EnemyManager.Instance.DeselectEnemy();
-            }
-        }
+        }*/
         
         
-        if (selectedGrid.GetComponent<Grid>().GridObject != null)
+        /*if (selectedGrid.GetComponent<Grid>().GridObject != null)
         {
             var gridObject = selectedGrid.GetComponent<Grid>().GridObject;
             
@@ -227,7 +298,7 @@ public class GridManager : Singleton<GridManager>
             {
                 gridObject.GetComponent<Player>().SetSelectedPlayerFromOutside();
             }
-        }
+        }*/
     }
 
     public void StartSearchForSkill(SearchType searchType)
@@ -235,6 +306,7 @@ public class GridManager : Singleton<GridManager>
         ResetTable();
 
         IsInSearchState = true;
+        WillPreview = true;
         hasPreviewed = false;
         AlgorithmSkillFourDirection searchAlgorithm = new AlgorithmSkillFourDirection();
         HashSet<Vector3> selectedGrids = null;
