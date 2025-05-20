@@ -48,6 +48,7 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 4
   damageMultiplier: 1
+  particle: {fileID: 5829763570108003510, guid: d3fa7d42ab5c7ac448c4c17fdfa2d907, type: 3}
 --- !u!1001 &8878372601602226454
 PrefabInstance:
   m_ObjectHideFlags: 0
