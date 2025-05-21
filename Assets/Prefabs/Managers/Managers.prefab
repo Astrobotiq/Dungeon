@@ -763,6 +763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yOffset: 1.5
   Arm: {fileID: 7102571870023175279}
+  StartPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &981569377238707794
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,8 +1082,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Levels:
+  - {fileID: 11400000, guid: 8b90d7faa849bd6409f6574e5bd39bd7, type: 2}
+  - {fileID: 11400000, guid: c1938e6992b45c04f8ac1fc3d7016519, type: 2}
   - {fileID: 11400000, guid: 9445b2d7d9e166041b5e2d5ce5600f04, type: 2}
-  - {fileID: 11400000, guid: d558153dc7983b7498f017f3a7923faa, type: 2}
   tutorialLevelSo: {fileID: 0}
 --- !u!1 &3232842220124896292
 GameObject:
@@ -1634,6 +1636,7 @@ MonoBehaviour:
   EndPosition: 7
   IsInSearchState: 0
   hasPreviewed: 0
+  WillPreview: 0
   hasInstantiated: 0
 --- !u!1 &3854407066434447104
 GameObject:
@@ -2274,6 +2277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Destroy a mountain
   RewardType: 0
+  isCompleted: 0
 --- !u!114 &3598142170171128991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,6 +2292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Kill four enemy
   RewardType: 0
+  isCompleted: 0
 --- !u!114 &2660122504462177210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2302,6 +2307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Player take no damage
   RewardType: 0
+  isCompleted: 0
 --- !u!114 &2415050266077931520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2316,6 +2322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Village take no damage
   RewardType: 0
+  isCompleted: 0
 --- !u!114 &1866832671973171880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2330,6 +2337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Prevent enemy spawn
   RewardType: 0
+  isCompleted: 0
 --- !u!114 &6767629584420775941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2344,6 +2352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MissionInfo: Drum take no hit
   RewardType: 0
+  isCompleted: 0
 --- !u!1 &5463179811272450187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2897,7 +2906,7 @@ MonoBehaviour:
   playerListForEnemyAI: []
   offset: 1.4
   soundManager: {fileID: 2066824013080358483}
-  PlayerSelectSoundVolume: 1
+  PlayerSelectSoundVolume: 0.3
 --- !u!1 &7414721686800075204
 GameObject:
   m_ObjectHideFlags: 0
@@ -3319,10 +3328,10 @@ MonoBehaviour:
   soundManager: {fileID: 2066824013080358483}
   currentLevelIndex: 0
   hasSeenTutorial: 0
-  VillageInstantiateSoundVolume: 1
-  PlayerNEnemyInstantiateSoundVolume: 1
-  WaterInstantiateSoundVolume: 1
-  MountainInstantiateSoundVolume: 1
+  VillageInstantiateSoundVolume: 0.2
+  PlayerNEnemyInstantiateSoundVolume: 0.2
+  WaterInstantiateSoundVolume: 0.2
+  MountainInstantiateSoundVolume: 0.2
 --- !u!1 &8503832116232198829
 GameObject:
   m_ObjectHideFlags: 0
@@ -4128,6 +4137,22 @@ PrefabInstance:
       propertyPath: EnviromentFactory
       value: 
       objectReference: {fileID: 2229279268441915657}
+    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
+      propertyPath: WaterInstantiateSoundVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
+      propertyPath: VillageInstantiateSoundVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
+      propertyPath: MountainInstantiateSoundVolume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 851841296082494833, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
+      propertyPath: PlayerNEnemyInstantiateSoundVolume
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8573548492346294041, guid: 66ad6b550ea27d4408895a9937d140c2, type: 3}
       propertyPath: m_Name
       value: TutorialManager
