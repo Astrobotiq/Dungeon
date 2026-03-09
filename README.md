@@ -1,1 +1,50 @@
-🏰 Dungeon📜 OverviewDungeon is a Unity game project featuring a grid-based and turn-based tactical combat system. The codebase is built with a modular and solid architecture, utilizing A* (A-Star) pathfinding , the Factory design pattern for object creation , and various manager classes to handle core game logic efficiently.🏗️ Architecture and Core Systems1. AI and PathfindingThis module controls the movement and targeting logic of enemies on the battlefield.AStarPathfinding: Calculates the shortest, obstacle-free path on the grid.EnemyAI_Organizer: Coordinates the AI states, actions, and targeting of all enemies during combat.AI Calculators: Tactical decision-making is divided into specific combat styles, including EnemyAI_Calculator_Archer, EnemyAI_Calculator_CloseRanged, EnemyAI_Calculator_Ranged, and EnemyAI_Calculator_Warrior.2. Core ManagersThe primary controllers that handle the overall game flow (typically implemented as Singletons):GridManager & Grid: Handles the generation of the battlefield grid, mathematical cell calculations, and user interactions via GridClickable.TurnBasedManager: Controls the turn order and flow of the game between the player and enemies.LevelManager & LevelDB: Manages level transitions, difficulty, and loads level data stored as ScriptableObjects (LevelSo).MissionManager: Tracks in-game missions and monitors player progression toward objectives.EventManager: Listens to and triggers in-game events to reduce coupling between classes.InputManager: Detects and processes player inputs and mouse clicks.3. Enemy SystemContains the logic for various enemy types and their unique behaviors:Enemy Brains: Specific scripts like SpiderEnemyBrain, RangerEnemyBrain, and WizardEnemyBrain dictate the movement and attack loops of different enemy classes.Projectiles: Ranged attacks, such as the WizardBall and Arrow, are managed using trajectory controllers like ParabolicLineController and StraightLineController.Interaction: Scripts like EnemyHealth, EnemyPushable, and EnemyRotateable handle damage calculation and physical reactions.4. Factory PatternEnsures dynamic, controlled, and optimized instantiation of game objects.FactoryManager & BaseFactory: Forms the backbone of the object creation architecture.Sub-Factories: Spawns specific entities based on their roles using EnemyFactory, PlayerFactory, EnviremoentFactory, and VillageFactory.5. Mission SystemIn-game objectives that the player must complete or defend, all deriving from the IMission interface:KillFourEnemyMission: Defeat a specific number of enemies.NoDamageToVillageMission: Protect the village from taking any hits.DestroyAMountainMission & PreventTwoSpawnerMission: Environmental and tactical objectives.6. Skill SystemThe project includes a robust skill system for entities, featuring abilities like Fireball, Heal, ThunderSkill, and SwordSwingSkill.7. InterfacesStandardized contracts used across different game objects for shared behaviors:IDamagable & IHealth: Implemented by any entity that has health points and can take damage.IClickable: Used for objects that can be interacted with via mouse clicks.IPushable: Applied to objects that can be knocked back or moved by force.IRotatable: Applied to objects that can change their facing direction.🛠 Technical Details & Developer NotesScriptable Objects (SO): The project heavily utilizes ScriptableObjects to store game data cleanly. This includes enemy stats (EnemySO) and level layouts like TutorialLevelSO and Level2.asset.Game Feel: A FeelManager is integrated to handle visual and auditory feedback (such as screen shake, hit pauses, or particles) to enhance the overall impact of combat.
+# 🏰 Dungeon
+
+> A grid-based, turn-based tactical combat game built with Unity. 
+
+Welcome to the **Dungeon** repository! [cite_start]This project features a highly modular architecture, leveraging A* pathfinding, the Factory design pattern, and a robust turn-based combat system to create a dynamic tactical experience[cite: 14, 98, 222].
+
+---
+
+## ⚙️ Core Systems & Architecture
+
+[cite_start]To maintain a scalable and clean codebase, the project is divided into specialized managers and core systems[cite: 81, 98, 110, 150, 222]:
+
+| System | Description | Key Classes |
+| :--- | :--- | :--- |
+| **AI & Pathfinding** | Controls enemy movement and tactical targeting. | [cite_start]`AStarPathfinding`, `EnemyAI_Organizer` [cite: 14, 81] |
+| **Turn-Based Combat** | Manages the flow of combat between player and enemies. | [cite_start]`TurnBasedManager`, `PlayerTurn`, `EnemyAttack` [cite: 213, 219, 222] |
+| **Grid Management** | Generates the battlefield and handles cell interactions. | [cite_start]`GridManager`, `Grid`, `GridClickable` [cite: 109, 110] |
+| **Object Creation** | Ensures optimized instantiation using the Factory pattern. | [cite_start]`FactoryManager`, `EnemyFactory`, `PlayerFactory` [cite: 96, 98, 102] |
+| **Mission Tracking** | Monitors player progression toward level objectives. | [cite_start]`MissionManager`, `KillFourEnemyMission` [cite: 148, 150] |
+
+---
+
+## 👾 Entities & Combat Mechanics
+
+The combat system is designed to support diverse enemy types and dynamic skills:
+
+* [cite_start]**Enemy Variations:** Behaviors are controlled by specialized AI brains (e.g., `SpiderEnemyBrain`, `WizardEnemyBrain`, `RangerEnemyBrain`)[cite: 50, 53, 60].
+* [cite_start]**Combat Styles:** Distinct calculators dictate tactical decisions (e.g., `EnemyAI_Calculator_Archer`, `EnemyAI_Calculator_Warrior`)[cite: 64, 77].
+* [cite_start]**Skills & Projectiles:** Features dynamic abilities like `Fireball`, `Heal`, and `ThunderSkill` with specific trajectory controllers like `ParabolicLineController`[cite: 46, 183, 185, 199].
+* [cite_start]**Game Feel:** The `FeelManager` handles visual and auditory feedback to enhance combat impact[cite: 105].
+
+---
+
+## 🔌 Core Interfaces
+
+To reduce coupling, entities rely on standardized contracts:
+
+* [cite_start]`IDamagable` / `IHealth`: Applied to any entity that has health points and can take damage[cite: 115, 116].
+* [cite_start]`IClickable`: Used for objects and grid cells that can be interacted with via mouse clicks[cite: 115].
+* [cite_start]`IPushable`: Applied to entities affected by knockback or force mechanics[cite: 130].
+* [cite_start]`IRotatable`: Used for objects that need to update their facing direction[cite: 131].
+
+---
+
+## 💾 Data Management
+
+The project heavily utilizes **ScriptableObjects** for clean, scalable data storage and configuration:
+
+* [cite_start]**Level Data:** Layouts and configurations are stored in assets like `LevelSo` and `TutorialLevelSO`[cite: 139, 140].
+* [cite_start]**Entity Stats:** Attributes are easily adjustable via `EnemySO` and `VillageSO`[cite: 45, 244].
